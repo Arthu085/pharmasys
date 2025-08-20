@@ -1,12 +1,10 @@
-import Screen from './components/Screen'
 import './App.css'
+import Register from './pages/Register'
 
 function App() {
   return (
     <>
-      <Screen>
-
-      </Screen>
+      <Register />
     </>
   )
 }

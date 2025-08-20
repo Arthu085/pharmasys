@@ -9,7 +9,7 @@ interface MainLayoutProps {
   children?: React.ReactNode;
 }
 
-const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
+const ScreenAuth: React.FC<MainLayoutProps> = ({ children }) => {
   return (
     <Layout style={{
       minHeight: '100vh',
@@ -17,7 +17,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
     }}>
       <Header />
       {children && (
-        <Content style={{ padding: '24px 0', justifyItems: 'center' }}>
+        <Content style={{ padding: '24px 0', justifyItems: 'center', alignItems: 'center' }}>
           <div style={{
             background: '#fff',
             padding: 15,
@@ -33,4 +33,4 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
   );
 };
 
-export default MainLayout;
+export default ScreenAuth;
