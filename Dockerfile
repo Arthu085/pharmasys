@@ -1,15 +1,17 @@
 FROM node:18-alpine AS builder
 WORKDIR /app
 
-COPY package.json yarn.lock ./
-RUN yarn install --frozen-lockfile
+COPY package*.json ./
+
+RUN npm ci
 
 COPY . .
-RUN yarn build
+
+RUN npm run build
 
 FROM nginx:1.25-alpine
 
-COPY --from=builder /app/build /usr/share/nginx/html
+COPY --from=builder /app/dist /usr/share/nginx/html
 
 RUN rm /etc/nginx/conf.d/default.conf
 
