@@ -5,14 +5,16 @@ import {
 	AuthRoutesEnum,
 	DashboardRoutesEnum,
 	NotFoundRoutesEnum,
+	UserRoutesEnum,
 } from "../enums/app-routes.enum";
 import { Navigate } from "react-router-dom";
 import { AuthGuard } from "../components/guards/auth.guard";
 import { MainLayout } from "../components/layouts/main.layout";
 import { LoginPage } from "@/modules/auth/presentation/pages/login.page";
-import { StatusGuard } from "../components/guards/status.guard";
-import { StatusEnum } from "@/shared/domain/enums/status.enum";
 import { RegisterPage } from "@/modules/auth/presentation/pages/register.page";
+import { NotFoundPage } from "../pages/not-found.page";
+import { DashboardPage } from "@/modules/dashboard/presentation/pages/dashboard.page";
+import { ProfilePage } from "@/modules/profile/presentation/pages/profile.page";
 
 export const routesConfig: IAppRoute[] = [
 	{
@@ -41,16 +43,19 @@ export const routesConfig: IAppRoute[] = [
 		element: <AuthGuard />,
 		children: [
 			{
-				element: <StatusGuard allowedStatus={StatusEnum.ATIVO} />,
+				element: <MainLayout />,
 				children: [
 					{
-						element: <MainLayout />,
-						children: [
-							{
-								path: DashboardRoutesEnum.HOME,
-								element: <h1>Bem-vindo ao Dashboard</h1>,
-							},
-						],
+						path: DashboardRoutesEnum.HOME,
+						element: <DashboardPage />,
+					},
+					{
+						path: UserRoutesEnum.USERS,
+						element: <h1>Usuários</h1>,
+					},
+					{
+						path: UserRoutesEnum.PROFILE,
+						element: <ProfilePage />,
 					},
 				],
 			},
@@ -58,6 +63,6 @@ export const routesConfig: IAppRoute[] = [
 	},
 	{
 		path: NotFoundRoutesEnum.NOT_FOUND,
-		element: <h1>404 - Página não encontrada</h1>,
+		element: <NotFoundPage />,
 	},
 ];

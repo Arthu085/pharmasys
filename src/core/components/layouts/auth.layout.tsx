@@ -1,28 +1,22 @@
 import { Outlet } from "react-router-dom";
+import { Flex, Layout } from "antd";
+
+const { Content, Footer } = Layout;
 
 export const AuthLayout = () => {
 	return (
-		<div
-			style={{
-				display: "flex",
-				justifyContent: "center",
-				alignItems: "center",
-				minHeight: "100vh",
-				width: "100%",
-			}}>
-			<Outlet />
-			<div
-				style={{
-					position: "fixed",
-					bottom: 12,
-					left: 0,
-					width: "100%",
-					textAlign: "center",
-					fontSize: 12,
-					opacity: 0.6,
-				}}>
-				v{__APP_VERSION__}
-			</div>
-		</div>
+		<Layout style={{ minHeight: "100vh" }}>
+			<Content style={{ display: "flex" }}>
+				<Flex
+					justify="center"
+					align="center"
+					style={{ flex: 1, width: "100%" }}>
+					<Outlet />
+				</Flex>
+			</Content>
+			<Footer style={{ textAlign: "center", fontSize: 12, opacity: 0.6 }}>
+				Versão: {__APP_VERSION__}
+			</Footer>
+		</Layout>
 	);
 };

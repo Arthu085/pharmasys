@@ -1,11 +1,23 @@
-import { Outlet } from "react-router-dom";
-import { Layout, Menu, theme } from "antd";
+import { Outlet, useLocation } from "react-router-dom";
 import {
-	UserOutlined,
-	DashboardOutlined,
+	Button,
+	Card,
+	Divider,
+	Flex,
+	Layout,
+	Menu,
+	theme,
+	Typography,
+} from "antd";
+import {
 	LogoutOutlined,
+	MenuUnfoldOutlined,
+	MenuFoldOutlined,
 } from "@ant-design/icons";
 import { useAuth } from "@/modules/auth/presentation/hooks/use-auth.hook";
+import { useMemo, useState } from "react";
+import { filterMenuByRole } from "@/core/utils/menu.util";
+import { bottomMenuItems, topMenuItems } from "@/core/config/menu.config";
 
 const { Header, Sider, Content, Footer } = Layout;
 
@@ -13,59 +25,104 @@ export const MainLayout = () => {
 	const {
 		token: { colorBgContainer, borderRadiusLG },
 	} = theme.useToken();
+	const { signOut, user } = useAuth();
+	const location = useLocation();
+	const [collapsed, setCollapsed] = useState(true);
 
-	const { signOut } = useAuth();
+	const topItems = useMemo(() => {
+		return filterMenuByRole(topMenuItems, user?.role);
+	}, [user]);
+
+	const bottomItems = useMemo(() => {
+		return bottomMenuItems(signOut);
+	}, [signOut]);
+
+	const getSelectedKeys = () => {
+		const path = location.pathname;
+		return [path];
+	};
 
 	return (
 		<Layout style={{ minHeight: "100vh" }}>
-			<Sider breakpoint="lg" collapsedWidth="0">
-				<div
-					style={{
-						height: 32,
-						margin: 16,
-						background: "rgba(255, 255, 255, 0.2)",
-					}}
-				/>
-				<Menu
-					theme="dark"
-					mode="inline"
-					defaultSelectedKeys={["1"]}
-					items={[
-						{
-							key: "1",
-							icon: <DashboardOutlined />,
-							label: "Dashboard",
-						},
-						{
-							key: "2",
-							icon: <UserOutlined />,
-							label: "Usuários",
-						},
-						{
-							key: "3",
-							icon: <LogoutOutlined />,
-							label: "Sair",
-							onClick: signOut,
-							danger: true,
-						},
-					]}
-				/>
+			<Sider
+				theme="light"
+				breakpoint="xs"
+				collapsedWidth={0}
+				trigger={null}
+				collapsible
+				collapsed={collapsed}
+				style={{
+					display: "flex",
+					flexDirection: "column",
+					overflow: "hidden",
+				}}>
+				<Flex vertical style={{ height: "100%", minHeight: 0 }}>
+					<Flex vertical style={{ padding: 16, paddingBottom: 8 }}>
+						<Typography.Title
+							level={4}
+							ellipsis={{ tooltip: "Pharmasys" }}
+							style={{ margin: 0, whiteSpace: "nowrap" }}>
+							Pharmasys
+						</Typography.Title>
+					</Flex>
+					<Divider style={{ margin: "0 0 8px 0" }} />
+					<Flex vertical style={{ flex: 1, minHeight: 0, overflow: "auto" }}>
+						<Menu
+							theme="light"
+							mode="inline"
+							items={topItems}
+							selectedKeys={getSelectedKeys()}
+						/>
+					</Flex>
+					<Divider style={{ margin: "8px 0" }} />
+					<Menu
+						theme="light"
+						mode="inline"
+						items={bottomItems}
+						selectedKeys={getSelectedKeys()}
+					/>
+				</Flex>
 			</Sider>
 			<Layout>
-				<Header style={{ padding: 0, background: colorBgContainer }} />
+				<Header style={{ padding: 0, background: colorBgContainer }}>
+					<Flex
+						align="center"
+						justify="space-between"
+						style={{ height: "100%", paddingInline: 8 }}>
+						<Button
+							type="text"
+							icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+							onClick={() => setCollapsed(!collapsed)}
+							style={{
+								fontSize: "16px",
+								width: 64,
+								height: 64,
+							}}
+						/>
+						<Button
+							icon={<LogoutOutlined />}
+							onClick={() => signOut()}
+							danger={true}
+						/>
+					</Flex>
+				</Header>
 				<Content style={{ margin: "24px 16px 0" }}>
-					<div
+					<Card
 						style={{
-							padding: 24,
-							minHeight: 360,
 							background: colorBgContainer,
 							borderRadius: borderRadiusLG,
+						}}
+						styles={{
+							body: {
+								padding: 24,
+								minHeight: 360,
+							},
 						}}>
 						<Outlet />
-					</div>
+					</Card>
 				</Content>
 				<Footer style={{ textAlign: "center", fontSize: 12, opacity: 0.6 }}>
-					v{__APP_VERSION__}
+					Versão: {__APP_VERSION__}
 				</Footer>
 			</Layout>
 		</Layout>

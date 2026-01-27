@@ -1,6 +1,11 @@
 import { useState } from "react";
 import { Card, Flex, Form, Space, Typography, message } from "antd";
-import { UserOutlined, LockOutlined } from "@ant-design/icons";
+import {
+	UserOutlined,
+	LockOutlined,
+	IdcardOutlined,
+	SolutionOutlined,
+} from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/use-auth.hook";
 import { AppInput } from "@/shared/components/inputs/app-input.tsx";
@@ -71,7 +76,7 @@ export const RegisterPage = () => {
 						name="email"
 						label="E-mail"
 						placeholder="exemplo@pharmasys.com"
-						prefix={<UserOutlined style={{ color: "rgba(0,0,0,.25)" }} />}
+						prefix={<IdcardOutlined style={{ color: "rgba(0,0,0,.25)" }} />}
 						zodSchema={registerSchema.shape.email}
 						maxLength={200}
 					/>
@@ -87,6 +92,7 @@ export const RegisterPage = () => {
 						name="role"
 						label="Função"
 						placeholder="Selecione uma função"
+						prefix={<SolutionOutlined style={{ color: "rgba(0,0,0,.25)" }} />}
 						options={registerRoleOptions}
 						zodSchema={registerSchema.shape.role}
 					/>
