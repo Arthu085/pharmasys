@@ -1,4 +1,7 @@
-import type { IApiResponse } from "@/core/interfaces/api-response.interface";
+import type {
+	IApiResponse,
+	IPaginatedResponse,
+} from "@/core/interfaces/api-response.interface";
 import type {
 	RoleEnum,
 	RoleEnumTranslated,
@@ -22,4 +25,4 @@ export interface IUserListData {
 	};
 }
 
-export type IUserListResponse = IApiResponse<IUserListData>;
+export type IUserListResponse = IApiResponse<IPaginatedResponse<IUserListData>>;

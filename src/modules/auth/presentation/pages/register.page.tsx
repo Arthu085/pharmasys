@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Card, Flex, Form, Space, Typography, message } from "antd";
+import { Card, Flex, Form, Modal, Space, Typography, message } from "antd";
 import {
 	UserOutlined,
 	LockOutlined,
@@ -21,6 +21,7 @@ import {
 	registerRoleOptions,
 	type IRegisterDto,
 } from "../../domain/dtos/register.dto";
+import { getErrorMessage } from "@/shared/utils/api-erro.util";
 
 export const RegisterPage = () => {
 	const navigate = useNavigate();
@@ -28,20 +29,33 @@ export const RegisterPage = () => {
 	const [loading, setLoading] = useState(false);
 
 	const handleSubmit = async (values: IRegisterDto) => {
-		setLoading(true);
 		try {
+			setLoading(true);
+
 			const response = await signUp(values);
-			message.success({
-				content: response.data?.name
-					? `Bem-vindo, ${response.data.name}!`
-					: "Bem-vindo!",
-				duration: 5,
+
+			if (response.success) {
+				message.success({
+					content: response.data?.name
+						? `Bem-vindo, ${response.data.name}!`
+						: "Bem-vindo!",
+					duration: 5,
+				});
+
+				navigate(DashboardRoutesEnum.HOME);
+			} else {
+				message.error({
+					content: response.message || "Não foi possível fazer registro",
+					duration: 5,
+				});
+			}
+		} catch (error) {
+			const msg = getErrorMessage(error);
+
+			Modal.error({
+				title: "Erro",
+				content: msg,
 			});
-			navigate(DashboardRoutesEnum.HOME);
-		} catch (error: any) {
-			const msg =
-				error?.response?.data?.message || error?.message || "Registro inválido";
-			message.error({ content: msg, duration: 5 });
 		} finally {
 			setLoading(false);
 		}

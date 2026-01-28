@@ -15,6 +15,7 @@ import { RegisterPage } from "@/modules/auth/presentation/pages/register.page";
 import { NotFoundPage } from "../pages/not-found.page";
 import { DashboardPage } from "@/modules/dashboard/presentation/pages/dashboard.page";
 import { ProfilePage } from "@/modules/profile/presentation/pages/profile.page";
+import { UserPage } from "@/modules/user/presentation/pages/user.page";
 
 export const routesConfig: IAppRoute[] = [
 	{
@@ -51,7 +52,7 @@ export const routesConfig: IAppRoute[] = [
 					},
 					{
 						path: UserRoutesEnum.USERS,
-						element: <h1>Usuários</h1>,
+						element: <UserPage />,
 					},
 					{
 						path: UserRoutesEnum.PROFILE,

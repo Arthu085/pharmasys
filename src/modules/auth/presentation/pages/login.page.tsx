@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Card, Flex, Form, Space, Typography, message } from "antd";
+import { Card, Flex, Form, Modal, Space, Typography, message } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/use-auth.hook";
@@ -11,6 +11,7 @@ import {
 	AuthRoutesEnum,
 	DashboardRoutesEnum,
 } from "@/core/enums/app-routes.enum";
+import { getErrorMessage } from "@/shared/utils/api-erro.util";
 
 export const LoginPage = () => {
 	const navigate = useNavigate();
@@ -18,22 +19,33 @@ export const LoginPage = () => {
 	const [loading, setLoading] = useState(false);
 
 	const handleSubmit = async (values: ILoginDto) => {
-		setLoading(true);
 		try {
+			setLoading(true);
+
 			const response = await signIn(values);
-			message.success({
-				content: response.data?.name
-					? `Bem-vindo de volta, ${response.data.name}!`
-					: "Bem-vindo de volta!",
-				duration: 5,
+
+			if (response.success) {
+				message.success({
+					content: response.data?.name
+						? `Bem-vindo de volta, ${response.data.name}!`
+						: "Bem-vindo de volta!",
+					duration: 5,
+				});
+
+				navigate(DashboardRoutesEnum.HOME);
+			} else {
+				message.error({
+					content: response.message || "Não foi possível fazer login",
+					duration: 5,
+				});
+			}
+		} catch (error) {
+			const msg = getErrorMessage(error);
+
+			Modal.error({
+				title: "Erro",
+				content: msg,
 			});
-			navigate(DashboardRoutesEnum.HOME);
-		} catch (error: any) {
-			const msg =
-				error?.response?.data?.message ||
-				error?.message ||
-				"Credenciais inválidas";
-			message.error({ content: msg, duration: 5 });
 		} finally {
 			setLoading(false);
 		}

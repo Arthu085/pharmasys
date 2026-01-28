@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { userService } from "../../infrastructure/user.service";
-import { Form, message } from "antd";
+import { Form, message, Modal } from "antd";
 import { AppModal } from "@/shared/components/modals/app-modal";
 import {
 	userUpdateSchema,
@@ -8,6 +8,7 @@ import {
 } from "../../domain/dtos/user-update.dto";
 import type { IUserEditProps } from "../../domain/interfaces/user-edit.interface";
 import { AppInput } from "@/shared/components/inputs/app-input";
+import { getErrorMessage } from "@/shared/utils/api-erro.util";
 
 export const UserEdit = ({
 	open,
@@ -42,9 +43,11 @@ export const UserEdit = ({
 				onClose();
 			}
 		} catch (error) {
-			message.error({
-				content: "Erro ao carregar dados",
-				duration: 5,
+			const msg = getErrorMessage(error);
+
+			Modal.error({
+				title: "Erro",
+				content: msg,
 			});
 			onClose();
 		} finally {
@@ -73,9 +76,11 @@ export const UserEdit = ({
 				});
 			}
 		} catch (error) {
-			message.error({
-				content: "Erro ao salvar dados",
-				duration: 5,
+			const msg = getErrorMessage(error);
+
+			Modal.error({
+				title: "Erro",
+				content: msg,
 			});
 		} finally {
 			setSaving(false);
