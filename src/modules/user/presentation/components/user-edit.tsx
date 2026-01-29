@@ -55,7 +55,7 @@ export const UserEdit = ({
 			onOk={form.submit}
 			confirmLoading={saving}
 			loading={fetching}>
-			<Form
+			<Form<IUserUpdateDto>
 				form={form}
 				layout="vertical"
 				onFinish={handleSubmit}

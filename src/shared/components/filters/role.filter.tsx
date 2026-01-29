@@ -1,6 +1,7 @@
-import { Flex, Select, Typography } from "antd";
+import { Flex, Typography } from "antd";
 import { RoleEnum, RoleEnumTranslated } from "@/shared/domain/enums/role.enum";
 import type { SizeType } from "antd/es/config-provider/SizeContext";
+import { AppSelect } from "../selects/app-select";
 
 const { Text } = Typography;
 
@@ -28,14 +29,14 @@ export const RoleFilter = ({
 	return (
 		<Flex vertical gap={4} style={{ width }}>
 			<Text strong>Função</Text>
-			<Select
+			<AppSelect
 				placeholder={placeholder}
 				style={{ width: "100%" }}
 				value={value}
 				onChange={onChange}
 				options={options}
-				allowClear
 				size={size}
+				allowClear
 			/>
 		</Flex>
 	);

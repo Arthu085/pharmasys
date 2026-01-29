@@ -3,7 +3,7 @@ import type { DefaultOptionType } from "antd/es/select";
 import { createZodRule, type ZodSchema } from "@/shared/validation/antd-zod";
 
 interface AppSelectProps extends Omit<SelectProps, "options"> {
-	name: string;
+	name?: string;
 	label?: string;
 	zodSchema?: ZodSchema;
 	options?: readonly DefaultOptionType[];
@@ -20,15 +20,21 @@ export const AppSelect = ({
 }: AppSelectProps) => {
 	const rules = zodSchema ? [createZodRule(zodSchema)] : undefined;
 
-	return (
-		<Form.Item
-			name={name}
-			label={label}
-			rules={rules}
-			style={{ marginBottom: 20, marginTop: 20 }}>
+	if (!name) {
+		return (
 			<Select
-				className={className}
 				options={options ? [...options] : undefined}
+				style={{ height: 40 }}
+				{...rest}
+			/>
+		);
+	}
+
+	return (
+		<Form.Item name={name} label={label} rules={rules} required={!!zodSchema}>
+			<Select
+				options={options ? [...options] : undefined}
+				style={{ height: 40 }}
 				{...rest}
 			/>
 		</Form.Item>

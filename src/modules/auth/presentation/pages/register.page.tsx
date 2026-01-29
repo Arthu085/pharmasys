@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { Card, Flex, Form, Modal, Space, Typography, message } from "antd";
+import { Card, Flex, Form, Space, Typography } from "antd";
 import {
 	UserOutlined,
 	LockOutlined,
@@ -21,45 +20,15 @@ import {
 	registerRoleOptions,
 	type IRegisterDto,
 } from "../../domain/dtos/register.dto";
-import { getErrorMessage } from "@/shared/utils/api-erro.util";
+import { useFormSubmit } from "@/shared/hooks/use-form-submit";
 
 export const RegisterPage = () => {
+	const [form] = Form.useForm();
 	const navigate = useNavigate();
 	const { signUp } = useAuth();
-	const [loading, setLoading] = useState(false);
-
-	const handleSubmit = async (values: IRegisterDto) => {
-		try {
-			setLoading(true);
-
-			const response = await signUp(values);
-
-			if (response.success) {
-				message.success({
-					content: response.data?.name
-						? `Bem-vindo, ${response.data.name}!`
-						: "Bem-vindo!",
-					duration: 5,
-				});
-
-				navigate(DashboardRoutesEnum.HOME);
-			} else {
-				message.error({
-					content: response.message || "Não foi possível fazer registro",
-					duration: 5,
-				});
-			}
-		} catch (error) {
-			const msg = getErrorMessage(error);
-
-			Modal.error({
-				title: "Erro",
-				content: msg,
-			});
-		} finally {
-			setLoading(false);
-		}
-	};
+	const { saving, handleSubmit } = useFormSubmit<IRegisterDto>(signUp, () => {
+		navigate(DashboardRoutesEnum.HOME);
+	});
 
 	return (
 		<Card style={{ width: "100%", maxWidth: 400 }}>
@@ -75,8 +44,10 @@ export const RegisterPage = () => {
 					</Typography.Text>
 				</Flex>
 				<Form<IRegisterDto>
+					form={form}
 					layout="vertical"
 					onFinish={handleSubmit}
+					disabled={saving}
 					requiredMark={false}>
 					<AppInput
 						name="name"
@@ -114,7 +85,7 @@ export const RegisterPage = () => {
 						label="Registrar"
 						type="primary"
 						htmlType="submit"
-						loading={loading}
+						loading={saving}
 						fullWidth
 						formItem={true}
 					/>

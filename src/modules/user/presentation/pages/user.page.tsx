@@ -85,6 +85,7 @@ export const UserPage = () => {
 						/>
 					</Col>
 				</Row>
+
 				<UserList
 					loading={loading}
 					users={users}

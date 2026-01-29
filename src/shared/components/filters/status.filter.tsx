@@ -1,9 +1,10 @@
-import { Flex, Select, Typography } from "antd";
+import { Flex, Typography } from "antd";
 import {
 	StatusEnum,
 	StatusEnumTranslated,
 } from "@/shared/domain/enums/status.enum";
 import type { SizeType } from "antd/es/config-provider/SizeContext";
+import { AppSelect } from "../selects/app-select";
 
 const { Text } = Typography;
 
@@ -30,13 +31,14 @@ export const StatusFilter = ({
 	return (
 		<Flex vertical gap={4} style={{ width }}>
 			<Text strong>Status</Text>
-			<Select
+			<AppSelect
 				placeholder={placeholder}
 				style={{ width: "100%" }}
 				value={value}
 				onChange={onChange}
 				options={options}
 				size={size}
+				allowClear={false}
 			/>
 		</Flex>
 	);

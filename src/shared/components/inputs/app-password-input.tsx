@@ -20,6 +20,7 @@ export const AppPasswordInput = ({
 			name={name}
 			label={label}
 			rules={rules}
+			required={!!zodSchema}
 			style={{ marginBottom: 20, marginTop: 20 }}>
 			<Input.Password {...rest} />
 		</Form.Item>

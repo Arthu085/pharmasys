@@ -5,7 +5,7 @@ import type { IApiResponse } from "@/core/interfaces/api-response.interface";
 
 type FetcherFunction<TData> = (uuid: string) => Promise<IApiResponse<TData>>;
 
-export const useFetch = <TData>(
+export const useFetchModal = <TData>(
 	uuid: string | null | undefined,
 	open: boolean,
 	fetcher: FetcherFunction<TData>,

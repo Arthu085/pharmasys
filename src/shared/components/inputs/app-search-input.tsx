@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
-import { Input, Flex, Typography } from "antd";
+import { Flex, Typography } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import type { SizeType } from "antd/es/config-provider/SizeContext";
+import { AppInput } from "./app-input";
 
 const { Text } = Typography;
 
@@ -43,14 +44,14 @@ export const AppSearchInput = ({
 	return (
 		<Flex vertical gap={4} style={{ width }}>
 			{label && <Text strong>{label}</Text>}
-			<Input
+			<AppInput
 				prefix={<SearchOutlined style={{ color: "rgba(0,0,0,.25)" }} />}
 				placeholder={placeholder}
 				value={localValue}
 				onChange={(e) => setLocalValue(e.target.value)}
 				allowClear
 				size={size}
-				style={{ width: "100%" }}
+				style={{ width: "100%", height: 32 }}
 			/>
 		</Flex>
 	);

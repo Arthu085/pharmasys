@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { Card, Flex, Form, Modal, Space, Typography, message } from "antd";
+import { Card, Flex, Form, Space, Typography } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/use-auth.hook";
@@ -11,45 +10,15 @@ import {
 	AuthRoutesEnum,
 	DashboardRoutesEnum,
 } from "@/core/enums/app-routes.enum";
-import { getErrorMessage } from "@/shared/utils/api-erro.util";
+import { useFormSubmit } from "@/shared/hooks/use-form-submit";
 
 export const LoginPage = () => {
+	const [form] = Form.useForm();
 	const navigate = useNavigate();
 	const { signIn } = useAuth();
-	const [loading, setLoading] = useState(false);
-
-	const handleSubmit = async (values: ILoginDto) => {
-		try {
-			setLoading(true);
-
-			const response = await signIn(values);
-
-			if (response.success) {
-				message.success({
-					content: response.data?.name
-						? `Bem-vindo de volta, ${response.data.name}!`
-						: "Bem-vindo de volta!",
-					duration: 5,
-				});
-
-				navigate(DashboardRoutesEnum.HOME);
-			} else {
-				message.error({
-					content: response.message || "Não foi possível fazer login",
-					duration: 5,
-				});
-			}
-		} catch (error) {
-			const msg = getErrorMessage(error);
-
-			Modal.error({
-				title: "Erro",
-				content: msg,
-			});
-		} finally {
-			setLoading(false);
-		}
-	};
+	const { saving, handleSubmit } = useFormSubmit<ILoginDto>(signIn, () => {
+		navigate(DashboardRoutesEnum.HOME);
+	});
 
 	return (
 		<Card style={{ width: "100%", maxWidth: 400 }}>
@@ -65,8 +34,10 @@ export const LoginPage = () => {
 					</Typography.Text>
 				</Flex>
 				<Form<ILoginDto>
+					form={form}
 					layout="vertical"
 					onFinish={handleSubmit}
+					disabled={saving}
 					requiredMark={false}>
 					<AppInput
 						name="email"
@@ -88,7 +59,7 @@ export const LoginPage = () => {
 						label="Entrar"
 						type="primary"
 						htmlType="submit"
-						loading={loading}
+						loading={saving}
 						fullWidth
 						formItem={true}
 					/>

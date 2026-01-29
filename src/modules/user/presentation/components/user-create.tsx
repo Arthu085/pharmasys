@@ -29,7 +29,7 @@ export const UserCreate = ({ open, onClose, onSuccess }: IUserCreateProps) => {
 			onCancel={onClose}
 			onOk={form.submit}
 			confirmLoading={saving}>
-			<Form
+			<Form<IUserCreateDto>
 				form={form}
 				layout="vertical"
 				onFinish={handleSubmit}
