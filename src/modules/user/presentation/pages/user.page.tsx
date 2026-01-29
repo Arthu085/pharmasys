@@ -1,6 +1,5 @@
-import { useEffect, useState } from "react";
-import { Typography, Card, message, Row, Col, Modal } from "antd";
-import type { IUserListResponse } from "../../domain/dtos/user-list-response.dto";
+import { Typography, Card, Row, Col } from "antd";
+import type { IUserListData } from "../../domain/dtos/user-list-response.dto";
 import { userService } from "../../infrastructure/user.service";
 import { UserList } from "../components/user-list";
 import type { IUserFilterDto } from "../../domain/dtos/user-filter.dto";
@@ -8,60 +7,41 @@ import { StatusEnum } from "@/shared/domain/enums/status.enum";
 import { StatusFilter } from "@/shared/components/filters/status.filter";
 import { RoleFilter } from "@/shared/components/filters/role.filter";
 import { AppSearchInput } from "@/shared/components/inputs/app-search-input";
-import { getErrorMessage } from "@/shared/utils/api-erro.util";
 import { AppButton } from "@/shared/components/buttons/app-button";
+import { UserCreate } from "../components/user-create";
+import { UserEdit } from "../components/user-edit";
+import { UserDetails } from "../components/user-details";
+import { useList } from "@/shared/hooks/use-list";
+import { useModals } from "@/shared/hooks/use-modals";
+import { useRowAction } from "@/shared/hooks/use-row-action";
 
 const { Title } = Typography;
 
 export const UserPage = () => {
-	const [loading, setLoading] = useState(true);
-	const [filters, setFilters] = useState<IUserFilterDto>({
+	const modals = useModals<string>();
+	const {
+		loading,
+		data: users,
+		meta,
+		filters,
+		handleFilterChange,
+		handlePageChange,
+		refresh,
+	} = useList<IUserListData, IUserFilterDto>(userService.findAll, {
 		page: 1,
 		limit: 10,
 		status: StatusEnum.ATIVO,
 	});
-	const [data, setData] = useState<IUserListResponse | null>(null);
 
-	const fetch = async () => {
-		try {
-			setLoading(true);
+	const { handleAction: handleChangeStatus } = useRowAction(
+		userService.updateStatus,
+		refresh,
+	);
 
-			const response = await userService.findAll(filters);
-
-			if (response.success && response.data) {
-				setData(response);
-			} else {
-				message.error({
-					content: response.message || "Não foi possível carregar os dados",
-					duration: 5,
-				});
-			}
-		} catch (error) {
-			const msg = getErrorMessage(error);
-
-			Modal.error({
-				title: "Erro",
-				content: msg,
-			});
-		} finally {
-			setLoading(false);
-		}
-	};
-
-	useEffect(() => {
-		fetch();
-	}, [filters]);
-
-	const handleFilterChange = (key: keyof IUserFilterDto, value: any) => {
-		setFilters((prev) => ({
-			...prev,
-			[key]: value,
-			page: 1,
-		}));
-	};
-
-	const users = data?.data?.data || [];
-	const meta = data?.data?.meta;
+	const { handleAction: handleDelete } = useRowAction(
+		userService.delete,
+		refresh,
+	);
 
 	return (
 		<>
@@ -75,7 +55,11 @@ export const UserPage = () => {
 				<Col
 					flex="none"
 					style={{ display: "flex", justifyContent: "flex-end" }}>
-					<AppButton label="Novo Usuário" type="primary" />
+					<AppButton
+						label="Novo Usuário"
+						type="primary"
+						onClick={() => modals.openCreate()}
+					/>
 				</Col>
 			</Row>
 			<Card>
@@ -104,14 +88,36 @@ export const UserPage = () => {
 				<UserList
 					loading={loading}
 					users={users}
-					total={meta?.total || 0}
+					total={meta.total}
 					page={filters.page}
 					pageSize={filters.limit}
-					onChangePage={(p, l) => {
-						setFilters((prev) => ({ ...prev, page: p, limit: l }));
+					onChangePage={handlePageChange}
+					onEdit={(user) => modals.openEdit(user.uuid)}
+					onDetails={(user) => modals.openDetails(user.uuid)}
+					onStatus={handleChangeStatus}
+					onDelete={handleDelete}
+				/>
+				<UserCreate
+					open={modals.isCreateOpen}
+					onClose={modals.closeCreate}
+					onSuccess={() => {
+						modals.closeCreate();
+						refresh();
 					}}
-					onEdit={(user) => console.log("Edit", user)}
-					onDelete={(user) => console.log("Delete", user)}
+				/>
+				<UserEdit
+					open={modals.isEditOpen}
+					uuid={modals.selectedUuid}
+					onClose={modals.closeEdit}
+					onSuccess={() => {
+						modals.closeEdit();
+						refresh();
+					}}
+				/>
+				<UserDetails
+					open={modals.isDetailsOpen}
+					uuid={modals.selectedUuid}
+					onClose={modals.closeDetails}
 				/>
 			</Card>
 		</>

@@ -9,14 +9,16 @@ export const UserList = ({
 	loading,
 	total,
 	onEdit,
+	onDetails,
+	onStatus,
 	onDelete,
 	page,
 	pageSize,
 	onChangePage,
 }: IUserListProps) => {
 	const columns = useMemo(
-		() => getUserColumns({ onEdit, onDelete }),
-		[onEdit, onDelete],
+		() => getUserColumns({ onEdit, onDetails, onStatus, onDelete }),
+		[onEdit, onDetails, onStatus, onDelete],
 	);
 
 	return (

@@ -1,6 +1,5 @@
-import { useEffect, useState } from "react";
 import { userService } from "../../infrastructure/user.service";
-import { Form, message, Modal } from "antd";
+import { Form } from "antd";
 import { AppModal } from "@/shared/components/modals/app-modal";
 import {
 	userUpdateSchema,
@@ -8,7 +7,12 @@ import {
 } from "../../domain/dtos/user-update.dto";
 import type { IUserEditProps } from "../../domain/interfaces/user-edit.interface";
 import { AppInput } from "@/shared/components/inputs/app-input";
-import { getErrorMessage } from "@/shared/utils/api-erro.util";
+import { AppPasswordInput } from "@/shared/components/inputs/app-password-input";
+import { AppSelect } from "@/shared/components/selects/app-select";
+import { createRoleOptions } from "../../domain/dtos/user-create.dto";
+import { useFormFetch } from "@/shared/hooks/use-form-fetch";
+import { useFormSubmit } from "@/shared/hooks/use-form-submit";
+import type { IUserListData } from "../../domain/dtos/user-list-response.dto";
 
 export const UserEdit = ({
 	open,
@@ -17,75 +21,31 @@ export const UserEdit = ({
 	onSuccess,
 }: IUserEditProps) => {
 	const [form] = Form.useForm();
-	const [fetching, setFetching] = useState(false);
-	const [saving, setSaving] = useState(false);
+	const { loading: fetching } = useFormFetch<IUserListData, any>(
+		uuid,
+		open,
+		userService.findOne,
+		form,
+		(data) => ({
+			...data,
+			role: data.role.value,
+			password: undefined,
+		}),
+		onClose,
+	);
 
-	useEffect(() => {
-		if (open && uuid) {
-			loadData(uuid);
-		} else {
-			form.resetFields();
-		}
-	}, [open, uuid]);
+	const handleUpdate = async (dto: IUserUpdateDto) => {
+		if (!uuid) throw new Error("UUID não fornecido");
+		return userService.update(uuid, dto);
+	};
 
-	const loadData = async (uuid: string) => {
-		try {
-			setFetching(true);
-			const response = await userService.findOne(uuid);
-
-			if (response.success && response.data) {
-				form.setFieldsValue(response.data);
-			} else {
-				message.error({
-					content: response.message || "Erro ao carregar dados",
-					duration: 5,
-				});
-				onClose();
-			}
-		} catch (error) {
-			const msg = getErrorMessage(error);
-
-			Modal.error({
-				title: "Erro",
-				content: msg,
-			});
+	const { saving, handleSubmit } = useFormSubmit<IUserUpdateDto>(
+		handleUpdate,
+		() => {
+			onSuccess?.();
 			onClose();
-		} finally {
-			setFetching(false);
-		}
-	};
-
-	const handleSubmit = async (values: IUserUpdateDto) => {
-		if (!uuid) return;
-
-		try {
-			setSaving(true);
-			const response = await userService.update(uuid, values);
-
-			if (response.success) {
-				message.success({
-					content: response.message || "Usuário atualizado com sucesso",
-					duration: 5,
-				});
-				if (onSuccess) onSuccess();
-				onClose();
-			} else {
-				message.error({
-					content: response.message || "Erro ao salvar dados",
-					duration: 5,
-				});
-			}
-		} catch (error) {
-			const msg = getErrorMessage(error);
-
-			Modal.error({
-				title: "Erro",
-				content: msg,
-			});
-		} finally {
-			setSaving(false);
-		}
-	};
+		},
+	);
 
 	return (
 		<AppModal
@@ -93,12 +53,14 @@ export const UserEdit = ({
 			open={open}
 			onCancel={onClose}
 			onOk={form.submit}
-			loading={saving}>
+			confirmLoading={saving}
+			loading={fetching}>
 			<Form
 				form={form}
 				layout="vertical"
 				onFinish={handleSubmit}
-				disabled={fetching}>
+				disabled={saving}
+				preserve={false}>
 				<AppInput
 					name="name"
 					label="Nome Completo"
@@ -108,6 +70,19 @@ export const UserEdit = ({
 					name="email"
 					label="E-mail"
 					zodSchema={userUpdateSchema.shape.email}
+				/>
+				<AppPasswordInput
+					name="password"
+					label="Senha"
+					placeholder="*********"
+					zodSchema={userUpdateSchema.shape.password}
+				/>
+				<AppSelect
+					name="role"
+					label="Função"
+					placeholder="Selecione uma função"
+					options={createRoleOptions}
+					zodSchema={userUpdateSchema.shape.role}
 				/>
 			</Form>
 		</AppModal>
