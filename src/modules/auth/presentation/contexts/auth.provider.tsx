@@ -9,12 +9,17 @@ import type { ILoginData } from "../../domain/dtos/login-response.dto";
 import { message } from "antd";
 import type { IRegisterDto } from "../../domain/dtos/register.dto";
 import type { IRegisterData } from "../../domain/dtos/register-response.dto";
+import { jwtUtil } from "@/core/utils/jwt.util";
 
 export const AuthContext = createContext<IAuthContext | undefined>(undefined);
+
+const TOKEN_REFRESH_THRESHOLD = 300;
+const TOKEN_CHECK_INTERVAL = 60000;
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
 	const [user, setUser] = useState<IAuthUser | null>(null);
 	const [isLoading, setIsLoading] = useState(true);
+	const [isRefreshing, setIsRefreshing] = useState(false);
 
 	useEffect(() => {
 		const onUnauthorized = () => {
@@ -24,39 +29,127 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
 		window.addEventListener("auth:unauthorized", onUnauthorized);
 
-		const recoverSession = () => {
+		const recoverSession = async () => {
 			const storedToken = localStorage.getItem("token");
 			const storedUser = localStorage.getItem("user");
 
-			if (storedToken && storedUser) {
-				try {
-					setUser(JSON.parse(storedUser) as IAuthUser);
+			if (!storedToken || !storedUser) {
+				setIsLoading(false);
+				return;
+			}
+
+			try {
+				if (jwtUtil.isExpired(storedToken)) {
+					authService.logout();
+					setIsLoading(false);
+					return;
+				}
+
+				const response = await authService.validateToken();
+
+				if (response.success && response.data) {
+					setUser(response.data);
 					setAuthToken(storedToken);
-				} catch (error) {
-					message.error({
-						content: `Erro ao recuperar sessão: ${error}`,
-						duration: 5,
-					});
+					setStoredUser(response.data);
+					startTokenExpirationCheck();
+				} else {
 					authService.logout();
 				}
+			} catch (error) {
+				message.error({
+					content: "Sessão expirada. Faça login novamente.",
+					duration: 3,
+				});
+				authService.logout();
+			} finally {
+				setIsLoading(false);
 			}
-			setIsLoading(false);
 		};
 
-		try {
-			recoverSession();
-		} catch (error) {
-			message.error({
-				content: `Erro fatal ao recuperar sessão: ${error}`,
-				duration: 5,
-			});
-			setIsLoading(false);
-		}
+		recoverSession();
 
 		return () => {
 			window.removeEventListener("auth:unauthorized", onUnauthorized);
+			stopTokenExpirationCheck();
 		};
 	}, []);
+
+	let tokenCheckInterval: NodeJS.Timeout | null = null;
+
+	const refreshToken = async (): Promise<boolean> => {
+		if (isRefreshing) {
+			return false;
+		}
+
+		try {
+			setIsRefreshing(true);
+
+			const response = await authService.validateToken();
+
+			if (response.success && response.data) {
+				setUser(response.data);
+				setStoredUser(response.data);
+
+				return true;
+			}
+
+			return false;
+		} catch (error) {
+			return false;
+		} finally {
+			setIsRefreshing(false);
+		}
+	};
+
+	const startTokenExpirationCheck = () => {
+		stopTokenExpirationCheck();
+
+		tokenCheckInterval = setInterval(async () => {
+			const currentToken = localStorage.getItem("token");
+
+			if (!currentToken) {
+				stopTokenExpirationCheck();
+				return;
+			}
+			if (jwtUtil.isExpired(currentToken)) {
+				message.warning({
+					content: "Sua sessão expirou. Faça login novamente",
+					duration: 3,
+				});
+				setUser(null);
+				authService.logout();
+				stopTokenExpirationCheck();
+				return;
+			}
+
+			if (jwtUtil.isExpiringSoon(currentToken, TOKEN_REFRESH_THRESHOLD)) {
+				const timeRemaining = Math.floor(
+					jwtUtil.getTimeToExpire(currentToken) / 60,
+				);
+
+				const refreshed = await refreshToken();
+
+				if (refreshed) {
+					message.success({
+						content: "Sessão renovada automaticamente",
+						duration: 2,
+					});
+				} else {
+					message.warning({
+						content: `Sua sessão expirará em ${timeRemaining} minuto(s). Salve seu trabalho.`,
+						duration: 5,
+					});
+				}
+			}
+		}, TOKEN_CHECK_INTERVAL);
+	};
+
+	const stopTokenExpirationCheck = () => {
+		if (tokenCheckInterval) {
+			clearInterval(tokenCheckInterval);
+			tokenCheckInterval = null;
+		}
+	};
 
 	const signIn = async (
 		dto: ILoginDto,
@@ -78,6 +171,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 		setUser(authUser);
 		setStoredUser(authUser);
 		setAuthToken(response.data.token);
+
+		startTokenExpirationCheck();
 
 		return response as IApiSuccessResponse<ILoginData>;
 	};
@@ -103,11 +198,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 		setStoredUser(authUser);
 		setAuthToken(response.data.token);
 
+		startTokenExpirationCheck();
+
 		return response as IApiSuccessResponse<IRegisterData>;
 	};
 
 	const signOut = () => {
 		setUser(null);
+		stopTokenExpirationCheck();
 		authService.logout();
 	};
 

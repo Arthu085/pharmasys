@@ -5,6 +5,7 @@ import axios, {
 } from "axios";
 import { AppConfig } from "./env.config";
 import type { IAuthUser } from "@/modules/auth/presentation/interfaces/auth-context.interface";
+import { jwtUtil } from "../utils/jwt.util";
 
 const AUTH_TOKEN_KEY = "token";
 
@@ -52,8 +53,17 @@ api.interceptors.request.use(
 	(config: InternalAxiosRequestConfig) => {
 		const token = getAuthToken();
 
-		if (token && config.headers) {
-			config.headers.Authorization = `Bearer ${token}`;
+		if (token) {
+			if (jwtUtil.isExpired(token)) {
+				if (typeof window !== "undefined") {
+					window.dispatchEvent(new CustomEvent("auth:unauthorized"));
+				}
+				return Promise.reject(new Error("Sessão expirada"));
+			}
+
+			if (config.headers) {
+				config.headers.Authorization = `Bearer ${token}`;
+			}
 		}
 
 		return config;
@@ -68,18 +78,10 @@ api.interceptors.response.use(
 		return response;
 	},
 	(error: AxiosError) => {
-		if (error.response) {
-			if (error.response.status === 401) {
-				console.warn("Usuário não autorizado ou token expirado");
-				if (typeof window !== "undefined") {
-					window.dispatchEvent(new CustomEvent("auth:unauthorized"));
-				}
+		if (error.response?.status === 401) {
+			if (typeof window !== "undefined") {
+				window.dispatchEvent(new CustomEvent("auth:unauthorized"));
 			}
-			if (error.response.status === 500) {
-				console.error("Erro interno do servidor.");
-			}
-		} else {
-			console.error("Erro de conexão / Network Error");
 		}
 
 		return Promise.reject(error);
