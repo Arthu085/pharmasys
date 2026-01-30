@@ -1,5 +1,4 @@
 import { api, setStoredUser } from "../../../../core/config/axios.config";
-import { setAuthToken } from "@/core/config/axios.config";
 import type { ILoginDto } from "../../domain/dtos/login.dto";
 import type { ILoginResponse } from "../../domain/dtos/login-response.dto";
 import type { IRegisterDto } from "../../domain/dtos/register.dto";
@@ -22,8 +21,8 @@ export const authService = {
 		return response.data;
 	},
 
-	logout: () => {
-		setAuthToken(null);
+	logout: async (): Promise<void> => {
+		await api.post("/auth/logout");
 		setStoredUser(null);
 	},
 };

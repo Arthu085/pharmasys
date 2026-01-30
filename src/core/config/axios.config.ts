@@ -5,30 +5,9 @@ import axios, {
 } from "axios";
 import { AppConfig } from "./env.config";
 import type { IAuthUser } from "@/modules/auth/presentation/interfaces/auth-context.interface";
-import { jwtUtil } from "../utils/jwt.util";
-
-const AUTH_TOKEN_KEY = "token";
 
 const canUseStorage = () =>
 	typeof window !== "undefined" && !!window.localStorage;
-
-const getAuthToken = () => {
-	if (!canUseStorage()) return null;
-	return localStorage.getItem(AUTH_TOKEN_KEY);
-};
-
-const setAuthToken = (token: string | null) => {
-	if (!canUseStorage()) return;
-
-	if (token) {
-		localStorage.setItem(AUTH_TOKEN_KEY, token);
-		api.defaults.headers.common.Authorization = `Bearer ${token}`;
-		return;
-	}
-
-	localStorage.removeItem(AUTH_TOKEN_KEY);
-	delete api.defaults.headers.common.Authorization;
-};
 
 const setStoredUser = (user: IAuthUser | null) => {
 	if (!canUseStorage()) return;
@@ -47,25 +26,11 @@ const api: AxiosInstance = axios.create({
 		"Content-Type": "application/json",
 	},
 	timeout: 10000,
+	withCredentials: true,
 });
 
 api.interceptors.request.use(
 	(config: InternalAxiosRequestConfig) => {
-		const token = getAuthToken();
-
-		if (token) {
-			if (jwtUtil.isExpired(token)) {
-				if (typeof window !== "undefined") {
-					window.dispatchEvent(new CustomEvent("auth:unauthorized"));
-				}
-				return Promise.reject(new Error("Sessão expirada"));
-			}
-
-			if (config.headers) {
-				config.headers.Authorization = `Bearer ${token}`;
-			}
-		}
-
 		return config;
 	},
 	(error) => {
@@ -88,4 +53,4 @@ api.interceptors.response.use(
 	},
 );
 
-export { api, getAuthToken, setAuthToken, setStoredUser };
+export { api, setStoredUser };
