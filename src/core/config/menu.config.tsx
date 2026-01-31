@@ -1,11 +1,16 @@
 import {
 	DashboardOutlined,
+	HomeOutlined,
 	LogoutOutlined,
 	UserAddOutlined,
 	UserOutlined,
 } from "@ant-design/icons";
 import { Link } from "react-router-dom";
-import { DashboardRoutesEnum, UserRoutesEnum } from "../enums/app-routes.enum";
+import {
+	CompanyRoutesEnum,
+	DashboardRoutesEnum,
+	UserRoutesEnum,
+} from "../enums/app-routes.enum";
 import { RoleEnum } from "@/shared/domain/enums/role.enum";
 import type { IAppMenuItem } from "../interfaces/app-menu.interface";
 
@@ -20,6 +25,12 @@ export const topMenuItems: IAppMenuItem[] = [
 		icon: <UserAddOutlined />,
 		label: <Link to={UserRoutesEnum.USERS}>Usuários</Link>,
 		allowedRoles: [RoleEnum.ADMIN],
+	},
+	{
+		key: CompanyRoutesEnum.COMPANIES,
+		icon: <HomeOutlined />,
+		label: <Link to={CompanyRoutesEnum.COMPANIES}>Empresas</Link>,
+		allowedRoles: [RoleEnum.ADMIN, RoleEnum.FARMACEUTICO],
 	},
 ];
 

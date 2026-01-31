@@ -7,7 +7,6 @@ interface AppSelectProps extends Omit<SelectProps, "options"> {
 	label?: string;
 	zodSchema?: ZodSchema;
 	options?: readonly DefaultOptionType[];
-	placeholder?: string;
 }
 
 export const AppSelect = ({

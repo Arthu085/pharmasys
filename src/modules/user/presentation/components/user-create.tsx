@@ -40,18 +40,21 @@ export const UserCreate = ({ open, onClose, onSuccess }: IUserCreateProps) => {
 					label="Nome Completo"
 					placeholder="Seu nome completo..."
 					zodSchema={userCreateSchema.shape.name}
+					maxLength={100}
 				/>
 				<AppInput
 					name="email"
 					label="E-mail"
 					placeholder="Seu e-mail..."
 					zodSchema={userCreateSchema.shape.email}
+					maxLength={255}
 				/>
 				<AppPasswordInput
 					name="password"
 					label="Senha"
 					placeholder="*********"
 					zodSchema={userCreateSchema.shape.password}
+					maxLength={40}
 				/>
 				<AppSelect
 					name="role"

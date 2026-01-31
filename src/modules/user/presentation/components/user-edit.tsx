@@ -64,18 +64,23 @@ export const UserEdit = ({
 				<AppInput
 					name="name"
 					label="Nome Completo"
+					placeholder="Seu nome completo..."
 					zodSchema={userUpdateSchema.shape.name}
+					maxLength={100}
 				/>
 				<AppInput
 					name="email"
 					label="E-mail"
+					placeholder="Seu e-mail..."
 					zodSchema={userUpdateSchema.shape.email}
+					maxLength={255}
 				/>
 				<AppPasswordInput
 					name="password"
 					label="Senha"
 					placeholder="*********"
 					zodSchema={userUpdateSchema.shape.password}
+					maxLength={40}
 				/>
 				<AppSelect
 					name="role"

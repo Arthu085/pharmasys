@@ -6,6 +6,7 @@ interface AppInputProps extends InputProps {
 	label?: string;
 	zodSchema?: ZodSchema;
 	placeholder?: string;
+	formatValueFromEvent?: (value: string) => string;
 }
 
 export const AppInput = ({
@@ -13,6 +14,7 @@ export const AppInput = ({
 	label,
 	zodSchema,
 	className,
+	formatValueFromEvent,
 	...rest
 }: AppInputProps) => {
 	const rules = zodSchema ? [createZodRule(zodSchema)] : undefined;
@@ -27,7 +29,12 @@ export const AppInput = ({
 			label={label}
 			rules={rules}
 			required={!!zodSchema}
-			style={{ marginBottom: 20, marginTop: 20 }}>
+			style={{ marginBottom: 20, marginTop: 20 }}
+			getValueFromEvent={(event) => {
+				const value = event?.target?.value;
+				if (typeof value !== "string") return value;
+				return formatValueFromEvent ? formatValueFromEvent(value) : value;
+			}}>
 			<Input className={className} {...rest} />
 		</Form.Item>
 	);
