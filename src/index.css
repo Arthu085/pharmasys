@@ -1,0 +1,40 @@
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+	height: 100%;
+	width: 100%;
+	font-family:
+		"Inter",
+		-apple-system,
+		BlinkMacSystemFont,
+		"Segoe UI",
+		Roboto,
+		sans-serif;
+	-webkit-font-smoothing: antialiased;
+}
+
+body {
+	background-color: #f0f2f5;
+}
+
+.app-table-actions {
+	display: inline-flex;
+	flex-wrap: wrap;
+	gap: 4px;
+}
+
+.app-table-actions .ant-btn {
+	padding-inline: 6px;
+}
+
+@media (max-width: 576px) {
+	.app-table-actions {
+		gap: 2px;
+	}
+}
