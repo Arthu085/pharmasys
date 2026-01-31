@@ -1,7 +1,6 @@
 import { Form } from "antd";
 import { AppModal } from "@/shared/components/modals/app-modal";
 import { AppInput } from "@/shared/components/inputs/app-input";
-import type { ICompanyCreateProps } from "../../domain/interfaces/company-create.interface";
 import {
 	companyCreateSchema,
 	createCompanyTypeOptions,
@@ -11,12 +10,9 @@ import { AppSelect } from "@/shared/components/selects/app-select";
 import { useFormSubmit } from "@/shared/hooks/use-form-submit";
 import { companyService } from "../../infrastructure/company.service";
 import { formatCnpj } from "@/shared/utils/cnpj.util";
+import type { ICreateProps } from "@/shared/domain/interfaces/create.interface";
 
-export const CompanyCreate = ({
-	open,
-	onClose,
-	onSuccess,
-}: ICompanyCreateProps) => {
+export const CompanyCreate = ({ open, onClose, onSuccess }: ICreateProps) => {
 	const [form] = Form.useForm();
 	const { saving, handleSubmit } = useFormSubmit<ICompanyCreateDto>(
 		companyService.create,

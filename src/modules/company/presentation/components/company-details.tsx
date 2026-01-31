@@ -4,15 +4,11 @@ import { AppModal } from "@/shared/components/modals/app-modal";
 import { useFetchModal } from "@/shared/hooks/use-fetch-modal";
 import { StatusEnum } from "@/shared/domain/enums/status.enum";
 import { formatDate } from "@/shared/utils/date.util";
-import type { ICompanyDetailsProps } from "../../domain/interfaces/company-details.interface";
 import type { ICompanyDetailsData } from "../../domain/dtos/company-details-response.dto";
 import { companyService } from "../../infrastructure/company.service";
+import type { IDetailsProps } from "@/shared/domain/interfaces/details.interface";
 
-export const CompanyDetails = ({
-	open,
-	onClose,
-	uuid,
-}: ICompanyDetailsProps) => {
+export const CompanyDetails = ({ open, onClose, uuid }: IDetailsProps) => {
 	const { loading, data: company } = useFetchModal<ICompanyDetailsData>(
 		uuid,
 		open,

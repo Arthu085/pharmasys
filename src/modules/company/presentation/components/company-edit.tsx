@@ -8,18 +8,13 @@ import { AppInput } from "@/shared/components/inputs/app-input";
 import { AppSelect } from "@/shared/components/selects/app-select";
 import { useFormFetch } from "@/shared/hooks/use-form-fetch";
 import { useFormSubmit } from "@/shared/hooks/use-form-submit";
-import type { ICompanyEditProps } from "../../domain/interfaces/company-edit.interface";
 import type { ICompanyListData } from "../../domain/dtos/company-list-response.dto";
 import { companyService } from "../../infrastructure/company.service";
 import { createCompanyTypeOptions } from "../../domain/dtos/company-create.dto";
 import { formatCnpj } from "@/shared/utils/cnpj.util";
+import type { IEditProps } from "@/shared/domain/interfaces/edit.interface";
 
-export const CompanyEdit = ({
-	open,
-	onClose,
-	uuid,
-	onSuccess,
-}: ICompanyEditProps) => {
+export const CompanyEdit = ({ open, onClose, uuid, onSuccess }: IEditProps) => {
 	const [form] = Form.useForm();
 	const { loading: fetching } = useFormFetch<ICompanyListData, any>(
 		uuid,

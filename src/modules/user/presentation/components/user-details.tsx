@@ -1,13 +1,13 @@
 import { userService } from "../../infrastructure/user.service";
 import { Descriptions, Tag } from "antd";
 import { AppModal } from "@/shared/components/modals/app-modal";
-import type { IUserDetailsProps } from "../../domain/interfaces/user-details.interface";
 import { useFetchModal } from "@/shared/hooks/use-fetch-modal";
 import { StatusEnum } from "@/shared/domain/enums/status.enum";
 import type { IUserDetailsData } from "../../domain/dtos/user-details-response.dto";
 import { formatDate } from "@/shared/utils/date.util";
+import type { IDetailsProps } from "@/shared/domain/interfaces/details.interface";
 
-export const UserDetails = ({ open, onClose, uuid }: IUserDetailsProps) => {
+export const UserDetails = ({ open, onClose, uuid }: IDetailsProps) => {
 	const { loading, data: user } = useFetchModal<IUserDetailsData>(
 		uuid,
 		open,
