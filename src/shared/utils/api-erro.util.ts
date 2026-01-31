@@ -2,6 +2,14 @@ import { isAxiosError } from "axios";
 
 export const getErrorMessage = (error: unknown): string => {
 	if (isAxiosError(error)) {
+		if (!error.response) {
+			if (error.code === "ECONNABORTED") {
+				return "Tempo excedido ao conectar com o servidor.";
+			}
+
+			return "Não foi possível conectar com o servidor";
+		}
+
 		const backendMessage = error.response?.data?.message;
 
 		if (backendMessage) {
