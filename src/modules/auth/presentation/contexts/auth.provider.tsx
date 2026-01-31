@@ -36,8 +36,21 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 				const response = await authService.validateToken();
 
 				if (response.success && response.data) {
-					setUser(response.data);
-					setStoredUser(response.data);
+					if (!response.data.role) {
+						authService.logout();
+						return;
+					}
+
+					const authUser: IAuthUser = {
+						name: response.data.name,
+						role: response.data.role.value,
+						roleLabel: response.data.role.label,
+						status: response.data.status.value,
+						statusLabel: response.data.status.label,
+					};
+
+					setUser(authUser);
+					setStoredUser(authUser);
 				} else {
 					authService.logout();
 				}
