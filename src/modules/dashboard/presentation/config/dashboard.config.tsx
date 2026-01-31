@@ -8,20 +8,20 @@ import {
 
 export const dashboardItems: IDashboardItem[] = [
 	{
-		title: "Gestão de Usuários",
-		subtitle: "Gerenciar usuários do sistema",
-		icon: <UserAddOutlined />,
-		to: UserRoutesEnum.USERS,
-		iconColor: "#1677ff",
-		allowedRoles: [RoleEnum.ADMIN],
-	},
-	{
 		title: "Gestão de Empresas",
 		subtitle: "Gerenciar empresas do sistema",
 		icon: <HomeOutlined />,
 		to: CompanyRoutesEnum.COMPANIES,
 		iconColor: "#1677ff",
 		allowedRoles: [RoleEnum.ADMIN, RoleEnum.FARMACEUTICO],
+	},
+	{
+		title: "Gestão de Usuários",
+		subtitle: "Gerenciar usuários do sistema",
+		icon: <UserAddOutlined />,
+		to: UserRoutesEnum.USERS,
+		iconColor: "#1677ff",
+		allowedRoles: [RoleEnum.ADMIN],
 	},
 	{
 		title: "Perfil",

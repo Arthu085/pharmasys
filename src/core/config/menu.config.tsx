@@ -21,16 +21,16 @@ export const topMenuItems: IAppMenuItem[] = [
 		label: <Link to={DashboardRoutesEnum.HOME}>Dashboard</Link>,
 	},
 	{
-		key: UserRoutesEnum.USERS,
-		icon: <UserAddOutlined />,
-		label: <Link to={UserRoutesEnum.USERS}>Usuários</Link>,
-		allowedRoles: [RoleEnum.ADMIN],
-	},
-	{
 		key: CompanyRoutesEnum.COMPANIES,
 		icon: <HomeOutlined />,
 		label: <Link to={CompanyRoutesEnum.COMPANIES}>Empresas</Link>,
 		allowedRoles: [RoleEnum.ADMIN, RoleEnum.FARMACEUTICO],
+	},
+	{
+		key: UserRoutesEnum.USERS,
+		icon: <UserAddOutlined />,
+		label: <Link to={UserRoutesEnum.USERS}>Usuários</Link>,
+		allowedRoles: [RoleEnum.ADMIN],
 	},
 ];
 
