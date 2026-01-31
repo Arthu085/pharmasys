@@ -14,6 +14,12 @@ export const ProfileDetails = ({ user }: IProfileDetails) => {
 						style={{ backgroundColor: "#1677ff" }}
 					/>
 					<Tag color="blue">{user.role.label}</Tag>
+					<Tag
+						color={
+							user.status.value === StatusEnum.ATIVO ? "success" : "error"
+						}>
+						{user.status.label}
+					</Tag>
 					{/*TODO: Fazer edição de perfil (necessário criar rota nova no backend)*/}
 					{/* <AppButton
 						label="Editar Perfil"
@@ -40,14 +46,6 @@ export const ProfileDetails = ({ user }: IProfileDetails) => {
 						{user.name}
 					</Descriptions.Item>
 					<Descriptions.Item label="E-mail">{user.email}</Descriptions.Item>
-					<Descriptions.Item label="Status">
-						<Tag
-							color={
-								user.status.value === StatusEnum.ATIVO ? "success" : "error"
-							}>
-							{user.status.label}
-						</Tag>
-					</Descriptions.Item>
 				</Descriptions>
 			</Col>
 		</Row>

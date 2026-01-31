@@ -1,4 +1,4 @@
-import { Empty, Table, type TableProps } from "antd";
+import { Empty, Grid, Table, type TableProps } from "antd";
 
 interface AppTableProps<T> extends TableProps<T> {
 	rowKey?: string | ((record: T) => string);
@@ -14,14 +14,17 @@ export const AppTable = <T extends object>({
 	emptyMessage = "Nenhum registro encontrado",
 	...rest
 }: AppTableProps<T>) => {
+	const screens = Grid.useBreakpoint();
+	const isMobile = screens.xs && !screens.sm;
+
 	return (
 		<Table
 			columns={columns}
 			dataSource={dataSource}
 			loading={loading}
 			rowKey={rowKey}
-			size="middle"
-			scroll={{ x: true }}
+			size={isMobile ? "small" : "middle"}
+			scroll={{ x: "max-content" }}
 			locale={{
 				emptyText: (
 					<Empty
@@ -33,9 +36,11 @@ export const AppTable = <T extends object>({
 			pagination={
 				pagination !== false
 					? {
-							showSizeChanger: true,
+							showSizeChanger: !isMobile,
 							pageSizeOptions: ["10", "20", "50"],
-							showTotal: (total) => `Total de ${total} registros`,
+							showTotal: isMobile
+								? undefined
+								: (total) => `Total de ${total} registros`,
 							...pagination,
 						}
 					: false

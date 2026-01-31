@@ -22,3 +22,19 @@ body,
 body {
 	background-color: #f0f2f5;
 }
+
+.app-table-actions {
+	display: inline-flex;
+	flex-wrap: wrap;
+	gap: 4px;
+}
+
+.app-table-actions .ant-btn {
+	padding-inline: 6px;
+}
+
+@media (max-width: 576px) {
+	.app-table-actions {
+		gap: 2px;
+	}
+}

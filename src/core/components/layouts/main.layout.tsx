@@ -1,9 +1,10 @@
 import { Outlet, useLocation } from "react-router-dom";
 import {
-	Button,
 	Card,
 	Divider,
+	Drawer,
 	Flex,
+	Grid,
 	Layout,
 	Menu,
 	theme,
@@ -18,6 +19,7 @@ import { useAuth } from "@/modules/auth/presentation/hooks/use-auth.hook";
 import { useMemo, useState } from "react";
 import { filterMenuByRole } from "@/core/utils/menu.util";
 import { bottomMenuItems, topMenuItems } from "@/core/config/menu.config";
+import { AppButton } from "@/shared/components/buttons/app-button";
 
 const { Header, Sider, Content, Footer } = Layout;
 
@@ -25,6 +27,8 @@ export const MainLayout = () => {
 	const {
 		token: { colorBgContainer, borderRadiusLG },
 	} = theme.useToken();
+	const screens = Grid.useBreakpoint();
+	const isMobile = screens.xs && !screens.sm;
 	const { signOut, user } = useAuth();
 	const location = useLocation();
 	const [collapsed, setCollapsed] = useState(true);
@@ -42,71 +46,95 @@ export const MainLayout = () => {
 		return [path];
 	};
 
+	const sidebarContent = (
+		<Flex vertical style={{ height: "100%", minHeight: 0 }}>
+			<Flex vertical style={{ padding: 16, paddingBottom: 8 }}>
+				<Typography.Title
+					level={4}
+					ellipsis={{ tooltip: "Pharmasys" }}
+					style={{ margin: 0, whiteSpace: "nowrap" }}>
+					Pharmasys
+				</Typography.Title>
+			</Flex>
+			<Divider style={{ margin: "0 0 8px 0" }} />
+			<Flex vertical style={{ flex: 1, minHeight: 0, overflow: "auto" }}>
+				<Menu
+					theme="light"
+					mode="inline"
+					items={topItems}
+					selectedKeys={getSelectedKeys()}
+					onClick={() => {
+						if (isMobile) setCollapsed(true);
+					}}
+				/>
+			</Flex>
+			<Divider style={{ margin: "8px 0" }} />
+			<Menu
+				theme="light"
+				mode="inline"
+				items={bottomItems}
+				selectedKeys={getSelectedKeys()}
+				onClick={() => {
+					if (isMobile) setCollapsed(true);
+				}}
+			/>
+		</Flex>
+	);
+
+	const toggleSidebar = () => setCollapsed((prev) => !prev);
+
 	return (
 		<Layout style={{ minHeight: "100vh" }}>
-			<Sider
-				theme="light"
-				breakpoint="xs"
-				collapsedWidth={0}
-				trigger={null}
-				collapsible
-				collapsed={collapsed}
-				style={{
-					display: "flex",
-					flexDirection: "column",
-					overflow: "hidden",
-				}}>
-				<Flex vertical style={{ height: "100%", minHeight: 0 }}>
-					<Flex vertical style={{ padding: 16, paddingBottom: 8 }}>
-						<Typography.Title
-							level={4}
-							ellipsis={{ tooltip: "Pharmasys" }}
-							style={{ margin: 0, whiteSpace: "nowrap" }}>
-							Pharmasys
-						</Typography.Title>
-					</Flex>
-					<Divider style={{ margin: "0 0 8px 0" }} />
-					<Flex vertical style={{ flex: 1, minHeight: 0, overflow: "auto" }}>
-						<Menu
-							theme="light"
-							mode="inline"
-							items={topItems}
-							selectedKeys={getSelectedKeys()}
-						/>
-					</Flex>
-					<Divider style={{ margin: "8px 0" }} />
-					<Menu
-						theme="light"
-						mode="inline"
-						items={bottomItems}
-						selectedKeys={getSelectedKeys()}
-					/>
-				</Flex>
-			</Sider>
+			{isMobile ? (
+				<Drawer
+					placement="left"
+					open={!collapsed}
+					onClose={() => setCollapsed(true)}
+					size="200px"
+					styles={{ body: { padding: 0 } }}
+					closable={false}>
+					{sidebarContent}
+				</Drawer>
+			) : (
+				<Sider
+					theme="light"
+					breakpoint="md"
+					collapsedWidth={0}
+					trigger={null}
+					collapsible
+					collapsed={collapsed}
+					style={{
+						display: "flex",
+						flexDirection: "column",
+						overflow: "hidden",
+					}}>
+					{sidebarContent}
+				</Sider>
+			)}
 			<Layout>
 				<Header style={{ padding: 0, background: colorBgContainer }}>
 					<Flex
 						align="center"
 						justify="space-between"
 						style={{ height: "100%", paddingInline: 8 }}>
-						<Button
+						<AppButton
 							type="text"
 							icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-							onClick={() => setCollapsed(!collapsed)}
+							onClick={toggleSidebar}
 							style={{
 								fontSize: "16px",
 								width: 64,
 								height: 64,
 							}}
 						/>
-						<Button
+						<AppButton
 							icon={<LogoutOutlined />}
 							onClick={() => signOut()}
 							danger={true}
 						/>
 					</Flex>
 				</Header>
-				<Content style={{ margin: "24px 16px 0" }}>
+				<Content style={{ margin: isMobile ? "16px 12px 0" : "24px 16px 0" }}>
 					<Card
 						style={{
 							background: colorBgContainer,
@@ -114,7 +142,7 @@ export const MainLayout = () => {
 						}}
 						styles={{
 							body: {
-								padding: 24,
+								padding: isMobile ? 16 : 24,
 								minHeight: 360,
 							},
 						}}>

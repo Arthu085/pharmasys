@@ -53,8 +53,7 @@ export const getUserColumns = ({
 	{
 		title: "Ações",
 		key: "actions",
-		width: 200,
-		fixed: "right",
+		width: 130,
 		render: (_, record) => (
 			<AppTableActions
 				entityName="Usuário"
