@@ -5,7 +5,6 @@ import {
 	userUpdateSchema,
 	type IUserUpdateDto,
 } from "../../domain/dtos/user-update.dto";
-import type { IUserEditProps } from "../../domain/interfaces/user-edit.interface";
 import { AppInput } from "@/shared/components/inputs/app-input";
 import { AppPasswordInput } from "@/shared/components/inputs/app-password-input";
 import { AppSelect } from "@/shared/components/selects/app-select";
@@ -13,13 +12,9 @@ import { createRoleOptions } from "../../domain/dtos/user-create.dto";
 import { useFormFetch } from "@/shared/hooks/use-form-fetch";
 import { useFormSubmit } from "@/shared/hooks/use-form-submit";
 import type { IUserListData } from "../../domain/dtos/user-list-response.dto";
+import type { IEditProps } from "@/shared/domain/interfaces/edit.interface";
 
-export const UserEdit = ({
-	open,
-	onClose,
-	uuid,
-	onSuccess,
-}: IUserEditProps) => {
+export const UserEdit = ({ open, onClose, uuid, onSuccess }: IEditProps) => {
 	const [form] = Form.useForm();
 	const { loading: fetching } = useFormFetch<IUserListData, any>(
 		uuid,
@@ -64,18 +59,23 @@ export const UserEdit = ({
 				<AppInput
 					name="name"
 					label="Nome Completo"
+					placeholder="Seu nome completo..."
 					zodSchema={userUpdateSchema.shape.name}
+					maxLength={100}
 				/>
 				<AppInput
 					name="email"
 					label="E-mail"
+					placeholder="Seu e-mail..."
 					zodSchema={userUpdateSchema.shape.email}
+					maxLength={255}
 				/>
 				<AppPasswordInput
 					name="password"
 					label="Senha"
 					placeholder="*********"
 					zodSchema={userUpdateSchema.shape.password}
+					maxLength={40}
 				/>
 				<AppSelect
 					name="role"

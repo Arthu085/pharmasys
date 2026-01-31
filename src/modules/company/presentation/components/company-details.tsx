@@ -1,53 +1,63 @@
-import { userService } from "../../infrastructure/user.service";
 import { Descriptions, Tag } from "antd";
+import { Fragment } from "react";
 import { AppModal } from "@/shared/components/modals/app-modal";
 import { useFetchModal } from "@/shared/hooks/use-fetch-modal";
 import { StatusEnum } from "@/shared/domain/enums/status.enum";
-import type { IUserDetailsData } from "../../domain/dtos/user-details-response.dto";
 import { formatDate } from "@/shared/utils/date.util";
+import type { ICompanyDetailsData } from "../../domain/dtos/company-details-response.dto";
+import { companyService } from "../../infrastructure/company.service";
 import type { IDetailsProps } from "@/shared/domain/interfaces/details.interface";
 
-export const UserDetails = ({ open, onClose, uuid }: IDetailsProps) => {
-	const { loading, data: user } = useFetchModal<IUserDetailsData>(
+export const CompanyDetails = ({ open, onClose, uuid }: IDetailsProps) => {
+	const { loading, data: company } = useFetchModal<ICompanyDetailsData>(
 		uuid,
 		open,
-		userService.findOne,
+		companyService.findOne,
 		onClose,
 	);
 
 	return (
 		<AppModal
-			title="Detalhes do Usuário"
+			title="Detalhes da Empresa"
 			open={open}
 			onCancel={onClose}
 			hideFooter
 			loading={loading}>
-			{user ? (
+			{company ? (
 				<Descriptions column={1} bordered size="small" layout="horizontal">
 					<Descriptions.Item label="Nome Completo">
-						{user.name}
+						{company.name}
 					</Descriptions.Item>
-					<Descriptions.Item label="E-mail">{user.email}</Descriptions.Item>
-					<Descriptions.Item label="Função">
-						<Tag color={"blue"}>{user.role.label}</Tag>
+					<Descriptions.Item label="CNPJ">{company.cnpj}</Descriptions.Item>
+					<Descriptions.Item label="Tipo de Empresa">
+						{company.companyTypes.map((type, index) => (
+							<Fragment key={type.value}>
+								<Tag color="blue">{type.label}</Tag>
+								{index < company.companyTypes.length - 1 ? (
+									<span> | </span>
+								) : null}
+							</Fragment>
+						))}
 					</Descriptions.Item>
 					<Descriptions.Item label="Status">
 						<Tag
-							color={user.status.value === StatusEnum.ATIVO ? "green" : "red"}>
-							{user.status.label}
+							color={
+								company.status.value === StatusEnum.ATIVO ? "green" : "red"
+							}>
+							{company.status.label}
 						</Tag>
 					</Descriptions.Item>
 					<Descriptions.Item label="Usário Criador">
-						{user.userCreated || "-"}
+						{company.userCreated || "-"}
 					</Descriptions.Item>
 					<Descriptions.Item label="Usário Atualizador">
-						{user.userUpdated || "-"}
+						{company.userUpdated || "-"}
 					</Descriptions.Item>
 					<Descriptions.Item label="Data de Criação">
-						{formatDate(user.createdAt) || "-"}
+						{formatDate(company.createdAt) || "-"}
 					</Descriptions.Item>
 					<Descriptions.Item label="Data de Atualização">
-						{formatDate(user.updatedAt) || "-"}
+						{formatDate(company.updatedAt) || "-"}
 					</Descriptions.Item>
 				</Descriptions>
 			) : null}

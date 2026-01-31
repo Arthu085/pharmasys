@@ -16,10 +16,12 @@ interface StatusFilterProps {
 	size?: SizeType;
 }
 
-const options = [
-	{ label: StatusEnumTranslated.ATIVO, value: StatusEnum.ATIVO },
-	{ label: StatusEnumTranslated.INATIVO, value: StatusEnum.INATIVO },
-];
+const options = (Object.keys(StatusEnum) as Array<keyof typeof StatusEnum>).map(
+	(key) => ({
+		label: StatusEnumTranslated[key],
+		value: StatusEnum[key],
+	}),
+);
 
 export const StatusFilter = ({
 	value,

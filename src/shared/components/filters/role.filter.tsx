@@ -13,11 +13,12 @@ interface RoleFilterProps {
 	size?: SizeType;
 }
 
-const options = [
-	{ label: RoleEnumTranslated.ADMIN, value: RoleEnum.ADMIN },
-	{ label: RoleEnumTranslated.FARMACEUTICO, value: RoleEnum.FARMACEUTICO },
-	{ label: RoleEnumTranslated.OPERADOR, value: RoleEnum.OPERADOR },
-];
+const options = (Object.keys(RoleEnum) as Array<keyof typeof RoleEnum>).map(
+	(key) => ({
+		label: RoleEnumTranslated[key],
+		value: RoleEnum[key],
+	}),
+);
 
 export const RoleFilter = ({
 	value,

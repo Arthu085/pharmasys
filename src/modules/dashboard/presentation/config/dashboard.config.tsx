@@ -1,9 +1,20 @@
-import { UserAddOutlined, UserOutlined } from "@ant-design/icons";
+import { HomeOutlined, UserAddOutlined, UserOutlined } from "@ant-design/icons";
 import { RoleEnum } from "@/shared/domain/enums/role.enum";
 import type { IDashboardItem } from "../../domain/interfaces/dashboard-item.interface";
-import { UserRoutesEnum } from "@/core/enums/app-routes.enum";
+import {
+	CompanyRoutesEnum,
+	UserRoutesEnum,
+} from "@/core/enums/app-routes.enum";
 
 export const dashboardItems: IDashboardItem[] = [
+	{
+		title: "Gestão de Empresas",
+		subtitle: "Gerenciar empresas do sistema",
+		icon: <HomeOutlined />,
+		to: CompanyRoutesEnum.COMPANIES,
+		iconColor: "#1677ff",
+		allowedRoles: [RoleEnum.ADMIN, RoleEnum.FARMACEUTICO],
+	},
 	{
 		title: "Gestão de Usuários",
 		subtitle: "Gerenciar usuários do sistema",

@@ -2,7 +2,6 @@ import { userService } from "../../infrastructure/user.service";
 import { Form } from "antd";
 import { AppModal } from "@/shared/components/modals/app-modal";
 import { AppInput } from "@/shared/components/inputs/app-input";
-import type { IUserCreateProps } from "../../domain/interfaces/user-create.interface";
 import {
 	createRoleOptions,
 	userCreateSchema,
@@ -11,8 +10,9 @@ import {
 import { AppPasswordInput } from "@/shared/components/inputs/app-password-input";
 import { AppSelect } from "@/shared/components/selects/app-select";
 import { useFormSubmit } from "@/shared/hooks/use-form-submit";
+import type { ICreateProps } from "@/shared/domain/interfaces/create.interface";
 
-export const UserCreate = ({ open, onClose, onSuccess }: IUserCreateProps) => {
+export const UserCreate = ({ open, onClose, onSuccess }: ICreateProps) => {
 	const [form] = Form.useForm();
 	const { saving, handleSubmit } = useFormSubmit<IUserCreateDto>(
 		userService.create,
@@ -40,18 +40,21 @@ export const UserCreate = ({ open, onClose, onSuccess }: IUserCreateProps) => {
 					label="Nome Completo"
 					placeholder="Seu nome completo..."
 					zodSchema={userCreateSchema.shape.name}
+					maxLength={100}
 				/>
 				<AppInput
 					name="email"
 					label="E-mail"
 					placeholder="Seu e-mail..."
 					zodSchema={userCreateSchema.shape.email}
+					maxLength={255}
 				/>
 				<AppPasswordInput
 					name="password"
 					label="Senha"
 					placeholder="*********"
 					zodSchema={userCreateSchema.shape.password}
+					maxLength={40}
 				/>
 				<AppSelect
 					name="role"

@@ -3,6 +3,7 @@ import type { IAppRoute } from "../interfaces/route-config.interface";
 import { AuthLayout } from "../components/layouts/auth.layout";
 import {
 	AuthRoutesEnum,
+	CompanyRoutesEnum,
 	DashboardRoutesEnum,
 	NotFoundRoutesEnum,
 	UserRoutesEnum,
@@ -16,6 +17,7 @@ import { NotFoundPage } from "../pages/not-found.page";
 import { DashboardPage } from "@/modules/dashboard/presentation/pages/dashboard.page";
 import { ProfilePage } from "@/modules/profile/presentation/pages/profile.page";
 import { UserPage } from "@/modules/user/presentation/pages/user.page";
+import { CompanyPage } from "@/modules/company/presentation/pages/company.page";
 
 export const routesConfig: IAppRoute[] = [
 	{
@@ -57,6 +59,10 @@ export const routesConfig: IAppRoute[] = [
 					{
 						path: UserRoutesEnum.PROFILE,
 						element: <ProfilePage />,
+					},
+					{
+						path: CompanyRoutesEnum.COMPANIES,
+						element: <CompanyPage />,
 					},
 				],
 			},
