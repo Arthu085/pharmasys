@@ -1,8 +1,14 @@
-import { HomeOutlined, UserAddOutlined, UserOutlined } from "@ant-design/icons";
+import {
+	HomeOutlined,
+	MedicineBoxOutlined,
+	UserAddOutlined,
+	UserOutlined,
+} from "@ant-design/icons";
 import { RoleEnum } from "@/shared/domain/enums/role.enum";
 import type { IDashboardItem } from "../../domain/interfaces/dashboard-item.interface";
 import {
 	CompanyRoutesEnum,
+	PatientRoutesEnum,
 	UserRoutesEnum,
 } from "@/core/enums/app-routes.enum";
 
@@ -12,6 +18,14 @@ export const dashboardItems: IDashboardItem[] = [
 		subtitle: "Gerenciar empresas do sistema",
 		icon: <HomeOutlined />,
 		to: CompanyRoutesEnum.COMPANIES,
+		iconColor: "#1677ff",
+		allowedRoles: [RoleEnum.ADMIN, RoleEnum.FARMACEUTICO],
+	},
+	{
+		title: "Gestão de Pacientes",
+		subtitle: "Gerenciar pacientes do sistema",
+		icon: <MedicineBoxOutlined />,
+		to: PatientRoutesEnum.PATIENTS,
 		iconColor: "#1677ff",
 		allowedRoles: [RoleEnum.ADMIN, RoleEnum.FARMACEUTICO],
 	},

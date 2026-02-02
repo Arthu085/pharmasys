@@ -6,6 +6,7 @@ import {
 	CompanyRoutesEnum,
 	DashboardRoutesEnum,
 	NotFoundRoutesEnum,
+	PatientRoutesEnum,
 	UserRoutesEnum,
 } from "../enums/app-routes.enum";
 import { Navigate } from "react-router-dom";
@@ -18,6 +19,7 @@ import { DashboardPage } from "@/modules/dashboard/presentation/pages/dashboard.
 import { ProfilePage } from "@/modules/profile/presentation/pages/profile.page";
 import { UserPage } from "@/modules/user/presentation/pages/user.page";
 import { CompanyPage } from "@/modules/company/presentation/pages/company.page";
+import { PatientPage } from "@/modules/patient/presentation/pages/patient.page";
 
 export const routesConfig: IAppRoute[] = [
 	{
@@ -63,6 +65,10 @@ export const routesConfig: IAppRoute[] = [
 					{
 						path: CompanyRoutesEnum.COMPANIES,
 						element: <CompanyPage />,
+					},
+					{
+						path: PatientRoutesEnum.PATIENTS,
+						element: <PatientPage />,
 					},
 				],
 			},

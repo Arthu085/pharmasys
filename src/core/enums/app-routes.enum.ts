@@ -16,6 +16,10 @@ export enum CompanyRoutesEnum {
 	COMPANIES = "/companies",
 }
 
+export enum PatientRoutesEnum {
+	PATIENTS = "/patients",
+}
+
 export enum NotFoundRoutesEnum {
 	NOT_FOUND = "*",
 }
