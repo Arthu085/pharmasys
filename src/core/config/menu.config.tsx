@@ -1,6 +1,7 @@
 import {
 	DashboardOutlined,
 	HomeOutlined,
+	MedicineBoxOutlined,
 	LogoutOutlined,
 	UserAddOutlined,
 	UserOutlined,
@@ -9,6 +10,7 @@ import { Link } from "react-router-dom";
 import {
 	CompanyRoutesEnum,
 	DashboardRoutesEnum,
+	PatientRoutesEnum,
 	UserRoutesEnum,
 } from "../enums/app-routes.enum";
 import { RoleEnum } from "@/shared/domain/enums/role.enum";
@@ -24,6 +26,12 @@ export const topMenuItems: IAppMenuItem[] = [
 		key: CompanyRoutesEnum.COMPANIES,
 		icon: <HomeOutlined />,
 		label: <Link to={CompanyRoutesEnum.COMPANIES}>Empresas</Link>,
+		allowedRoles: [RoleEnum.ADMIN, RoleEnum.FARMACEUTICO],
+	},
+	{
+		key: PatientRoutesEnum.PATIENTS,
+		icon: <MedicineBoxOutlined />,
+		label: <Link to={PatientRoutesEnum.PATIENTS}>Pacientes</Link>,
 		allowedRoles: [RoleEnum.ADMIN, RoleEnum.FARMACEUTICO],
 	},
 	{
