@@ -3,6 +3,7 @@ import type { IAppRoute } from "../interfaces/route-config.interface";
 import { AuthLayout } from "../components/layouts/auth.layout";
 import {
 	AuthRoutesEnum,
+	BatchRoutesEnum,
 	CompanyRoutesEnum,
 	DashboardRoutesEnum,
 	NotFoundRoutesEnum,
@@ -20,6 +21,7 @@ import { ProfilePage } from "@/modules/profile/presentation/pages/profile.page";
 import { UserPage } from "@/modules/user/presentation/pages/user.page";
 import { CompanyPage } from "@/modules/company/presentation/pages/company.page";
 import { PatientPage } from "@/modules/patient/presentation/pages/patient.page";
+import { BatchPage } from "@/modules/batch/presentation/pages/batch.page";
 
 export const routesConfig: IAppRoute[] = [
 	{
@@ -69,6 +71,10 @@ export const routesConfig: IAppRoute[] = [
 					{
 						path: PatientRoutesEnum.PATIENTS,
 						element: <PatientPage />,
+					},
+					{
+						path: BatchRoutesEnum.BATCHES,
+						element: <BatchPage />,
 					},
 				],
 			},

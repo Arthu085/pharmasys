@@ -6,39 +6,41 @@ import { AppButton } from "@/shared/components/buttons/app-button";
 import { useList } from "@/shared/hooks/use-list";
 import { useModals } from "@/shared/hooks/use-modals";
 import { useRowAction } from "@/shared/hooks/use-row-action";
-import type { IPatientListData } from "../../domain/dtos/patient-list-response.dto";
-import type { IPatientFilterDto } from "../../domain/dtos/patient-filter.dto";
-import { patientService } from "../../infrastructure/patient.service";
-import { PatientList } from "../components/patient-list";
-import { PatientCreate } from "../components/patient-create";
-import { PatientEdit } from "../components/patient-edit";
-import { PatientDetails } from "../components/patient-details";
+import type { IBatchListData } from "../../domain/dtos/batch-list-response.dto";
+import type { IBatchFilterDto } from "../../domain/dtos/batch-filter.dto";
+import { batchService } from "../../infrastructure/batch.service";
+import { BatchList } from "../components/batch-list";
+import { BatchCreate } from "../components/batch-create";
+import { BatchEdit } from "../components/batch-edit";
+import { BatchDetails } from "../components/batch-details";
+import { AppDateFilterInput } from "@/shared/components/inputs/app-date-filter-input";
+import { AppCompanyFilterSelect } from "@/shared/components/selects/company/app-company-filter-select";
 
 const { Title } = Typography;
 
-export const PatientPage = () => {
+export const BatchPage = () => {
 	const modals = useModals<string>();
 	const {
 		loading,
-		data: patients,
+		data: batches,
 		meta,
 		filters,
 		handleFilterChange,
 		handlePageChange,
 		refresh,
-	} = useList<IPatientListData, IPatientFilterDto>(patientService.findAll, {
+	} = useList<IBatchListData, IBatchFilterDto>(batchService.findAll, {
 		page: 1,
 		limit: 10,
 		status: StatusEnum.ATIVO,
 	});
 
 	const { handleAction: handleChangeStatus } = useRowAction(
-		patientService.updateStatus,
+		batchService.updateStatus,
 		refresh,
 	);
 
 	const { handleAction: handleDelete } = useRowAction(
-		patientService.delete,
+		batchService.delete,
 		refresh,
 	);
 
@@ -49,13 +51,13 @@ export const PatientPage = () => {
 				align={"middle"}
 				style={{ marginBottom: 16 }}>
 				<Col flex="auto">
-					<Title level={2}>Pacientes</Title>
+					<Title level={2}>Lotes</Title>
 				</Col>
 				<Col
 					flex="none"
 					style={{ display: "flex", justifyContent: "flex-end" }}>
 					<AppButton
-						label="Novo Paciente"
+						label="Novo Lote"
 						type="primary"
 						onClick={() => modals.openCreate()}
 					/>
@@ -63,34 +65,50 @@ export const PatientPage = () => {
 			</Row>
 			<Card>
 				<Row gutter={[16, 16]} style={{ marginBottom: 16 }}>
-					<Col xs={24} sm={24} md={24} lg={6} xl={4}>
+					<Col xs={24} sm={24} md={12} lg={12} xl={4}>
 						<StatusFilter
 							value={filters.status}
 							onChange={(val) => handleFilterChange("status", val)}
 						/>
 					</Col>
-					<Col xs={24} sm={24} md={24} lg={12} xl={12}>
+					<Col xs={24} sm={24} md={12} lg={12} xl={7}>
 						<AppSearchInput
-							label="Documento"
-							placeholder="Buscar pelo documento..."
-							value={filters.document}
-							onChange={(val) => handleFilterChange("document", val)}
+							label="Código do Lote"
+							placeholder="Buscar pelo código do lote..."
+							value={filters.batchCode}
+							onChange={(val) => handleFilterChange("batchCode", val)}
+						/>
+					</Col>
+					<Col xs={24} sm={24} md={12} lg={12} xl={7}>
+						<AppCompanyFilterSelect
+							label="Empresa"
+							placeholder="Buscar pela empresa..."
+							value={filters.company}
+							onChange={(val) => handleFilterChange("company", val)}
+						/>
+					</Col>
+					<Col xs={24} sm={24} md={12} lg={12} xl={6}>
+						<AppDateFilterInput
+							label="Data de Expiração"
+							placeholder="Buscar pela data de expiração..."
+							value={filters.expirationDate}
+							onChange={(val) => handleFilterChange("expirationDate", val)}
 						/>
 					</Col>
 				</Row>
-				<PatientList
+				<BatchList
 					loading={loading}
-					patients={patients}
+					batches={batches}
 					total={meta.total}
 					page={filters.page}
 					pageSize={filters.limit}
 					onChangePage={handlePageChange}
-					onEdit={(patient) => modals.openEdit(patient.uuid)}
-					onDetails={(patient) => modals.openDetails(patient.uuid)}
+					onEdit={(batch) => modals.openEdit(batch.uuid)}
+					onDetails={(batch) => modals.openDetails(batch.uuid)}
 					onStatus={handleChangeStatus}
 					onDelete={handleDelete}
 				/>
-				<PatientCreate
+				<BatchCreate
 					open={modals.isCreateOpen}
 					onClose={modals.closeCreate}
 					onSuccess={() => {
@@ -98,7 +116,7 @@ export const PatientPage = () => {
 						refresh();
 					}}
 				/>
-				<PatientEdit
+				<BatchEdit
 					open={modals.isEditOpen}
 					uuid={modals.selectedUuid}
 					onClose={modals.closeEdit}
@@ -107,7 +125,7 @@ export const PatientPage = () => {
 						refresh();
 					}}
 				/>
-				<PatientDetails
+				<BatchDetails
 					open={modals.isDetailsOpen}
 					uuid={modals.selectedUuid}
 					onClose={modals.closeDetails}

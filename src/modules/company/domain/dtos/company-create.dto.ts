@@ -1,4 +1,5 @@
 import z from "zod";
+import { onlyDigits } from "@/shared/utils/digits.util";
 import {
 	CompanyTypeEnum,
 	CompanyTypeEnumTranslated,
@@ -23,7 +24,7 @@ export const companyCreateSchema = z.object({
 		.min(3, { error: "Nome deve ter no mínimo 3 caracteres" })
 		.max(255, { error: "Nome deve ter no máximo 255 caracteres" }),
 	cnpj: z.preprocess(
-		(value) => (typeof value === "string" ? value.replace(/\D/g, "") : value),
+		(value) => (typeof value === "string" ? onlyDigits(value) : value),
 		z
 			.string({ error: "CNPJ é obrigatório" })
 			.length(14, { error: "CNPJ deve ter 14 dígitos" }),

@@ -1,4 +1,4 @@
-import { onlyDigits } from "./cnpj.util";
+import { onlyDigits } from "./digits.util";
 
 export const formatCpf = (value: string): string => {
 	const digits = onlyDigits(value).slice(0, 11);

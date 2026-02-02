@@ -29,7 +29,6 @@ export const AppInput = ({
 			label={label}
 			rules={rules}
 			required={!!zodSchema}
-			style={{ marginBottom: 20, marginTop: 20 }}
 			getValueFromEvent={(event) => {
 				const value = event?.target?.value;
 				if (typeof value !== "string") return value;

@@ -1,4 +1,6 @@
-export const onlyDigits = (value: string): string => value.replace(/\D/g, "");
+import { onlyDigits } from "./digits.util";
+
+export { onlyDigits };
 
 export const formatCnpj = (value: string): string => {
 	const digits = onlyDigits(value).slice(0, 14);
