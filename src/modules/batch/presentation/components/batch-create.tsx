@@ -14,8 +14,12 @@ import { batchService } from "../../infrastructure/batch.service";
 export const BatchCreate = ({ open, onClose, onSuccess }: ICreateProps) => {
 	const [form] = Form.useForm();
 
+	const handleCreate = async (dto: IBatchCreateDto) => {
+		return batchService.create(dto);
+	};
+
 	const { saving, handleSubmit } = useFormSubmit<IBatchCreateDto>(
-		batchService.create,
+		handleCreate,
 		() => {
 			onSuccess?.();
 			onClose();
@@ -53,8 +57,8 @@ export const BatchCreate = ({ open, onClose, onSuccess }: ICreateProps) => {
 					name="company"
 					label="Empresa"
 					placeholder="Selecione a empresa"
-					showSearch
 					zodSchema={batchCreateSchema.shape.company}
+					showSearch
 				/>
 			</Form>
 		</AppModal>

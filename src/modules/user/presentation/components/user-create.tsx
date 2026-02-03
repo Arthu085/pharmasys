@@ -15,8 +15,12 @@ import type { ICreateProps } from "@/shared/domain/interfaces/create.interface";
 export const UserCreate = ({ open, onClose, onSuccess }: ICreateProps) => {
 	const [form] = Form.useForm();
 
+	const handleCreate = async (dto: IUserCreateDto) => {
+		return userService.create(dto);
+	};
+
 	const { saving, handleSubmit } = useFormSubmit<IUserCreateDto>(
-		userService.create,
+		handleCreate,
 		() => {
 			onSuccess?.();
 			onClose();
@@ -63,6 +67,7 @@ export const UserCreate = ({ open, onClose, onSuccess }: ICreateProps) => {
 					placeholder="Selecione uma função"
 					options={createRoleOptions}
 					zodSchema={userCreateSchema.shape.role}
+					showSearch={{ optionFilterProp: "label" }}
 				/>
 			</Form>
 		</AppModal>

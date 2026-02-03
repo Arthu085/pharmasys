@@ -84,6 +84,7 @@ export const UserEdit = ({ open, onClose, uuid, onSuccess }: IEditProps) => {
 					placeholder="Selecione uma função"
 					options={createRoleOptions}
 					zodSchema={userUpdateSchema.shape.role}
+					showSearch={{ optionFilterProp: "label" }}
 				/>
 			</Form>
 		</AppModal>

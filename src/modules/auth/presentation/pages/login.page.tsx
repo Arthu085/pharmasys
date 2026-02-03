@@ -16,6 +16,7 @@ export const LoginPage = () => {
 	const [form] = Form.useForm();
 	const navigate = useNavigate();
 	const { signIn } = useAuth();
+
 	const { saving, handleSubmit } = useFormSubmit<ILoginDto>(signIn, () => {
 		navigate(DashboardRoutesEnum.HOME);
 	});

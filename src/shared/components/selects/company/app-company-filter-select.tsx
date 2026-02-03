@@ -35,8 +35,8 @@ export const AppCompanyFilterSelect = ({
 				value={value}
 				onChange={onChange}
 				placeholder={placeholder}
-				showSearch
 				size={size}
+				showSearch
 				{...rest}
 			/>
 		</Flex>

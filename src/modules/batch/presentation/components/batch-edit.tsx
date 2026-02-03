@@ -82,9 +82,9 @@ export const BatchEdit = ({ open, onClose, uuid, onSuccess }: IEditProps) => {
 					name="company"
 					label="Empresa"
 					placeholder="Selecione a empresa"
-					showSearch
 					zodSchema={batchCreateSchema.shape.company}
 					options={optionsMap.company}
+					showSearch
 				/>
 			</Form>
 		</AppModal>

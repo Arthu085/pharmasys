@@ -4,6 +4,7 @@ import {
 	InboxOutlined,
 	MedicineBoxOutlined,
 	LogoutOutlined,
+	SolutionOutlined,
 	UserAddOutlined,
 	UserOutlined,
 } from "@ant-design/icons";
@@ -13,6 +14,7 @@ import {
 	CompanyRoutesEnum,
 	DashboardRoutesEnum,
 	PatientRoutesEnum,
+	PrescriptorRoutesEnum,
 	UserRoutesEnum,
 } from "../enums/app-routes.enum";
 import { RoleEnum } from "@/shared/domain/enums/role.enum";
@@ -40,6 +42,12 @@ export const topMenuItems: IAppMenuItem[] = [
 		key: BatchRoutesEnum.BATCHES,
 		icon: <InboxOutlined />,
 		label: <Link to={BatchRoutesEnum.BATCHES}>Lotes</Link>,
+		allowedRoles: [RoleEnum.ADMIN, RoleEnum.FARMACEUTICO],
+	},
+	{
+		key: PrescriptorRoutesEnum.PRESCRIPTORS,
+		icon: <SolutionOutlined />,
+		label: <Link to={PrescriptorRoutesEnum.PRESCRIPTORS}>Prescritores</Link>,
 		allowedRoles: [RoleEnum.ADMIN, RoleEnum.FARMACEUTICO],
 	},
 	{

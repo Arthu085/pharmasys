@@ -1,6 +1,10 @@
 import { Form, DatePicker, type DatePickerProps } from "antd";
 import dayjs, { type Dayjs } from "dayjs";
-import { createZodRule, type ZodSchema } from "@/shared/validation/antd-zod";
+import {
+	createZodRule,
+	isZodRequired,
+	type ZodSchema,
+} from "@/shared/validation/antd-zod";
 
 interface AppDateInputProps extends Omit<
 	DatePickerProps,
@@ -29,6 +33,7 @@ export const AppDateInput = ({
 	...rest
 }: AppDateInputProps) => {
 	const rules = zodSchema ? [createZodRule(zodSchema)] : undefined;
+	const required = isZodRequired(zodSchema);
 
 	const getDatePickerValueProps = (value: unknown) => ({
 		value: value ? dayjs(value as Date) : null,
@@ -76,7 +81,7 @@ export const AppDateInput = ({
 			name={name}
 			label={label}
 			rules={rules}
-			required={!!zodSchema}
+			required={required}
 			getValueProps={getDatePickerValueProps}
 			getValueFromEvent={getDateFromPickerEvent}>
 			<DatePicker

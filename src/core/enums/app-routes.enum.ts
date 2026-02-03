@@ -24,6 +24,10 @@ export enum BatchRoutesEnum {
 	BATCHES = "/batches",
 }
 
+export enum PrescriptorRoutesEnum {
+	PRESCRIPTORS = "/prescriptors",
+}
+
 export enum NotFoundRoutesEnum {
 	NOT_FOUND = "*",
 }

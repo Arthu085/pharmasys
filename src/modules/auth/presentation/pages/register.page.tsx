@@ -26,6 +26,7 @@ export const RegisterPage = () => {
 	const [form] = Form.useForm();
 	const navigate = useNavigate();
 	const { signUp } = useAuth();
+
 	const { saving, handleSubmit } = useFormSubmit<IRegisterDto>(signUp, () => {
 		navigate(DashboardRoutesEnum.HOME);
 	});
@@ -80,6 +81,7 @@ export const RegisterPage = () => {
 						prefix={<SolutionOutlined style={{ color: "rgba(0,0,0,.25)" }} />}
 						options={registerRoleOptions}
 						zodSchema={registerSchema.shape.role}
+						showSearch={{ optionFilterProp: "label" }}
 					/>
 					<AppButton
 						label="Registrar"

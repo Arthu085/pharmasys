@@ -7,7 +7,11 @@ import React, {
 } from "react";
 import { Form, Select, Spin, Empty, type SelectProps } from "antd";
 import debounce from "lodash.debounce";
-import { createZodRule, type ZodSchema } from "@/shared/validation/antd-zod";
+import {
+	createZodRule,
+	isZodRequired,
+	type ZodSchema,
+} from "@/shared/validation/antd-zod";
 
 export interface FetchResult<T> {
 	data: T[];
@@ -195,13 +199,17 @@ export const AppAsyncSelect = <T,>({
 	}
 
 	const rules = zodSchema ? [createZodRule(zodSchema)] : undefined;
+	const required = isZodRequired(zodSchema);
 
 	return (
 		<Form.Item
 			name={name}
 			label={label}
 			rules={rules}
-			required={!!zodSchema}
+			required={required}
+			getValueFromEvent={(value) =>
+				value === undefined && !required ? null : value
+			}
 			validateTrigger={["onChange", "onBlur"]}>
 			{selectNode}
 		</Form.Item>
