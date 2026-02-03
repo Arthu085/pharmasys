@@ -1,4 +1,8 @@
-import { createZodRule, type ZodSchema } from "@/shared/validation/antd-zod";
+import {
+	createZodRule,
+	isZodRequired,
+	type ZodSchema,
+} from "@/shared/validation/antd-zod";
 import { Form, Input, type InputProps } from "antd";
 
 interface AppPasswordInputProps extends InputProps {
@@ -14,9 +18,10 @@ export const AppPasswordInput = ({
 	...rest
 }: AppPasswordInputProps) => {
 	const rules = zodSchema ? [createZodRule(zodSchema)] : undefined;
+	const required = isZodRequired(zodSchema);
 
 	return (
-		<Form.Item name={name} label={label} rules={rules} required={!!zodSchema}>
+		<Form.Item name={name} label={label} rules={rules} required={required}>
 			<Input.Password style={{ width: "100%", height: 40 }} {...rest} />
 		</Form.Item>
 	);

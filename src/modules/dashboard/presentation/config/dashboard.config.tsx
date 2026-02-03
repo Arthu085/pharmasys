@@ -2,6 +2,7 @@ import {
 	HomeOutlined,
 	InboxOutlined,
 	MedicineBoxOutlined,
+	SolutionOutlined,
 	UserAddOutlined,
 	UserOutlined,
 } from "@ant-design/icons";
@@ -11,6 +12,7 @@ import {
 	BatchRoutesEnum,
 	CompanyRoutesEnum,
 	PatientRoutesEnum,
+	PrescriptorRoutesEnum,
 	UserRoutesEnum,
 } from "@/core/enums/app-routes.enum";
 
@@ -36,6 +38,14 @@ export const dashboardItems: IDashboardItem[] = [
 		subtitle: "Gerenciar lotes do sistema",
 		icon: <InboxOutlined />,
 		to: BatchRoutesEnum.BATCHES,
+		iconColor: "#1677ff",
+		allowedRoles: [RoleEnum.ADMIN, RoleEnum.FARMACEUTICO],
+	},
+	{
+		title: "Gestão de Prescritores",
+		subtitle: "Gerenciar prescritores do sistema",
+		icon: <SolutionOutlined />,
+		to: PrescriptorRoutesEnum.PRESCRIPTORS,
 		iconColor: "#1677ff",
 		allowedRoles: [RoleEnum.ADMIN, RoleEnum.FARMACEUTICO],
 	},

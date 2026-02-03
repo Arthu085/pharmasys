@@ -27,7 +27,7 @@ export const CompanyTypeFilter = ({
 	value,
 	onChange,
 	width = "100%",
-	placeholder = "Filtrar por Tipo de Empresa",
+	placeholder = "Buscar pelo tipo de empresa...",
 	size = "middle",
 }: CompanyTypeFilterProps) => {
 	return (
@@ -41,6 +41,7 @@ export const CompanyTypeFilter = ({
 				options={options}
 				size={size}
 				allowClear
+				showSearch={{ optionFilterProp: "label" }}
 			/>
 		</Flex>
 	);

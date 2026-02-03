@@ -8,6 +8,7 @@ import {
 	DashboardRoutesEnum,
 	NotFoundRoutesEnum,
 	PatientRoutesEnum,
+	PrescriptorRoutesEnum,
 	UserRoutesEnum,
 } from "../enums/app-routes.enum";
 import { Navigate } from "react-router-dom";
@@ -22,6 +23,7 @@ import { UserPage } from "@/modules/user/presentation/pages/user.page";
 import { CompanyPage } from "@/modules/company/presentation/pages/company.page";
 import { PatientPage } from "@/modules/patient/presentation/pages/patient.page";
 import { BatchPage } from "@/modules/batch/presentation/pages/batch.page";
+import { PrescriptorPage } from "@/modules/prescriptor/presentation/pages/prescriptor.page";
 
 export const routesConfig: IAppRoute[] = [
 	{
@@ -75,6 +77,10 @@ export const routesConfig: IAppRoute[] = [
 					{
 						path: BatchRoutesEnum.BATCHES,
 						element: <BatchPage />,
+					},
+					{
+						path: PrescriptorRoutesEnum.PRESCRIPTORS,
+						element: <PrescriptorPage />,
 					},
 				],
 			},

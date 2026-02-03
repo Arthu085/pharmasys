@@ -13,8 +13,12 @@ import { formatCpf } from "@/shared/utils/cpf.util";
 export const PatientCreate = ({ open, onClose, onSuccess }: ICreateProps) => {
 	const [form] = Form.useForm();
 
+	const handleCreate = async (dto: IPatientCreateDto) => {
+		return patientService.create(dto);
+	};
+
 	const { saving, handleSubmit } = useFormSubmit<IPatientCreateDto>(
-		patientService.create,
+		handleCreate,
 		() => {
 			onSuccess?.();
 			onClose();

@@ -1,12 +1,16 @@
 import { Form, Input, type InputProps } from "antd";
-import { createZodRule, type ZodSchema } from "@/shared/validation/antd-zod";
+import {
+	createZodRule,
+	isZodRequired,
+	type ZodSchema,
+} from "@/shared/validation/antd-zod";
 
 interface AppInputProps extends InputProps {
 	name?: string;
 	label?: string;
 	zodSchema?: ZodSchema;
 	placeholder?: string;
-	formatValueFromEvent?: (value: string) => string;
+	formatValueFromEvent?: (value: string) => unknown;
 }
 
 export const AppInput = ({
@@ -18,14 +22,22 @@ export const AppInput = ({
 	...rest
 }: AppInputProps) => {
 	const rules = zodSchema ? [createZodRule(zodSchema)] : undefined;
+	const required = isZodRequired(zodSchema);
 
 	const getFormattedValueFromEvent =
-		(formatValueFromEvent?: (value: string) => string) => (event: any) => {
+		(formatValueFromEvent?: (value: string) => unknown) => (event: any) => {
 			const value = event?.target?.value;
 
 			if (typeof value !== "string") return value;
 
-			return formatValueFromEvent ? formatValueFromEvent(value) : value;
+			const formatted = formatValueFromEvent
+				? formatValueFromEvent(value)
+				: value;
+			if (!required && typeof formatted === "string" && !formatted.trim()) {
+				return null;
+			}
+
+			return formatted;
 		};
 
 	if (!name) {
@@ -43,7 +55,7 @@ export const AppInput = ({
 			name={name}
 			label={label}
 			rules={rules}
-			required={!!zodSchema}
+			required={required}
 			getValueFromEvent={getFormattedValueFromEvent(formatValueFromEvent)}>
 			<Input
 				className={className}

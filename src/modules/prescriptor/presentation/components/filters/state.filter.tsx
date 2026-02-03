@@ -1,35 +1,38 @@
 import { Flex, Typography } from "antd";
-import { RoleEnum, RoleEnumTranslated } from "@/shared/domain/enums/role.enum";
 import type { SizeType } from "antd/es/config-provider/SizeContext";
-import { AppSelect } from "../selects/app-select";
+import { AppSelect } from "@/shared/components/selects/app-select";
+import {
+	UfEnum,
+	UfEnumTranslated,
+} from "@/modules/prescriptor/domain/enums/uf.enum";
 
 const { Text } = Typography;
 
-interface RoleFilterProps {
-	value?: RoleEnum;
-	onChange: (value?: RoleEnum) => void;
+interface StateFilterProps {
+	value?: UfEnum;
+	onChange: (value?: UfEnum) => void;
 	width?: number | string;
 	placeholder?: string;
 	size?: SizeType;
 }
 
-const options = (Object.keys(RoleEnum) as Array<keyof typeof RoleEnum>).map(
+const options = (Object.keys(UfEnum) as Array<keyof typeof UfEnum>).map(
 	(key) => ({
-		label: RoleEnumTranslated[key],
-		value: RoleEnum[key],
+		label: UfEnumTranslated[key],
+		value: UfEnum[key],
 	}),
 );
 
-export const RoleFilter = ({
+export const StateFilter = ({
 	value,
 	onChange,
 	width = "100%",
-	placeholder = "Buscar pela função...",
+	placeholder = "Buscar pelo estado...",
 	size = "middle",
-}: RoleFilterProps) => {
+}: StateFilterProps) => {
 	return (
 		<Flex vertical gap={4} style={{ width }}>
-			<Text strong>Função</Text>
+			<Text strong>Estado</Text>
 			<AppSelect
 				placeholder={placeholder}
 				style={{ width: "100%", height: 40 }}

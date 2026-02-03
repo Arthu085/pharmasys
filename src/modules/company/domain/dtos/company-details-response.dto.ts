@@ -2,7 +2,7 @@ import type { IApiResponse } from "@/core/interfaces/api-response.interface";
 import type { ICompanyListData } from "./company-list-response.dto";
 
 export interface ICompanyDetailsData extends ICompanyListData {
-	userCreated: string;
+	userCreated: string | null;
 	userUpdated: string | null;
 	createdAt: string;
 	updatedAt: string | null;

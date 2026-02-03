@@ -15,8 +15,12 @@ import type { ICreateProps } from "@/shared/domain/interfaces/create.interface";
 export const CompanyCreate = ({ open, onClose, onSuccess }: ICreateProps) => {
 	const [form] = Form.useForm();
 
+	const handleCreate = async (dto: ICompanyCreateDto) => {
+		return companyService.create(dto);
+	};
+
 	const { saving, handleSubmit } = useFormSubmit<ICompanyCreateDto>(
-		companyService.create,
+		handleCreate,
 		() => {
 			onSuccess?.();
 			onClose();
