@@ -1,7 +1,7 @@
 import { Typography, Card, Row, Col } from "antd";
 import { StatusEnum } from "@/shared/domain/enums/status.enum";
-import { StatusFilter } from "@/shared/components/filters/status.filter";
-import { AppSearchInput } from "@/shared/components/inputs/app-search-input";
+import { StatusFilter } from "@/shared/components/filters/status-filter";
+import { AppSearchFilter } from "@/shared/components/filters/app-search-filter";
 import { AppButton } from "@/shared/components/buttons/app-button";
 import { useList } from "@/shared/hooks/use-list";
 import { useModals } from "@/shared/hooks/use-modals";
@@ -63,14 +63,14 @@ export const PatientPage = () => {
 			</Row>
 			<Card>
 				<Row gutter={[16, 16]} style={{ marginBottom: 16 }}>
-					<Col xs={24} sm={12} md={6} lg={6} xl={4}>
+					<Col xs={24} sm={24} md={24} lg={6} xl={4}>
 						<StatusFilter
 							value={filters.status}
 							onChange={(val) => handleFilterChange("status", val)}
 						/>
 					</Col>
-					<Col xs={24} sm={24} md={12} lg={12} xl={10}>
-						<AppSearchInput
+					<Col xs={24} sm={24} md={24} lg={12} xl={12}>
+						<AppSearchFilter
 							label="Documento"
 							placeholder="Buscar pelo documento..."
 							value={filters.document}

@@ -1,6 +1,7 @@
 import {
 	DashboardOutlined,
 	HomeOutlined,
+	InboxOutlined,
 	MedicineBoxOutlined,
 	LogoutOutlined,
 	UserAddOutlined,
@@ -8,6 +9,7 @@ import {
 } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import {
+	BatchRoutesEnum,
 	CompanyRoutesEnum,
 	DashboardRoutesEnum,
 	PatientRoutesEnum,
@@ -32,6 +34,12 @@ export const topMenuItems: IAppMenuItem[] = [
 		key: PatientRoutesEnum.PATIENTS,
 		icon: <MedicineBoxOutlined />,
 		label: <Link to={PatientRoutesEnum.PATIENTS}>Pacientes</Link>,
+		allowedRoles: [RoleEnum.ADMIN, RoleEnum.FARMACEUTICO],
+	},
+	{
+		key: BatchRoutesEnum.BATCHES,
+		icon: <InboxOutlined />,
+		label: <Link to={BatchRoutesEnum.BATCHES}>Lotes</Link>,
 		allowedRoles: [RoleEnum.ADMIN, RoleEnum.FARMACEUTICO],
 	},
 	{

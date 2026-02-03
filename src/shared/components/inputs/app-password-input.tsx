@@ -16,13 +16,8 @@ export const AppPasswordInput = ({
 	const rules = zodSchema ? [createZodRule(zodSchema)] : undefined;
 
 	return (
-		<Form.Item
-			name={name}
-			label={label}
-			rules={rules}
-			required={!!zodSchema}
-			style={{ marginBottom: 20, marginTop: 20 }}>
-			<Input.Password {...rest} />
+		<Form.Item name={name} label={label} rules={rules} required={!!zodSchema}>
+			<Input.Password style={{ width: "100%", height: 40 }} {...rest} />
 		</Form.Item>
 	);
 };

@@ -5,6 +5,7 @@ import type { IPatientListResponse } from "../domain/dtos/patient-list-response.
 import type { IPatientDetailsResponse } from "../domain/dtos/patient-details-response.dto";
 import type { IPatientCreateDto } from "../domain/dtos/patient-create.dto";
 import type { IPatientUpdateDto } from "../domain/dtos/patient-update.dto";
+import { onlyDigits } from "@/shared/utils/digits.util";
 
 export const patientService = {
 	findAll: async (
@@ -22,7 +23,12 @@ export const patientService = {
 	},
 
 	create: async (dto: IPatientCreateDto): Promise<IPatientListResponse> => {
-		const response = await api.post<IPatientListResponse>("/patient", dto);
+		const payload: IPatientCreateDto = {
+			...dto,
+			document: onlyDigits(dto.document),
+		};
+
+		const response = await api.post<IPatientListResponse>("/patient", payload);
 		return response.data;
 	},
 
@@ -30,9 +36,14 @@ export const patientService = {
 		uuid: string,
 		dto: IPatientUpdateDto,
 	): Promise<IPatientListResponse> => {
+		const payload: IPatientUpdateDto = {
+			...dto,
+			document: dto.document ? onlyDigits(dto.document) : dto.document,
+		};
+
 		const response = await api.patch<IPatientListResponse>(
 			`/patient/${uuid}`,
-			dto,
+			payload,
 		);
 		return response.data;
 	},

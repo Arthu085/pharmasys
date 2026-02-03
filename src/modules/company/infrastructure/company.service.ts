@@ -3,7 +3,7 @@ import type { IStatusDto } from "@/shared/domain/dtos/status.dto";
 import type { ICompanyFilterDto } from "../domain/dtos/company-filter.dto";
 import type { ICompanyListResponse } from "../domain/dtos/company-list-response.dto";
 import type { ICompanyCreateDto } from "../domain/dtos/company-create.dto";
-import { onlyDigits } from "@/shared/utils/cnpj.util";
+import { onlyDigits } from "@/shared/utils/digits.util";
 import type { ICompanyDetailsResponse } from "../domain/dtos/company-details-response.dto";
 import type { ICompanyUpdateDto } from "../domain/dtos/company-update.dto";
 

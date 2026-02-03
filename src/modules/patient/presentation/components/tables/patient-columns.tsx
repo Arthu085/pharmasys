@@ -1,7 +1,6 @@
-import { Tag } from "antd";
 import type { ColumnsType } from "antd/es/table";
-import { StatusEnum } from "@/shared/domain/enums/status.enum";
 import { AppTableActions } from "@/shared/components/tables/app-table-actions";
+import { AppStatusTag } from "@/shared/components/tags/app-status-tag";
 import type { IStatusDto } from "@/shared/domain/dtos/status.dto";
 import type { IPatientListData } from "@/modules/patient/domain/dtos/patient-list-response.dto";
 
@@ -23,31 +22,23 @@ export const getPatientColumns = ({
 		dataIndex: "name",
 		key: "name",
 		render: (text) => <strong>{text}</strong>,
+		width: 300,
 	},
 	{
 		title: "Documento",
 		dataIndex: "document",
 		key: "document",
+		width: 900,
 	},
 	{
 		title: "Status",
 		dataIndex: "status",
 		key: "status",
-		width: 120,
-		render: (status) => {
-			const isActive = status?.value === StatusEnum.ATIVO;
-
-			return (
-				<Tag color={isActive ? "success" : "error"}>
-					{status?.label || status}
-				</Tag>
-			);
-		},
+		render: (status) => <AppStatusTag status={status} />,
 	},
 	{
 		title: "Ações",
 		key: "actions",
-		width: 130,
 		render: (_, record) => (
 			<AppTableActions
 				entityName="Paciente"

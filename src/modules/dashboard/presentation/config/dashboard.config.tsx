@@ -1,5 +1,6 @@
 import {
 	HomeOutlined,
+	InboxOutlined,
 	MedicineBoxOutlined,
 	UserAddOutlined,
 	UserOutlined,
@@ -7,6 +8,7 @@ import {
 import { RoleEnum } from "@/shared/domain/enums/role.enum";
 import type { IDashboardItem } from "../../domain/interfaces/dashboard-item.interface";
 import {
+	BatchRoutesEnum,
 	CompanyRoutesEnum,
 	PatientRoutesEnum,
 	UserRoutesEnum,
@@ -26,6 +28,14 @@ export const dashboardItems: IDashboardItem[] = [
 		subtitle: "Gerenciar pacientes do sistema",
 		icon: <MedicineBoxOutlined />,
 		to: PatientRoutesEnum.PATIENTS,
+		iconColor: "#1677ff",
+		allowedRoles: [RoleEnum.ADMIN, RoleEnum.FARMACEUTICO],
+	},
+	{
+		title: "Gestão de Lotes",
+		subtitle: "Gerenciar lotes do sistema",
+		icon: <InboxOutlined />,
+		to: BatchRoutesEnum.BATCHES,
 		iconColor: "#1677ff",
 		allowedRoles: [RoleEnum.ADMIN, RoleEnum.FARMACEUTICO],
 	},

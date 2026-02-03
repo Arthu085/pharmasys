@@ -14,6 +14,7 @@ import type { ICreateProps } from "@/shared/domain/interfaces/create.interface";
 
 export const UserCreate = ({ open, onClose, onSuccess }: ICreateProps) => {
 	const [form] = Form.useForm();
+
 	const { saving, handleSubmit } = useFormSubmit<IUserCreateDto>(
 		userService.create,
 		() => {

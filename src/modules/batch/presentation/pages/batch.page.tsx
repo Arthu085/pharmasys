@@ -5,41 +5,42 @@ import { AppSearchFilter } from "@/shared/components/filters/app-search-filter";
 import { AppButton } from "@/shared/components/buttons/app-button";
 import { useList } from "@/shared/hooks/use-list";
 import { useModals } from "@/shared/hooks/use-modals";
-import type { ICompanyListData } from "../../domain/dtos/company-list-response.dto";
-import type { ICompanyFilterDto } from "../../domain/dtos/company-filter.dto";
-import { companyService } from "../../infrastructure/company.service";
-import { CompanyList } from "../components/company-list";
 import { useRowAction } from "@/shared/hooks/use-row-action";
-import { CompanyTypeFilter } from "../components/filters/company-type.filter";
-import { CompanyCreate } from "../components/company-create";
-import { CompanyDetails } from "../components/company-details";
-import { CompanyEdit } from "../components/company-edit";
+import type { IBatchListData } from "../../domain/dtos/batch-list-response.dto";
+import type { IBatchFilterDto } from "../../domain/dtos/batch-filter.dto";
+import { batchService } from "../../infrastructure/batch.service";
+import { BatchList } from "../components/batch-list";
+import { BatchCreate } from "../components/batch-create";
+import { BatchEdit } from "../components/batch-edit";
+import { BatchDetails } from "../components/batch-details";
+import { AppDateFilter } from "@/shared/components/filters/app-date-filter";
+import { AppCompanyFilterSelect } from "@/shared/components/selects/company/app-company-filter-select";
 
 const { Title } = Typography;
 
-export const CompanyPage = () => {
+export const BatchPage = () => {
 	const modals = useModals<string>();
 	const {
 		loading,
-		data: companies,
+		data: batches,
 		meta,
 		filters,
 		handleFilterChange,
 		handlePageChange,
 		refresh,
-	} = useList<ICompanyListData, ICompanyFilterDto>(companyService.findAll, {
+	} = useList<IBatchListData, IBatchFilterDto>(batchService.findAll, {
 		page: 1,
 		limit: 10,
 		status: StatusEnum.ATIVO,
 	});
 
 	const { handleAction: handleChangeStatus } = useRowAction(
-		companyService.updateStatus,
+		batchService.updateStatus,
 		refresh,
 	);
 
 	const { handleAction: handleDelete } = useRowAction(
-		companyService.delete,
+		batchService.delete,
 		refresh,
 	);
 
@@ -50,13 +51,13 @@ export const CompanyPage = () => {
 				align={"middle"}
 				style={{ marginBottom: 16 }}>
 				<Col flex="auto">
-					<Title level={2}>Empresas</Title>
+					<Title level={2}>Lotes</Title>
 				</Col>
 				<Col
 					flex="none"
 					style={{ display: "flex", justifyContent: "flex-end" }}>
 					<AppButton
-						label="Nova Empresa"
+						label="Novo Lote"
 						type="primary"
 						onClick={() => modals.openCreate()}
 					/>
@@ -64,48 +65,50 @@ export const CompanyPage = () => {
 			</Row>
 			<Card>
 				<Row gutter={[16, 16]} style={{ marginBottom: 16 }}>
-					<Col xs={24} sm={12} md={12} lg={6} xl={4}>
+					<Col xs={24} sm={24} md={12} lg={12} xl={4}>
 						<StatusFilter
 							value={filters.status}
 							onChange={(val) => handleFilterChange("status", val)}
 						/>
 					</Col>
-					<Col xs={24} sm={12} md={12} lg={8} xl={6}>
-						<CompanyTypeFilter
-							value={filters.companyType}
-							onChange={(val) => handleFilterChange("companyType", val)}
-						/>
-					</Col>
-					<Col xs={24} sm={24} md={12} lg={10} xl={7}>
+					<Col xs={24} sm={24} md={12} lg={12} xl={7}>
 						<AppSearchFilter
-							label="Nome"
-							placeholder="Buscar pelo nome..."
-							value={filters.name}
-							onChange={(val) => handleFilterChange("name", val)}
+							label="Código do Lote"
+							placeholder="Buscar pelo código do lote..."
+							value={filters.batchCode}
+							onChange={(val) => handleFilterChange("batchCode", val)}
 						/>
 					</Col>
 					<Col xs={24} sm={24} md={12} lg={12} xl={7}>
-						<AppSearchFilter
-							label="CNPJ"
-							placeholder="Buscar pelo CNPJ..."
-							value={filters.cnpj}
-							onChange={(val) => handleFilterChange("cnpj", val)}
+						<AppCompanyFilterSelect
+							label="Empresa"
+							placeholder="Buscar pela empresa..."
+							value={filters.company}
+							onChange={(val) => handleFilterChange("company", val)}
+						/>
+					</Col>
+					<Col xs={24} sm={24} md={12} lg={12} xl={6}>
+						<AppDateFilter
+							label="Data de Expiração"
+							placeholder="Buscar pela data de expiração..."
+							value={filters.expirationDate}
+							onChange={(val) => handleFilterChange("expirationDate", val)}
 						/>
 					</Col>
 				</Row>
-				<CompanyList
+				<BatchList
 					loading={loading}
-					companies={companies}
+					batches={batches}
 					total={meta.total}
 					page={filters.page}
 					pageSize={filters.limit}
 					onChangePage={handlePageChange}
-					onEdit={(company) => modals.openEdit(company.uuid)}
-					onDetails={(company) => modals.openDetails(company.uuid)}
+					onEdit={(batch) => modals.openEdit(batch.uuid)}
+					onDetails={(batch) => modals.openDetails(batch.uuid)}
 					onStatus={handleChangeStatus}
 					onDelete={handleDelete}
 				/>
-				<CompanyCreate
+				<BatchCreate
 					open={modals.isCreateOpen}
 					onClose={modals.closeCreate}
 					onSuccess={() => {
@@ -113,7 +116,7 @@ export const CompanyPage = () => {
 						refresh();
 					}}
 				/>
-				<CompanyEdit
+				<BatchEdit
 					open={modals.isEditOpen}
 					uuid={modals.selectedUuid}
 					onClose={modals.closeEdit}
@@ -122,7 +125,7 @@ export const CompanyPage = () => {
 						refresh();
 					}}
 				/>
-				<CompanyDetails
+				<BatchDetails
 					open={modals.isDetailsOpen}
 					uuid={modals.selectedUuid}
 					onClose={modals.closeDetails}

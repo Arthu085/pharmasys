@@ -20,6 +20,10 @@ export enum PatientRoutesEnum {
 	PATIENTS = "/patients",
 }
 
+export enum BatchRoutesEnum {
+	BATCHES = "/batches",
+}
+
 export enum NotFoundRoutesEnum {
 	NOT_FOUND = "*",
 }

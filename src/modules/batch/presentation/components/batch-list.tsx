@@ -1,11 +1,11 @@
 import { useMemo } from "react";
 import { AppTable } from "@/shared/components/tables/app-table";
-import type { IPatientListProps } from "../../domain/interfaces/patient-list.interface";
-import type { IPatientListData } from "../../domain/dtos/patient-list-response.dto";
-import { getPatientColumns } from "./tables/patient-columns";
+import { getBatchColumns } from "./tables/batch-columns";
+import type { IBatchListProps } from "../../domain/interfaces/batch-list.interface";
+import type { IBatchListData } from "../../domain/dtos/batch-list-response.dto";
 
-export const PatientList = ({
-	patients,
+export const BatchList = ({
+	batches,
 	loading,
 	total,
 	onEdit,
@@ -15,16 +15,16 @@ export const PatientList = ({
 	page,
 	pageSize,
 	onChangePage,
-}: IPatientListProps) => {
+}: IBatchListProps) => {
 	const columns = useMemo(
-		() => getPatientColumns({ onEdit, onDetails, onStatus, onDelete }),
+		() => getBatchColumns({ onEdit, onDetails, onStatus, onDelete }),
 		[onEdit, onDetails, onStatus, onDelete],
 	);
 
 	return (
-		<AppTable<IPatientListData>
+		<AppTable<IBatchListData>
 			columns={columns}
-			dataSource={patients}
+			dataSource={batches}
 			loading={loading}
 			pagination={{
 				current: page,

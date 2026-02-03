@@ -3,55 +3,47 @@ import type { ColumnsType } from "antd/es/table";
 import { AppTableActions } from "@/shared/components/tables/app-table-actions";
 import { AppStatusTag } from "@/shared/components/tags/app-status-tag";
 import type { IStatusDto } from "@/shared/domain/dtos/status.dto";
-import type { ICompanyListData } from "@/modules/company/domain/dtos/company-list-response.dto";
+import type { IBatchListData } from "@/modules/batch/domain/dtos/batch-list-response.dto";
+import { formatDate } from "@/shared/utils/date.util";
 
-interface GetCompanyColumnsProps {
-	onEdit: (company: ICompanyListData) => void;
-	onDetails: (company: ICompanyListData) => void;
+interface GetBatchColumnsProps {
+	onEdit: (batch: IBatchListData) => void;
+	onDetails: (batch: IBatchListData) => void;
 	onStatus: (uuid: string, dto: IStatusDto) => Promise<void>;
 	onDelete: (uuid: string) => Promise<void>;
 }
 
-export const getCompanyColumns = ({
+export const getBatchColumns = ({
 	onEdit,
 	onDetails,
 	onStatus,
 	onDelete,
-}: GetCompanyColumnsProps): ColumnsType<ICompanyListData> => [
+}: GetBatchColumnsProps): ColumnsType<IBatchListData> => [
 	{
-		title: "Nome",
-		dataIndex: "name",
-		key: "name",
+		title: "Código do Lote",
+		dataIndex: "batchCode",
+		key: "batchCode",
 		render: (text) => <strong>{text}</strong>,
 		width: 300,
 	},
 	{
-		title: "CNPJ",
-		dataIndex: "cnpj",
-		key: "cnpj",
+		title: "Empresa",
+		dataIndex: "company",
+		key: "company",
 		width: 250,
+		render: (company) => {
+			return <Tag color={"blue"}>{company?.label || company}</Tag>;
+		},
 	},
 	{
-		title: "Tipo de Empresa",
-		dataIndex: "companyTypes",
-		key: "companyTypes",
-		render: (companyTypes: ICompanyListData["companyTypes"]) => {
-			if (!companyTypes?.length) {
-				return "-";
-			}
-
-			return (
-				<>
-					{companyTypes.map((type, index) => (
-						<span key={type.value}>
-							{index > 0 ? <span style={{ margin: "0 6px" }}>|</span> : null}
-							<Tag color="blue">{type.label}</Tag>
-						</span>
-					))}
-				</>
-			);
-		},
+		title: "Data de Expiração",
+		dataIndex: "expirationDate",
+		key: "expirationDate",
 		width: 650,
+		render: (date) => {
+			if (!date) return "-";
+			return formatDate(date, "DD/MM/YYYY");
+		},
 	},
 	{
 		title: "Status",
@@ -64,7 +56,7 @@ export const getCompanyColumns = ({
 		key: "actions",
 		render: (_, record) => (
 			<AppTableActions
-				entityName="Empresa"
+				entityName="Lote"
 				onEdit={() => onEdit(record)}
 				onDetails={() => onDetails(record)}
 				onDelete={() => onDelete(record.uuid)}

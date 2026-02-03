@@ -20,20 +20,6 @@ export const ProfileDetails = ({ user }: IProfileDetails) => {
 						}>
 						{user.status.label}
 					</Tag>
-					{/*TODO: Fazer edição de perfil (necessário criar rota nova no backend)*/}
-					{/* <AppButton
-						label="Editar Perfil"
-						type="default"
-						icon={<EditOutlined />}
-						onClick={() => setIsEditOpen(true)}
-						size="middle"
-					/>
-					<UserEdit
-						open={isEditOpen}
-						uuid={user.uuid}
-						onClose={() => setIsEditOpen(false)}
-						onSuccess={handleSuccess}
-					/> */}
 				</Flex>
 			</Col>
 			<Col xs={24} md={18}>

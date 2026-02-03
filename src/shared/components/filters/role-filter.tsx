@@ -32,7 +32,7 @@ export const RoleFilter = ({
 			<Text strong>Função</Text>
 			<AppSelect
 				placeholder={placeholder}
-				style={{ width: "100%" }}
+				style={{ width: "100%", height: 40 }}
 				value={value}
 				onChange={onChange}
 				options={options}
