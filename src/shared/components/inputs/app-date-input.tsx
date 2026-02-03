@@ -30,6 +30,32 @@ export const AppDateInput = ({
 }: AppDateInputProps) => {
 	const rules = zodSchema ? [createZodRule(zodSchema)] : undefined;
 
+	const getDatePickerValueProps = (value: unknown) => ({
+		value: value ? dayjs(value as Date) : null,
+	});
+
+	const getDateFromPickerEvent = (date: Dayjs | null) => {
+		return date ? date.toDate() : null;
+	};
+
+	const handleDatePickerChange =
+		(onChange?: (value: Date | null) => void) =>
+		(date: Dayjs | Dayjs[] | null) => {
+			if (!onChange) return;
+
+			if (!date) {
+				onChange(null);
+				return;
+			}
+
+			if (Array.isArray(date)) {
+				onChange(date[0]?.toDate?.() ?? null);
+				return;
+			}
+
+			onChange(date.toDate());
+		};
+
 	if (!name) {
 		return (
 			<DatePicker
@@ -38,12 +64,8 @@ export const AppDateInput = ({
 				format={format}
 				allowClear={allowClear}
 				value={value ? dayjs(value) : null}
-				onChange={(date) => {
-					if (!onChange) return;
-					if (!date) return onChange(null);
-					if (Array.isArray(date)) return onChange(date[0]?.toDate?.() ?? null);
-					onChange(date.toDate());
-				}}
+				onChange={handleDatePickerChange(onChange)}
+				style={{ width: "100%", height: 40 }}
 				{...rest}
 			/>
 		);
@@ -55,12 +77,8 @@ export const AppDateInput = ({
 			label={label}
 			rules={rules}
 			required={!!zodSchema}
-			getValueProps={(value) => ({
-				value: value ? dayjs(value as Date) : null,
-			})}
-			getValueFromEvent={(date: Dayjs | null) => {
-				return date ? date.toDate() : null;
-			}}>
+			getValueProps={getDatePickerValueProps}
+			getValueFromEvent={getDateFromPickerEvent}>
 			<DatePicker
 				className={className}
 				placeholder={placeholder}

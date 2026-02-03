@@ -1,7 +1,7 @@
 import { Typography, Card, Row, Col } from "antd";
 import { StatusEnum } from "@/shared/domain/enums/status.enum";
-import { StatusFilter } from "@/shared/components/filters/status.filter";
-import { AppSearchInput } from "@/shared/components/inputs/app-search-input";
+import { StatusFilter } from "@/shared/components/filters/status-filter";
+import { AppSearchFilter } from "@/shared/components/filters/app-search-filter";
 import { AppButton } from "@/shared/components/buttons/app-button";
 import { useList } from "@/shared/hooks/use-list";
 import { useModals } from "@/shared/hooks/use-modals";
@@ -70,7 +70,7 @@ export const PatientPage = () => {
 						/>
 					</Col>
 					<Col xs={24} sm={24} md={24} lg={12} xl={12}>
-						<AppSearchInput
+						<AppSearchFilter
 							label="Documento"
 							placeholder="Buscar pelo documento..."
 							value={filters.document}

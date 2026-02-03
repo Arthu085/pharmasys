@@ -13,6 +13,7 @@ import { batchService } from "../../infrastructure/batch.service";
 
 export const BatchCreate = ({ open, onClose, onSuccess }: ICreateProps) => {
 	const [form] = Form.useForm();
+
 	const { saving, handleSubmit } = useFormSubmit<IBatchCreateDto>(
 		batchService.create,
 		() => {

@@ -13,21 +13,27 @@ import {
 	batchUpdateSchema,
 	type IBatchUpdateDto,
 } from "../../domain/dtos/batch-update.dto";
+import { batchCreateSchema } from "../../domain/dtos/batch-create.dto";
+import { useSelectOptions } from "@/shared/hooks/use-select-options";
 
 export const BatchEdit = ({ open, onClose, uuid, onSuccess }: IEditProps) => {
 	const [form] = Form.useForm();
+	const { optionsMap, loadOption } = useSelectOptions();
+
 	const { loading: fetching } = useFormFetch<IBatchListData, any>(
 		uuid,
 		open,
 		batchService.findOne,
 		form,
-		(data) => ({
-			...data,
-			expirationDate: data.expirationDate
-				? dayjs(data.expirationDate).toDate()
-				: undefined,
-			company: data.company?.label,
-		}),
+		(data) => {
+			return {
+				...data,
+				expirationDate: data.expirationDate
+					? dayjs(data.expirationDate).toDate()
+					: undefined,
+				company: loadOption("company", data.company),
+			};
+		},
 		onClose,
 	);
 
@@ -77,7 +83,8 @@ export const BatchEdit = ({ open, onClose, uuid, onSuccess }: IEditProps) => {
 					label="Empresa"
 					placeholder="Selecione a empresa"
 					showSearch
-					zodSchema={batchUpdateSchema.shape.company}
+					zodSchema={batchCreateSchema.shape.company}
+					options={optionsMap.company}
 				/>
 			</Form>
 		</AppModal>

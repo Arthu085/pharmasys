@@ -1,67 +1,67 @@
-import type { SelectProps } from "antd";
-import { StatusEnum } from "@/shared/domain/enums/status.enum";
+import { useCallback } from "react";
+import {
+	AppAsyncSelect,
+	type AppAsyncSelectProps,
+	type FetchResult,
+} from "../app-async-select"; // Caminho relativo
 import { companyService } from "@/modules/company/infrastructure/company.service";
+import { StatusEnum } from "@/shared/domain/enums/status.enum";
 import type { ICompanyListData } from "@/modules/company/domain/dtos/company-list-response.dto";
 import type { ICompanyFilterDto } from "@/modules/company/domain/dtos/company-filter.dto";
-import { AppAsyncSelect } from "../app-async-select";
-import type { ZodSchema } from "@/shared/validation/antd-zod";
 
-interface AppCompanySelectProps extends Omit<SelectProps, "options"> {
-	name?: string;
-	label?: string;
-	zodSchema?: ZodSchema;
-	placeholder?: string;
-	onlyActive?: boolean;
-	limit?: number;
+interface AppCompanySelectProps extends Omit<
+	AppAsyncSelectProps<ICompanyListData>,
+	"fetchOptions" | "mapOption"
+> {
+	pageSize?: number;
 }
 
 export const AppCompanySelect = ({
-	name,
-	label,
-	zodSchema,
+	pageSize = 20,
 	placeholder = "Selecione a empresa...",
-	onlyActive = true,
-	limit = 50,
 	...rest
 }: AppCompanySelectProps) => {
+	const fetchCompanies = useCallback(
+		async ({
+			search,
+			page,
+		}: {
+			search: string;
+			page: number;
+		}): Promise<FetchResult<ICompanyListData>> => {
+			const filters: ICompanyFilterDto = {
+				page: page,
+				limit: pageSize,
+				name: search || undefined,
+				status: StatusEnum.ATIVO,
+			};
+
+			const response = await companyService.findAll(filters);
+
+			if (!response.success || !response.data) {
+				throw new Error(response.message || "Erro ao carregar empresas");
+			}
+
+			const { data, meta } = response.data;
+
+			const hasMore = meta ? meta.page < meta.lastPage : false;
+
+			return {
+				data,
+				hasMore,
+			};
+		},
+		[pageSize],
+	);
+
 	return (
-		<AppAsyncSelect
-			name={name}
-			label={label}
-			zodSchema={zodSchema}
+		<AppAsyncSelect<ICompanyListData>
 			placeholder={placeholder}
-			allowClear
-			fetchOnOpen
-			fetchOnSearch
-			minSearchLength={0}
-			style={{ width: "100%" }}
-			fetchOptions={async ({ search, page = 1 } = {}) => {
-				const filters: ICompanyFilterDto = {
-					page,
-					limit,
-					name: search || undefined,
-					status: onlyActive ? StatusEnum.ATIVO : undefined,
-				};
-
-				const response = await companyService.findAll(filters);
-
-				if (!response.success || !response.data) {
-					throw new Error(response.message || "Erro ao carregar empresas");
-				}
-
-				const options = response.data.data.map((company: ICompanyListData) => ({
-					label: company.name,
-					value: company.uuid,
-				}));
-
-				const meta = response.data.meta;
-				const nextHasMore = meta ? meta.page < meta.lastPage : false;
-
-				return {
-					options,
-					hasMore: nextHasMore,
-				};
-			}}
+			fetchOptions={fetchCompanies}
+			mapOption={(company) => ({
+				label: company.name,
+				value: company.uuid,
+			})}
 			{...rest}
 		/>
 	);

@@ -1,10 +1,10 @@
 import { Flex, Typography, type DatePickerProps } from "antd";
 import type { SizeType } from "antd/es/config-provider/SizeContext";
-import { AppDateInput } from "./app-date-input";
+import { AppDateInput } from "../inputs/app-date-input";
 
 const { Text } = Typography;
 
-interface AppDateFilterInputProps extends Omit<
+interface AppDateFilterProps extends Omit<
 	DatePickerProps,
 	"value" | "onChange" | "format"
 > {
@@ -17,7 +17,7 @@ interface AppDateFilterInputProps extends Omit<
 	format?: string;
 }
 
-export const AppDateFilterInput = ({
+export const AppDateFilter = ({
 	value,
 	onChange,
 	placeholder = "Selecione a data...",
@@ -26,7 +26,7 @@ export const AppDateFilterInput = ({
 	size = "middle",
 	format = "DD/MM/YYYY",
 	...rest
-}: AppDateFilterInputProps) => {
+}: AppDateFilterProps) => {
 	return (
 		<Flex vertical gap={4} style={{ width }}>
 			{label && <Text strong>{label}</Text>}
@@ -36,7 +36,7 @@ export const AppDateFilterInput = ({
 				onChange={onChange}
 				size={size}
 				format={format}
-				style={{ width: "100%" }}
+				style={{ width: "100%", height: 40 }}
 				{...rest}
 			/>
 		</Flex>

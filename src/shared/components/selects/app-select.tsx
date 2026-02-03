@@ -23,7 +23,7 @@ export const AppSelect = ({
 		return (
 			<Select
 				options={options ? [...options] : undefined}
-				style={{ height: 40 }}
+				style={{ width: "100%", height: 40 }}
 				{...rest}
 			/>
 		);
@@ -33,7 +33,7 @@ export const AppSelect = ({
 		<Form.Item name={name} label={label} rules={rules} required={!!zodSchema}>
 			<Select
 				options={options ? [...options] : undefined}
-				style={{ height: 40 }}
+				style={{ width: "100%", height: 40 }}
 				{...rest}
 			/>
 		</Form.Item>

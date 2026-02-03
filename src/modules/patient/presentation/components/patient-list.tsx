@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { AppTable } from "@/shared/components/tables/app-table";
 import type { IPatientListProps } from "../../domain/interfaces/patient-list.interface";
 import type { IPatientListData } from "../../domain/dtos/patient-list-response.dto";
-import { getPatientColumns } from "./tables/user-columns";
+import { getPatientColumns } from "./tables/patient-columns";
 
 export const PatientList = ({
 	patients,

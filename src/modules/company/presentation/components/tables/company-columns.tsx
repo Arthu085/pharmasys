@@ -1,7 +1,7 @@
 import { Tag } from "antd";
 import type { ColumnsType } from "antd/es/table";
-import { StatusEnum } from "@/shared/domain/enums/status.enum";
 import { AppTableActions } from "@/shared/components/tables/app-table-actions";
+import { AppStatusTag } from "@/shared/components/tags/app-status-tag";
 import type { IStatusDto } from "@/shared/domain/dtos/status.dto";
 import type { ICompanyListData } from "@/modules/company/domain/dtos/company-list-response.dto";
 
@@ -23,12 +23,13 @@ export const getCompanyColumns = ({
 		dataIndex: "name",
 		key: "name",
 		render: (text) => <strong>{text}</strong>,
+		width: 300,
 	},
 	{
 		title: "CNPJ",
 		dataIndex: "cnpj",
 		key: "cnpj",
-		width: 180,
+		width: 250,
 	},
 	{
 		title: "Tipo de Empresa",
@@ -50,26 +51,17 @@ export const getCompanyColumns = ({
 				</>
 			);
 		},
+		width: 650,
 	},
 	{
 		title: "Status",
 		dataIndex: "status",
 		key: "status",
-		width: 120,
-		render: (status) => {
-			const isActive = status?.value === StatusEnum.ATIVO;
-
-			return (
-				<Tag color={isActive ? "success" : "error"}>
-					{status?.label || status}
-				</Tag>
-			);
-		},
+		render: (status) => <AppStatusTag status={status} />,
 	},
 	{
 		title: "Ações",
 		key: "actions",
-		width: 130,
 		render: (_, record) => (
 			<AppTableActions
 				entityName="Empresa"

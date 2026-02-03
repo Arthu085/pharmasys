@@ -2,11 +2,11 @@ import { useState, useEffect } from "react";
 import { Flex, Typography } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import type { SizeType } from "antd/es/config-provider/SizeContext";
-import { AppInput } from "./app-input";
+import { AppInput } from "../inputs/app-input";
 
 const { Text } = Typography;
 
-interface AppSearchInputProps {
+interface AppSearchFilterProps {
 	value?: string;
 	onChange: (value: string) => void;
 	placeholder?: string;
@@ -16,7 +16,7 @@ interface AppSearchInputProps {
 	size?: SizeType;
 }
 
-export const AppSearchInput = ({
+export const AppSearchFilter = ({
 	value,
 	onChange,
 	placeholder = "Buscar...",
@@ -24,7 +24,7 @@ export const AppSearchInput = ({
 	width = "100%",
 	delay = 600,
 	size = "middle",
-}: AppSearchInputProps) => {
+}: AppSearchFilterProps) => {
 	const [localValue, setLocalValue] = useState(value || "");
 
 	useEffect(() => {
@@ -51,7 +51,7 @@ export const AppSearchInput = ({
 				onChange={(e) => setLocalValue(e.target.value)}
 				allowClear
 				size={size}
-				style={{ width: "100%", height: 32 }}
+				style={{ width: "100%", height: 40 }}
 			/>
 		</Flex>
 	);

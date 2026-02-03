@@ -16,6 +16,7 @@ import type { IEditProps } from "@/shared/domain/interfaces/edit.interface";
 
 export const CompanyEdit = ({ open, onClose, uuid, onSuccess }: IEditProps) => {
 	const [form] = Form.useForm();
+
 	const { loading: fetching } = useFormFetch<ICompanyListData, any>(
 		uuid,
 		open,

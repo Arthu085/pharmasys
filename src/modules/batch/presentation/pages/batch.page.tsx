@@ -1,7 +1,7 @@
 import { Typography, Card, Row, Col } from "antd";
 import { StatusEnum } from "@/shared/domain/enums/status.enum";
-import { StatusFilter } from "@/shared/components/filters/status.filter";
-import { AppSearchInput } from "@/shared/components/inputs/app-search-input";
+import { StatusFilter } from "@/shared/components/filters/status-filter";
+import { AppSearchFilter } from "@/shared/components/filters/app-search-filter";
 import { AppButton } from "@/shared/components/buttons/app-button";
 import { useList } from "@/shared/hooks/use-list";
 import { useModals } from "@/shared/hooks/use-modals";
@@ -13,7 +13,7 @@ import { BatchList } from "../components/batch-list";
 import { BatchCreate } from "../components/batch-create";
 import { BatchEdit } from "../components/batch-edit";
 import { BatchDetails } from "../components/batch-details";
-import { AppDateFilterInput } from "@/shared/components/inputs/app-date-filter-input";
+import { AppDateFilter } from "@/shared/components/filters/app-date-filter";
 import { AppCompanyFilterSelect } from "@/shared/components/selects/company/app-company-filter-select";
 
 const { Title } = Typography;
@@ -72,7 +72,7 @@ export const BatchPage = () => {
 						/>
 					</Col>
 					<Col xs={24} sm={24} md={12} lg={12} xl={7}>
-						<AppSearchInput
+						<AppSearchFilter
 							label="Código do Lote"
 							placeholder="Buscar pelo código do lote..."
 							value={filters.batchCode}
@@ -88,7 +88,7 @@ export const BatchPage = () => {
 						/>
 					</Col>
 					<Col xs={24} sm={24} md={12} lg={12} xl={6}>
-						<AppDateFilterInput
+						<AppDateFilter
 							label="Data de Expiração"
 							placeholder="Buscar pela data de expiração..."
 							value={filters.expirationDate}

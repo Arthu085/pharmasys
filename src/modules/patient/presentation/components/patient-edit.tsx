@@ -15,6 +15,7 @@ import { formatCpf } from "@/shared/utils/cpf.util";
 
 export const PatientEdit = ({ open, onClose, uuid, onSuccess }: IEditProps) => {
 	const [form] = Form.useForm();
+
 	const { loading: fetching } = useFormFetch<IPatientListData, any>(
 		uuid,
 		open,

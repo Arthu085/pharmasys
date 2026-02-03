@@ -37,9 +37,6 @@ export const AppCompanyFilterSelect = ({
 				placeholder={placeholder}
 				showSearch
 				size={size}
-				onlyActive={onlyActive}
-				limit={limit}
-				style={{ height: 32, ...(style || {}) }}
 				{...rest}
 			/>
 		</Flex>

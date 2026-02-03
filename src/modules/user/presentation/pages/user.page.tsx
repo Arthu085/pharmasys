@@ -4,9 +4,9 @@ import { userService } from "../../infrastructure/user.service";
 import { UserList } from "../components/user-list";
 import type { IUserFilterDto } from "../../domain/dtos/user-filter.dto";
 import { StatusEnum } from "@/shared/domain/enums/status.enum";
-import { StatusFilter } from "@/shared/components/filters/status.filter";
-import { RoleFilter } from "@/shared/components/filters/role.filter";
-import { AppSearchInput } from "@/shared/components/inputs/app-search-input";
+import { StatusFilter } from "@/shared/components/filters/status-filter";
+import { RoleFilter } from "@/shared/components/filters/role-filter";
+import { AppSearchFilter } from "@/shared/components/filters/app-search-filter";
 import { AppButton } from "@/shared/components/buttons/app-button";
 import { UserCreate } from "../components/user-create";
 import { UserEdit } from "../components/user-edit";
@@ -77,7 +77,7 @@ export const UserPage = () => {
 						/>
 					</Col>
 					<Col xs={24} sm={24} md={12} lg={12} xl={10}>
-						<AppSearchInput
+						<AppSearchFilter
 							label="Nome"
 							placeholder="Buscar pelo nome..."
 							value={filters.name}

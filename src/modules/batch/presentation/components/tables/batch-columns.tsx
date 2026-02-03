@@ -1,7 +1,7 @@
 import { Tag } from "antd";
 import type { ColumnsType } from "antd/es/table";
-import { StatusEnum } from "@/shared/domain/enums/status.enum";
 import { AppTableActions } from "@/shared/components/tables/app-table-actions";
+import { AppStatusTag } from "@/shared/components/tags/app-status-tag";
 import type { IStatusDto } from "@/shared/domain/dtos/status.dto";
 import type { IBatchListData } from "@/modules/batch/domain/dtos/batch-list-response.dto";
 import { formatDate } from "@/shared/utils/date.util";
@@ -24,13 +24,13 @@ export const getBatchColumns = ({
 		dataIndex: "batchCode",
 		key: "batchCode",
 		render: (text) => <strong>{text}</strong>,
-		width: 180,
+		width: 300,
 	},
 	{
 		title: "Empresa",
 		dataIndex: "company",
 		key: "company",
-		width: 180,
+		width: 250,
 		render: (company) => {
 			return <Tag color={"blue"}>{company?.label || company}</Tag>;
 		},
@@ -39,7 +39,7 @@ export const getBatchColumns = ({
 		title: "Data de Expiração",
 		dataIndex: "expirationDate",
 		key: "expirationDate",
-		width: 180,
+		width: 650,
 		render: (date) => {
 			if (!date) return "-";
 			return formatDate(date, "DD/MM/YYYY");
@@ -49,21 +49,11 @@ export const getBatchColumns = ({
 		title: "Status",
 		dataIndex: "status",
 		key: "status",
-		width: 120,
-		render: (status) => {
-			const isActive = status?.value === StatusEnum.ATIVO;
-
-			return (
-				<Tag color={isActive ? "success" : "error"}>
-					{status?.label || status}
-				</Tag>
-			);
-		},
+		render: (status) => <AppStatusTag status={status} />,
 	},
 	{
 		title: "Ações",
 		key: "actions",
-		width: 130,
 		render: (_, record) => (
 			<AppTableActions
 				entityName="Lote"

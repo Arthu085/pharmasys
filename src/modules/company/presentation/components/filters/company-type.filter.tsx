@@ -35,7 +35,7 @@ export const CompanyTypeFilter = ({
 			<Text strong>Tipo de Empresa</Text>
 			<AppSelect
 				placeholder={placeholder}
-				style={{ width: "100%" }}
+				style={{ width: "100%", height: 40 }}
 				value={value}
 				onChange={onChange}
 				options={options}

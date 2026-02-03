@@ -1,162 +1,192 @@
-import { useCallback, useRef, useState } from "react";
-import { Form, Select, Spin, message, type SelectProps } from "antd";
-import type { DefaultOptionType } from "antd/es/select";
+import React, {
+	useMemo,
+	useRef,
+	useState,
+	useEffect,
+	useCallback,
+} from "react";
+import { Form, Select, Spin, Empty, type SelectProps } from "antd";
+import debounce from "lodash.debounce";
 import { createZodRule, type ZodSchema } from "@/shared/validation/antd-zod";
 
-type FetchOptionsParams = {
-	search?: string;
-	page?: number;
-};
+export interface FetchResult<T> {
+	data: T[];
+	hasMore: boolean;
+}
 
-type FetchOptionsResult =
-	| DefaultOptionType[]
-	| {
-			options: DefaultOptionType[];
-			hasMore?: boolean;
-	  };
-
-interface AppAsyncSelectProps extends Omit<
+export interface AppAsyncSelectProps<T = any> extends Omit<
 	SelectProps,
-	"options" | "loading" | "filterOption" | "onSearch"
+	"options" | "onSearch" | "filterOption" | "notFoundContent"
 > {
+	fetchOptions: (params: {
+		search: string;
+		page: number;
+	}) => Promise<FetchResult<T>>;
+	mapOption: (item: T) => { label: React.ReactNode; value: string | number };
+	debounceTime?: number;
 	name?: string;
 	label?: string;
 	zodSchema?: ZodSchema;
-	fetchOptions: (params?: FetchOptionsParams) => Promise<FetchOptionsResult>;
-	fetchOnOpen?: boolean;
-	fetchOnSearch?: boolean;
-	debounceMs?: number;
-	minSearchLength?: number;
-	enableInfiniteScroll?: boolean;
+	options?: SelectProps["options"];
 }
 
-export const AppAsyncSelect = ({
+export const AppAsyncSelect = <T,>({
+	fetchOptions,
+	mapOption,
+	debounceTime = 800,
+	showSearch: showSearchProp,
 	name,
 	label,
 	zodSchema,
 	className,
-	fetchOptions,
-	fetchOnOpen = true,
-	fetchOnSearch = true,
-	debounceMs = 400,
-	minSearchLength = 0,
-	enableInfiniteScroll = true,
-	onPopupVisibleChange,
-	showSearch,
-	style,
-	onPopupScroll,
-	onFocus,
-	onClick,
-	...rest
-}: AppAsyncSelectProps) => {
-	const rules = zodSchema ? [createZodRule(zodSchema)] : undefined;
+	options: initialOptions,
+	...props
+}: AppAsyncSelectProps<T>) => {
+	const [options, setOptions] = useState<SelectProps["options"]>(
+		initialOptions || [],
+	);
+	const [fetching, setFetching] = useState(false);
+	const [hasMore, setHasMore] = useState(true);
+	const pageRef = useRef(1);
+	const searchRef = useRef("");
+	const fetchIdRef = useRef(0);
+	const mountedRef = useRef(false);
+	const fetchOptionsRef = useRef(fetchOptions);
+	const hasFetchedOnceRef = useRef(false);
 
-	const [options, setOptions] = useState<DefaultOptionType[]>([]);
-	const [loading, setLoading] = useState(false);
-	const [hasMore, setHasMore] = useState(false);
-	const hasLoadedOnce = useRef(false);
-	const currentPage = useRef(1);
-	const currentSearch = useRef<string | undefined>(undefined);
-	const debounceTimer = useRef<number | undefined>(undefined);
+	useEffect(() => {
+		if (initialOptions) {
+			setOptions(initialOptions);
+		}
+	}, [initialOptions]);
 
-	const loadPage = useCallback(
-		async (params?: { search?: string; page?: number; append?: boolean }) => {
-			const search = params?.search;
-			const page = params?.page ?? 1;
-			const append = params?.append ?? false;
+	useEffect(() => {
+		fetchOptionsRef.current = fetchOptions;
+	}, [fetchOptions]);
+
+	const loadData = useCallback(
+		async (search: string, page: number, isScrolling = false) => {
+			fetchIdRef.current += 1;
+			const currentFetchId = fetchIdRef.current;
+
+			setFetching(true);
 
 			try {
-				setLoading(true);
-				const result = await fetchOptions({ search, page });
-				const nextOptions = Array.isArray(result) ? result : result.options;
-				const nextHasMore = Array.isArray(result) ? false : !!result.hasMore;
+				const { data, hasMore: moreExists } = await fetchOptionsRef.current({
+					search,
+					page,
+				});
 
-				setOptions((prev) =>
-					append ? [...prev, ...nextOptions] : nextOptions,
-				);
-				setHasMore(nextHasMore);
-				hasLoadedOnce.current = true;
-				currentPage.current = page;
-				currentSearch.current = search;
+				if (currentFetchId !== fetchIdRef.current) return;
+
+				const newOptions = data.map(mapOption);
+
+				hasFetchedOnceRef.current = true;
+
+				if (isScrolling) {
+					setOptions((prev) => [...(prev || []), ...newOptions]);
+				} else {
+					setOptions(newOptions);
+				}
+
+				setHasMore(moreExists);
 			} catch (error) {
-				message.error("Não foi possível carregar as opções");
-				if (!append) setOptions([]);
-				setHasMore(false);
+				console.error("Erro ao buscar dados:", error);
 			} finally {
-				setLoading(false);
+				if (currentFetchId === fetchIdRef.current) {
+					setFetching(false);
+				}
 			}
 		},
-		[fetchOptions],
+		[mapOption],
 	);
 
-	const resolvedShowSearch: SelectProps["showSearch"] = fetchOnSearch
-		? {
-				...(typeof showSearch === "object" ? showSearch : {}),
-				filterOption: false,
-				onSearch: (search: string) => {
-					if (typeof showSearch === "object") {
-						showSearch.onSearch?.(search);
-					}
+	const debouncedSearch = useMemo(() => {
+		const run = (value: string) => {
+			searchRef.current = value;
+			pageRef.current = 1;
+			loadData(value, 1, false);
+		};
+		return debounce(run, debounceTime);
+	}, [loadData, debounceTime]);
 
-					if (search.length < minSearchLength) return;
+	useEffect(() => {
+		mountedRef.current = true;
+		return () => {
+			mountedRef.current = false;
+			debouncedSearch.cancel();
+		};
+	}, [debouncedSearch]);
 
-					if (debounceTimer.current) {
-						window.clearTimeout(debounceTimer.current);
-					}
+	const handlePopupScroll = async (e: React.UIEvent<HTMLDivElement>) => {
+		const target = e.target as HTMLDivElement;
 
-					debounceTimer.current = window.setTimeout(() => {
-						loadPage({ search, page: 1, append: false });
-					}, debounceMs);
-				},
-			}
-		: showSearch;
+		const isBottom =
+			Math.abs(target.scrollHeight - (target.scrollTop + target.offsetHeight)) <
+			10;
+
+		if (isBottom && hasMore && !fetching) {
+			pageRef.current += 1;
+			await loadData(searchRef.current, pageRef.current, true);
+		}
+
+		props.onPopupScroll?.(e);
+	};
+
+	const handleOnOpenChange = (open: boolean) => {
+		if (open && !hasFetchedOnceRef.current && mountedRef.current) {
+			pageRef.current = 1;
+			loadData("", 1, false);
+		}
+		props.onOpenChange?.(open);
+	};
+
+	const getShowSearchConfig = useCallback((): SelectProps["showSearch"] => {
+		const baseConfig = typeof showSearchProp === "object" ? showSearchProp : {};
+
+		return {
+			...baseConfig,
+			filterOption: false,
+			onSearch: debouncedSearch,
+		};
+	}, [showSearchProp, debouncedSearch]);
+
+	const renderNotFoundContent = useCallback(() => {
+		if (fetching && pageRef.current === 1) {
+			return <Spin size="small" />;
+		}
+		return <Empty description="Sem dados" />;
+	}, [fetching]);
+
+	const renderDropdown = useCallback(
+		(menu: React.ReactNode) => {
+			return (
+				<>
+					{menu}
+					{fetching && pageRef.current > 1 && (
+						<div style={{ padding: "8px", textAlign: "center" }}>
+							<Spin size="small" />
+						</div>
+					)}
+				</>
+			);
+		},
+		[fetching],
+	);
 
 	const selectNode = (
 		<Select
+			style={{ width: "100%", height: 40, ...props.style }}
 			className={className}
-			style={{ height: 40, ...(style || {}) }}
+			showSearch={getShowSearchConfig()}
+			loading={fetching}
 			options={options}
-			loading={loading}
-			notFoundContent={loading ? <Spin size="small" /> : undefined}
-			onFocus={(e) => {
-				onFocus?.(e);
-				if (!fetchOnOpen) return;
-				if (hasLoadedOnce.current) return;
-				loadPage({ page: 1, append: false });
-			}}
-			onClick={(e) => {
-				onClick?.(e);
-				if (!fetchOnOpen) return;
-				if (hasLoadedOnce.current) return;
-				loadPage({ page: 1, append: false });
-			}}
-			onPopupVisibleChange={(open) => {
-				onPopupVisibleChange?.(open);
-				if (!open) return;
-				if (!fetchOnOpen) return;
-				if (hasLoadedOnce.current) return;
-				loadPage({ page: 1, append: false });
-			}}
-			onPopupScroll={(e) => {
-				onPopupScroll?.(e);
-				if (!enableInfiniteScroll) return;
-				if (!hasLoadedOnce.current) return;
-				if (loading) return;
-				if (!hasMore) return;
-
-				const target = e.target as HTMLElement;
-				const nearBottom =
-					target.scrollTop + target.clientHeight >= target.scrollHeight - 24;
-				if (!nearBottom) return;
-
-				loadPage({
-					search: currentSearch.current,
-					page: currentPage.current + 1,
-					append: true,
-				});
-			}}
-			showSearch={resolvedShowSearch}
-			{...rest}
+			onPopupScroll={handlePopupScroll}
+			onOpenChange={handleOnOpenChange}
+			allowClear
+			notFoundContent={renderNotFoundContent()}
+			popupRender={renderDropdown}
+			{...props}
 		/>
 	);
 
@@ -164,8 +194,15 @@ export const AppAsyncSelect = ({
 		return selectNode;
 	}
 
+	const rules = zodSchema ? [createZodRule(zodSchema)] : undefined;
+
 	return (
-		<Form.Item name={name} label={label} rules={rules} required={!!zodSchema}>
+		<Form.Item
+			name={name}
+			label={label}
+			rules={rules}
+			required={!!zodSchema}
+			validateTrigger={["onChange", "onBlur"]}>
 			{selectNode}
 		</Form.Item>
 	);
