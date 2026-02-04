@@ -1,4 +1,5 @@
 import {
+	AppstoreOutlined,
 	HomeOutlined,
 	InboxOutlined,
 	MedicineBoxOutlined,
@@ -11,6 +12,7 @@ import type { IDashboardItem } from "../../domain/interfaces/dashboard-item.inte
 import {
 	BatchRoutesEnum,
 	CompanyRoutesEnum,
+	ItemRoutesEnum,
 	PatientRoutesEnum,
 	PrescriptorRoutesEnum,
 	UserRoutesEnum,
@@ -46,6 +48,14 @@ export const dashboardItems: IDashboardItem[] = [
 		subtitle: "Gerenciar prescritores do sistema",
 		icon: <SolutionOutlined />,
 		to: PrescriptorRoutesEnum.PRESCRIPTORS,
+		iconColor: "#1677ff",
+		allowedRoles: [RoleEnum.ADMIN, RoleEnum.FARMACEUTICO],
+	},
+	{
+		title: "Gestão de Itens",
+		subtitle: "Gerenciar itens do sistema",
+		icon: <AppstoreOutlined />,
+		to: ItemRoutesEnum.ITEMS,
 		iconColor: "#1677ff",
 		allowedRoles: [RoleEnum.ADMIN, RoleEnum.FARMACEUTICO],
 	},

@@ -4,18 +4,11 @@ import {
 	CompanyTypeEnum,
 	CompanyTypeEnumTranslated,
 } from "../enums/company-type.enum";
+import { buildEnumHelpers } from "@/shared/utils/enum.util";
 
-const companyTypesKeys = Object.keys(CompanyTypeEnum) as Array<
-	keyof typeof CompanyTypeEnum
->;
-
-export const createCompanyTypeOptions = companyTypesKeys.map((key) => ({
-	label: CompanyTypeEnumTranslated[key],
-	value: CompanyTypeEnum[key],
-}));
-
-export const allowedCreateCompanyTypes = companyTypesKeys.map(
-	(key) => CompanyTypeEnum[key],
+export const companyTypeConfig = buildEnumHelpers(
+	CompanyTypeEnum,
+	CompanyTypeEnumTranslated,
 );
 
 export const companyCreateSchema = z.object({
@@ -32,7 +25,7 @@ export const companyCreateSchema = z.object({
 	companyTypes: z
 		.array(
 			z.enum(
-				allowedCreateCompanyTypes as unknown as [
+				companyTypeConfig.values as unknown as [
 					CompanyTypeEnum,
 					...CompanyTypeEnum[],
 				],

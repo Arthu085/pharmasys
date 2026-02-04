@@ -8,11 +8,11 @@ import {
 import { AppInput } from "@/shared/components/inputs/app-input";
 import { AppPasswordInput } from "@/shared/components/inputs/app-password-input";
 import { AppSelect } from "@/shared/components/selects/app-select";
-import { createRoleOptions } from "../../domain/dtos/user-create.dto";
 import { useFormFetch } from "@/shared/hooks/use-form-fetch";
 import { useFormSubmit } from "@/shared/hooks/use-form-submit";
 import type { IUserListData } from "../../domain/dtos/user-list-response.dto";
 import type { IEditProps } from "@/shared/domain/interfaces/edit.interface";
+import { roleConfig } from "../../domain/dtos/user-create.dto";
 
 export const UserEdit = ({ open, onClose, uuid, onSuccess }: IEditProps) => {
 	const [form] = Form.useForm();
@@ -82,7 +82,7 @@ export const UserEdit = ({ open, onClose, uuid, onSuccess }: IEditProps) => {
 					name="role"
 					label="Função"
 					placeholder="Selecione uma função"
-					options={createRoleOptions}
+					options={roleConfig.options}
 					zodSchema={userUpdateSchema.shape.role}
 					showSearch={{ optionFilterProp: "label" }}
 				/>

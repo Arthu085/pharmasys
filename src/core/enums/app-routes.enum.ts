@@ -28,6 +28,10 @@ export enum PrescriptorRoutesEnum {
 	PRESCRIPTORS = "/prescriptors",
 }
 
+export enum ItemRoutesEnum {
+	ITEMS = "/items",
+}
+
 export enum NotFoundRoutesEnum {
 	NOT_FOUND = "*",
 }

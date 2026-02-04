@@ -3,7 +3,7 @@ import { AppModal } from "@/shared/components/modals/app-modal";
 import { AppInput } from "@/shared/components/inputs/app-input";
 import {
 	companyCreateSchema,
-	createCompanyTypeOptions,
+	companyTypeConfig,
 	type ICompanyCreateDto,
 } from "../../domain/dtos/company-create.dto";
 import { AppSelect } from "@/shared/components/selects/app-select";
@@ -60,7 +60,7 @@ export const CompanyCreate = ({ open, onClose, onSuccess }: ICreateProps) => {
 					label="Tipo de Empresa"
 					placeholder="Selecione um tipo de empresa"
 					mode="multiple"
-					options={createCompanyTypeOptions}
+					options={companyTypeConfig.options}
 					zodSchema={companyCreateSchema.shape.companyTypes}
 				/>
 			</Form>

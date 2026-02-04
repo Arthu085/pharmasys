@@ -2,6 +2,7 @@ import {
 	DashboardOutlined,
 	HomeOutlined,
 	InboxOutlined,
+	AppstoreOutlined,
 	MedicineBoxOutlined,
 	LogoutOutlined,
 	SolutionOutlined,
@@ -13,6 +14,7 @@ import {
 	BatchRoutesEnum,
 	CompanyRoutesEnum,
 	DashboardRoutesEnum,
+	ItemRoutesEnum,
 	PatientRoutesEnum,
 	PrescriptorRoutesEnum,
 	UserRoutesEnum,
@@ -48,6 +50,12 @@ export const topMenuItems: IAppMenuItem[] = [
 		key: PrescriptorRoutesEnum.PRESCRIPTORS,
 		icon: <SolutionOutlined />,
 		label: <Link to={PrescriptorRoutesEnum.PRESCRIPTORS}>Prescritores</Link>,
+		allowedRoles: [RoleEnum.ADMIN, RoleEnum.FARMACEUTICO],
+	},
+	{
+		key: ItemRoutesEnum.ITEMS,
+		icon: <AppstoreOutlined />,
+		label: <Link to={ItemRoutesEnum.ITEMS}>Itens</Link>,
 		allowedRoles: [RoleEnum.ADMIN, RoleEnum.FARMACEUTICO],
 	},
 	{

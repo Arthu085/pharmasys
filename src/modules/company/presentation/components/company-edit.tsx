@@ -10,9 +10,9 @@ import { useFormFetch } from "@/shared/hooks/use-form-fetch";
 import { useFormSubmit } from "@/shared/hooks/use-form-submit";
 import type { ICompanyListData } from "../../domain/dtos/company-list-response.dto";
 import { companyService } from "../../infrastructure/company.service";
-import { createCompanyTypeOptions } from "../../domain/dtos/company-create.dto";
 import { formatCnpj } from "@/shared/utils/cnpj.util";
 import type { IEditProps } from "@/shared/domain/interfaces/edit.interface";
+import { companyTypeConfig } from "../../domain/dtos/company-create.dto";
 
 export const CompanyEdit = ({ open, onClose, uuid, onSuccess }: IEditProps) => {
 	const [form] = Form.useForm();
@@ -76,7 +76,7 @@ export const CompanyEdit = ({ open, onClose, uuid, onSuccess }: IEditProps) => {
 					label="Tipo de Empresa"
 					placeholder="Selecione um tipo de empresa"
 					mode="multiple"
-					options={createCompanyTypeOptions}
+					options={companyTypeConfig.options}
 					zodSchema={companyUpdateSchema.shape.companyTypes}
 				/>
 			</Form>

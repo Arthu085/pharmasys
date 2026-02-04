@@ -1,14 +1,8 @@
 import { RoleEnum, RoleEnumTranslated } from "@/shared/domain/enums/role.enum";
+import { buildEnumHelpers } from "@/shared/utils/enum.util";
 import z from "zod";
 
-const roleKeys = Object.keys(RoleEnum) as Array<keyof typeof RoleEnum>;
-
-export const createRoleOptions = roleKeys.map((key) => ({
-	label: RoleEnumTranslated[key],
-	value: RoleEnum[key],
-}));
-
-export const allowedCreateRoles = roleKeys.map((key) => RoleEnum[key]);
+export const roleConfig = buildEnumHelpers(RoleEnum, RoleEnumTranslated);
 
 export const userCreateSchema = z.object({
 	name: z
@@ -22,7 +16,7 @@ export const userCreateSchema = z.object({
 		.string({ error: "Senha é obrigatória" })
 		.min(6, { error: "Senha deve ter no mínimo 6 caracteres" })
 		.max(40, { error: "Senha deve ter no máximo 40 caracteres" }),
-	role: z.enum(allowedCreateRoles, { error: "Função inválida" }),
+	role: z.enum(roleConfig.values, { error: "Função inválida" }),
 });
 
 export type IUserCreateDto = z.infer<typeof userCreateSchema>;

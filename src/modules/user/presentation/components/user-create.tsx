@@ -3,7 +3,7 @@ import { Form } from "antd";
 import { AppModal } from "@/shared/components/modals/app-modal";
 import { AppInput } from "@/shared/components/inputs/app-input";
 import {
-	createRoleOptions,
+	roleConfig,
 	userCreateSchema,
 	type IUserCreateDto,
 } from "../../domain/dtos/user-create.dto";
@@ -65,7 +65,7 @@ export const UserCreate = ({ open, onClose, onSuccess }: ICreateProps) => {
 					name="role"
 					label="Função"
 					placeholder="Selecione uma função"
-					options={createRoleOptions}
+					options={roleConfig.options}
 					zodSchema={userCreateSchema.shape.role}
 					showSearch={{ optionFilterProp: "label" }}
 				/>
