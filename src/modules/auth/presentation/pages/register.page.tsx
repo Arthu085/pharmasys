@@ -16,8 +16,8 @@ import {
 	DashboardRoutesEnum,
 } from "@/core/enums/app-routes.enum";
 import {
+	registerRolesConfig,
 	registerSchema,
-	registerRoleOptions,
 	type IRegisterDto,
 } from "../../domain/dtos/register.dto";
 import { useFormSubmit } from "@/shared/hooks/use-form-submit";
@@ -79,7 +79,7 @@ export const RegisterPage = () => {
 						label="Função"
 						placeholder="Selecione uma função"
 						prefix={<SolutionOutlined style={{ color: "rgba(0,0,0,.25)" }} />}
-						options={registerRoleOptions}
+						options={registerRolesConfig.options}
 						zodSchema={registerSchema.shape.role}
 						showSearch={{ optionFilterProp: "label" }}
 					/>

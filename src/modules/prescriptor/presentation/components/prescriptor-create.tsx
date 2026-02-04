@@ -5,9 +5,9 @@ import { AppSelect } from "@/shared/components/selects/app-select";
 import { useFormSubmit } from "@/shared/hooks/use-form-submit";
 import type { ICreateProps } from "@/shared/domain/interfaces/create.interface";
 import {
-	createAdviceOptions,
-	createUfOptions,
+	adviceConfig,
 	prescriptorCreateSchema,
+	ufConfig,
 	type IPrescriptorCreateDto,
 } from "../../domain/dtos/prescriptor-create.dto";
 import { prescriptorService } from "../../infrastructure/prescriptor.service";
@@ -76,7 +76,7 @@ export const PrescriptorCreate = ({
 					name="state"
 					label="Estado"
 					placeholder="Selecione um estado"
-					options={createUfOptions}
+					options={ufConfig.options}
 					zodSchema={prescriptorCreateSchema.shape.state}
 					showSearch={{ optionFilterProp: "label" }}
 				/>
@@ -84,7 +84,7 @@ export const PrescriptorCreate = ({
 					name="advice"
 					label="Conselho"
 					placeholder="Selecione um conselho"
-					options={createAdviceOptions}
+					options={adviceConfig.options}
 					zodSchema={prescriptorCreateSchema.shape.advice}
 					showSearch={{ optionFilterProp: "label" }}
 				/>

@@ -6,6 +6,7 @@ import {
 	BatchRoutesEnum,
 	CompanyRoutesEnum,
 	DashboardRoutesEnum,
+	ItemRoutesEnum,
 	NotFoundRoutesEnum,
 	PatientRoutesEnum,
 	PrescriptorRoutesEnum,
@@ -24,6 +25,7 @@ import { CompanyPage } from "@/modules/company/presentation/pages/company.page";
 import { PatientPage } from "@/modules/patient/presentation/pages/patient.page";
 import { BatchPage } from "@/modules/batch/presentation/pages/batch.page";
 import { PrescriptorPage } from "@/modules/prescriptor/presentation/pages/prescriptor.page";
+import { ItemPage } from "@/modules/item/presentation/pages/item.page";
 
 export const routesConfig: IAppRoute[] = [
 	{
@@ -81,6 +83,10 @@ export const routesConfig: IAppRoute[] = [
 					{
 						path: PrescriptorRoutesEnum.PRESCRIPTORS,
 						element: <PrescriptorPage />,
+					},
+					{
+						path: ItemRoutesEnum.ITEMS,
+						element: <ItemPage />,
 					},
 				],
 			},

@@ -1,15 +1,14 @@
 import { RoleEnum, RoleEnumTranslated } from "@/shared/domain/enums/role.enum";
+import { buildEnumHelpers } from "@/shared/utils/enum.util";
 import { z } from "zod";
 
-export const registerRoleOptions = [
-	{ label: RoleEnumTranslated.OPERADOR, value: RoleEnum.OPERADOR },
-	{ label: RoleEnumTranslated.FARMACEUTICO, value: RoleEnum.FARMACEUTICO },
-] as const;
-
-const allowedRegisterRoles = registerRoleOptions.map((opt) => opt.value) as [
-	RoleEnum.OPERADOR,
-	RoleEnum.FARMACEUTICO,
-];
+export const registerRolesConfig = buildEnumHelpers(
+	RoleEnum,
+	RoleEnumTranslated,
+	{
+		only: [RoleEnum.OPERADOR, RoleEnum.FARMACEUTICO],
+	},
+);
 
 export const registerSchema = z.object({
 	name: z
@@ -23,7 +22,7 @@ export const registerSchema = z.object({
 		.string({ error: "Senha é obrigatória" })
 		.min(6, { error: "Senha deve ter no mínimo 6 caracteres" })
 		.max(40, { error: "Senha deve ter no máximo 40 caracteres" }),
-	role: z.enum(allowedRegisterRoles, { error: "Função inválida" }),
+	role: z.enum(registerRolesConfig.values, { error: "Função inválida" }),
 });
 
 export type IRegisterDto = z.infer<typeof registerSchema>;

@@ -1,24 +1,10 @@
 import z from "zod";
 import { AdviceEnum, AdviceEnumTranslated } from "../enums/advice.enum";
 import { UfEnum, UfEnumTranslated } from "../enums/uf.enum";
+import { buildEnumHelpers } from "@/shared/utils/enum.util";
 
-const adviceKeys = Object.keys(AdviceEnum) as Array<keyof typeof AdviceEnum>;
-
-export const createAdviceOptions = adviceKeys.map((key) => ({
-	label: AdviceEnumTranslated[key],
-	value: AdviceEnum[key],
-}));
-
-export const allowedCreateAdvice = adviceKeys.map((key) => AdviceEnum[key]);
-
-const ufKeys = Object.keys(UfEnum) as Array<keyof typeof UfEnum>;
-
-export const createUfOptions = ufKeys.map((key) => ({
-	label: UfEnumTranslated[key],
-	value: UfEnum[key],
-}));
-
-export const allowedCreateUf = ufKeys.map((key) => UfEnum[key]);
+export const adviceConfig = buildEnumHelpers(AdviceEnum, AdviceEnumTranslated);
+export const ufConfig = buildEnumHelpers(UfEnum, UfEnumTranslated);
 
 export const prescriptorCreateSchema = z.object({
 	name: z
@@ -37,8 +23,8 @@ export const prescriptorCreateSchema = z.object({
 		.max(150, { message: "A especialidade deve ter no máximo 150 caracteres" })
 		.optional()
 		.nullable(),
-	state: z.enum(allowedCreateUf, { error: "Estado inválido" }),
-	advice: z.enum(allowedCreateAdvice, { error: "Conselho inválido" }),
+	state: z.enum(ufConfig.values, { error: "Estado inválido" }),
+	advice: z.enum(adviceConfig.values, { error: "Conselho inválido" }),
 });
 
 export type IPrescriptorCreateDto = z.infer<typeof prescriptorCreateSchema>;

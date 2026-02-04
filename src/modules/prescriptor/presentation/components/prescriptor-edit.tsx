@@ -11,8 +11,8 @@ import {
 	type IPrescriptorUpdateDto,
 } from "../../domain/dtos/prescriptor-update.dto";
 import {
-	createAdviceOptions,
-	createUfOptions,
+	adviceConfig,
+	ufConfig,
 } from "../../domain/dtos/prescriptor-create.dto";
 import type { IPrescriptorListData } from "../../domain/dtos/prescriptor-list-response.dto";
 
@@ -97,7 +97,7 @@ export const PrescriptorEdit = ({
 					name="state"
 					label="Estado"
 					placeholder="Selecione um estado"
-					options={createUfOptions}
+					options={ufConfig.options}
 					zodSchema={prescriptorUpdateSchema.shape.state}
 					showSearch={{ optionFilterProp: "label" }}
 				/>
@@ -105,7 +105,7 @@ export const PrescriptorEdit = ({
 					name="advice"
 					label="Conselho"
 					placeholder="Selecione um conselho"
-					options={createAdviceOptions}
+					options={adviceConfig.options}
 					zodSchema={prescriptorUpdateSchema.shape.advice}
 					showSearch={{ optionFilterProp: "label" }}
 				/>
