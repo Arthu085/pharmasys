@@ -63,13 +63,21 @@ export const PatientPage = () => {
 			</Row>
 			<Card>
 				<Row gutter={[16, 16]} style={{ marginBottom: 16 }}>
-					<Col xs={24} sm={24} md={24} lg={6} xl={4}>
+					<Col xs={24} sm={24} md={24} lg={12} xl={4}>
 						<StatusFilter
 							value={filters.status}
 							onChange={(val) => handleFilterChange("status", val)}
 						/>
 					</Col>
-					<Col xs={24} sm={24} md={24} lg={12} xl={12}>
+					<Col xs={24} sm={24} md={24} lg={12} xl={10}>
+						<AppSearchFilter
+							label="Nome"
+							placeholder="Buscar pelo nome..."
+							value={filters.name}
+							onChange={(val) => handleFilterChange("name", val)}
+						/>
+					</Col>
+					<Col xs={24} sm={24} md={24} lg={12} xl={10}>
 						<AppSearchFilter
 							label="Documento"
 							placeholder="Buscar pelo documento..."
