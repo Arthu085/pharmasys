@@ -32,6 +32,10 @@ export enum ItemRoutesEnum {
 	ITEMS = "/items",
 }
 
+export enum StockLocationRoutesEnum {
+	STOCK_LOCATIONS = "/stock-locations",
+}
+
 export enum NotFoundRoutesEnum {
 	NOT_FOUND = "*",
 }
