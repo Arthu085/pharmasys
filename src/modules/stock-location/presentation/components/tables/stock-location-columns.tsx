@@ -10,6 +10,7 @@ interface GetStockLocationColumnsProps {
 	onDetails: (stockLocation: IStockLocationListData) => void;
 	onStatus: (uuid: string, dto: IStatusDto) => Promise<void>;
 	onDelete: (uuid: string) => Promise<void>;
+	isMobile?: boolean;
 }
 
 export const getStockLocationColumns = ({
@@ -17,6 +18,7 @@ export const getStockLocationColumns = ({
 	onDetails,
 	onStatus,
 	onDelete,
+	isMobile = false,
 }: GetStockLocationColumnsProps): ColumnsType<IStockLocationListData> => [
 	{
 		title: "Nome",
@@ -24,6 +26,7 @@ export const getStockLocationColumns = ({
 		key: "name",
 		render: (text) => <strong>{text}</strong>,
 		width: 300,
+		fixed: isMobile ? undefined : "left",
 	},
 	{
 		title: "Código",
@@ -43,13 +46,14 @@ export const getStockLocationColumns = ({
 				{isCentralStock ? "Sim" : "Não"}
 			</Tag>
 		),
-		width: 650,
 	},
 	{
 		title: "Status",
 		dataIndex: "status",
 		key: "status",
 		render: (status) => <AppStatusTag status={status} />,
+		fixed: isMobile ? undefined : "right",
+		width: 150,
 	},
 	{
 		title: "Ações",
@@ -64,5 +68,7 @@ export const getStockLocationColumns = ({
 				onStatus={(dto) => onStatus(record.uuid, dto)}
 			/>
 		),
+		fixed: isMobile ? undefined : "right",
+		width: 140,
 	},
 ];

@@ -3,6 +3,7 @@ import { AppTable } from "@/shared/components/tables/app-table";
 import { getItemColumns } from "./tables/item-columns";
 import type { IItemListProps } from "../../domain/interfaces/item-list.interface";
 import type { IItemListData } from "../../domain/dtos/item-list-response.dto";
+import { Grid } from "antd";
 
 export const ItemList = ({
 	items,
@@ -16,9 +17,12 @@ export const ItemList = ({
 	pageSize,
 	onChangePage,
 }: IItemListProps) => {
+	const screens = Grid.useBreakpoint();
+	const isMobile = (screens.xs && !screens.sm) ?? false;
+
 	const columns = useMemo(
-		() => getItemColumns({ onEdit, onDetails, onStatus, onDelete }),
-		[onEdit, onDetails, onStatus, onDelete],
+		() => getItemColumns({ onEdit, onDetails, onStatus, onDelete, isMobile }),
+		[onEdit, onDetails, onStatus, onDelete, isMobile],
 	);
 
 	return (

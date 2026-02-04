@@ -10,6 +10,7 @@ interface GetUserColumnsProps {
 	onDetails: (user: IUserListData) => void;
 	onStatus: (uuid: string, dto: IStatusDto) => Promise<void>;
 	onDelete: (uuid: string) => Promise<void>;
+	isMobile?: boolean;
 }
 
 export const getUserColumns = ({
@@ -17,6 +18,7 @@ export const getUserColumns = ({
 	onDetails,
 	onStatus,
 	onDelete,
+	isMobile = false,
 }: GetUserColumnsProps): ColumnsType<IUserListData> => [
 	{
 		title: "Nome",
@@ -24,6 +26,7 @@ export const getUserColumns = ({
 		key: "name",
 		render: (text) => <strong>{text}</strong>,
 		width: 300,
+		fixed: isMobile ? undefined : "left",
 	},
 	{
 		title: "E-mail",
@@ -36,13 +39,14 @@ export const getUserColumns = ({
 		dataIndex: "role",
 		key: "role",
 		render: (role) => <Tag color="blue">{role?.label || role}</Tag>,
-		width: 650,
 	},
 	{
 		title: "Status",
 		dataIndex: "status",
 		key: "status",
 		render: (status) => <AppStatusTag status={status} />,
+		fixed: isMobile ? undefined : "right",
+		width: 150,
 	},
 	{
 		title: "Ações",
@@ -57,5 +61,7 @@ export const getUserColumns = ({
 				onStatus={(dto) => onStatus(record.uuid, dto)}
 			/>
 		),
+		fixed: isMobile ? undefined : "right",
+		width: 140,
 	},
 ];

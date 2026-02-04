@@ -3,6 +3,7 @@ import { AppTable } from "@/shared/components/tables/app-table";
 import { getPrescriptorColumns } from "./tables/prescriptor-columns";
 import type { IPrescriptorListProps } from "../../domain/interfaces/prescriptor-list.interface";
 import type { IPrescriptorListData } from "../../domain/dtos/prescriptor-list-response.dto";
+import { Grid } from "antd";
 
 export const PrescriptorList = ({
 	prescriptors,
@@ -16,9 +17,19 @@ export const PrescriptorList = ({
 	pageSize,
 	onChangePage,
 }: IPrescriptorListProps) => {
+	const screens = Grid.useBreakpoint();
+	const isMobile = (screens.xs && !screens.sm) ?? false;
+
 	const columns = useMemo(
-		() => getPrescriptorColumns({ onEdit, onDetails, onStatus, onDelete }),
-		[onEdit, onDetails, onStatus, onDelete],
+		() =>
+			getPrescriptorColumns({
+				onEdit,
+				onDetails,
+				onStatus,
+				onDelete,
+				isMobile,
+			}),
+		[onEdit, onDetails, onStatus, onDelete, isMobile],
 	);
 
 	return (

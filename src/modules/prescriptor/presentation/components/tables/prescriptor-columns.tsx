@@ -10,6 +10,7 @@ interface GetPrescriptorColumnsProps {
 	onDetails: (prescriptor: IPrescriptorListData) => void;
 	onStatus: (uuid: string, dto: IStatusDto) => Promise<void>;
 	onDelete: (uuid: string) => Promise<void>;
+	isMobile?: boolean;
 }
 
 export const getPrescriptorColumns = ({
@@ -17,6 +18,7 @@ export const getPrescriptorColumns = ({
 	onDetails,
 	onStatus,
 	onDelete,
+	isMobile = false,
 }: GetPrescriptorColumnsProps): ColumnsType<IPrescriptorListData> => [
 	{
 		title: "Nome",
@@ -24,6 +26,7 @@ export const getPrescriptorColumns = ({
 		key: "name",
 		render: (text) => <strong>{text}</strong>,
 		width: 300,
+		fixed: isMobile ? undefined : "left",
 	},
 	{
 		title: "Número de Registro",
@@ -42,14 +45,13 @@ export const getPrescriptorColumns = ({
 		title: "Estado",
 		dataIndex: "state",
 		key: "state",
-		width: 100,
 		render: (state) => state?.label || state?.value,
+		width: 250,
 	},
 	{
 		title: "Conselho",
 		dataIndex: "advice",
 		key: "advice",
-		width: 100,
 		render: (advice) => (
 			<Tag color={"blue"}>{advice?.label || advice?.value}</Tag>
 		),
@@ -59,6 +61,8 @@ export const getPrescriptorColumns = ({
 		dataIndex: "status",
 		key: "status",
 		render: (status) => <AppStatusTag status={status} />,
+		fixed: isMobile ? undefined : "right",
+		width: 150,
 	},
 	{
 		title: "Ações",
@@ -73,5 +77,7 @@ export const getPrescriptorColumns = ({
 				onStatus={(dto) => onStatus(record.uuid, dto)}
 			/>
 		),
+		fixed: isMobile ? undefined : "right",
+		width: 140,
 	},
 ];

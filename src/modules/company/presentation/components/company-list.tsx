@@ -3,6 +3,7 @@ import { AppTable } from "@/shared/components/tables/app-table";
 import { getCompanyColumns } from "./tables/company-columns";
 import type { ICompanyListProps } from "../../domain/interfaces/company-list.interface";
 import type { ICompanyListData } from "../../domain/dtos/company-list-response.dto";
+import { Grid } from "antd";
 
 export const CompanyList = ({
 	companies,
@@ -16,9 +17,13 @@ export const CompanyList = ({
 	pageSize,
 	onChangePage,
 }: ICompanyListProps) => {
+	const screens = Grid.useBreakpoint();
+	const isMobile = (screens.xs && !screens.sm) ?? false;
+
 	const columns = useMemo(
-		() => getCompanyColumns({ onEdit, onDetails, onStatus, onDelete }),
-		[onEdit, onDetails, onStatus, onDelete],
+		() =>
+			getCompanyColumns({ onEdit, onDetails, onStatus, onDelete, isMobile }),
+		[onEdit, onDetails, onStatus, onDelete, isMobile],
 	);
 
 	return (

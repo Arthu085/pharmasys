@@ -3,6 +3,7 @@ import { AppTable } from "@/shared/components/tables/app-table";
 import { getStockLocationColumns } from "./tables/stock-location-columns";
 import type { IStockLocationListProps } from "../../domain/interfaces/stock-location-list.interface";
 import type { IStockLocationListData } from "../../domain/dtos/stock-location-list-response.dto";
+import { Grid } from "antd";
 
 export const StockLocationList = ({
 	stockLocations,
@@ -16,9 +17,19 @@ export const StockLocationList = ({
 	pageSize,
 	onChangePage,
 }: IStockLocationListProps) => {
+	const screens = Grid.useBreakpoint();
+	const isMobile = (screens.xs && !screens.sm) ?? false;
+
 	const columns = useMemo(
-		() => getStockLocationColumns({ onEdit, onDetails, onStatus, onDelete }),
-		[onEdit, onDetails, onStatus, onDelete],
+		() =>
+			getStockLocationColumns({
+				onEdit,
+				onDetails,
+				onStatus,
+				onDelete,
+				isMobile,
+			}),
+		[onEdit, onDetails, onStatus, onDelete, isMobile],
 	);
 
 	return (

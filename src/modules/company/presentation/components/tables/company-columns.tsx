@@ -10,6 +10,7 @@ interface GetCompanyColumnsProps {
 	onDetails: (company: ICompanyListData) => void;
 	onStatus: (uuid: string, dto: IStatusDto) => Promise<void>;
 	onDelete: (uuid: string) => Promise<void>;
+	isMobile?: boolean;
 }
 
 export const getCompanyColumns = ({
@@ -17,6 +18,7 @@ export const getCompanyColumns = ({
 	onDetails,
 	onStatus,
 	onDelete,
+	isMobile = false,
 }: GetCompanyColumnsProps): ColumnsType<ICompanyListData> => [
 	{
 		title: "Nome",
@@ -24,6 +26,7 @@ export const getCompanyColumns = ({
 		key: "name",
 		render: (text) => <strong>{text}</strong>,
 		width: 300,
+		fixed: isMobile ? undefined : "left",
 	},
 	{
 		title: "CNPJ",
@@ -51,13 +54,14 @@ export const getCompanyColumns = ({
 				</>
 			);
 		},
-		width: 650,
 	},
 	{
 		title: "Status",
 		dataIndex: "status",
 		key: "status",
 		render: (status) => <AppStatusTag status={status} />,
+		fixed: isMobile ? undefined : "right",
+		width: 150,
 	},
 	{
 		title: "Ações",
@@ -72,5 +76,7 @@ export const getCompanyColumns = ({
 				onStatus={(dto) => onStatus(record.uuid, dto)}
 			/>
 		),
+		fixed: isMobile ? undefined : "right",
+		width: 140,
 	},
 ];

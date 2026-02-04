@@ -10,6 +10,7 @@ interface GetItemColumnsProps {
 	onDetails: (item: IItemListData) => void;
 	onStatus: (uuid: string, dto: IStatusDto) => Promise<void>;
 	onDelete: (uuid: string) => Promise<void>;
+	isMobile?: boolean;
 }
 
 export const getItemColumns = ({
@@ -17,6 +18,7 @@ export const getItemColumns = ({
 	onDetails,
 	onStatus,
 	onDelete,
+	isMobile = false,
 }: GetItemColumnsProps): ColumnsType<IItemListData> => [
 	{
 		title: "Nome",
@@ -24,13 +26,14 @@ export const getItemColumns = ({
 		key: "name",
 		render: (text) => <strong>{text}</strong>,
 		width: 300,
+		fixed: isMobile ? undefined : "left",
 	},
 	{
 		title: "Tipo",
 		dataIndex: "type",
 		key: "type",
 		render: (type) => <Tag color="blue">{type?.label || type}</Tag>,
-		width: 180,
+		width: 250,
 	},
 	{
 		title: "Subtipo",
@@ -39,14 +42,14 @@ export const getItemColumns = ({
 		render: (subtype) => (
 			<Tag color="blue">{subtype?.label || subtype || "-"}</Tag>
 		),
-		width: 180,
+		width: 250,
 	},
 	{
 		title: "Dosagem",
 		dataIndex: "dosage",
 		key: "dosage",
 		render: (dosage) => <Tag color="blue">{dosage?.label || dosage}</Tag>,
-		width: 100,
+		width: 250,
 	},
 	{
 		title: "Apresentação",
@@ -55,13 +58,14 @@ export const getItemColumns = ({
 		render: (presentation) => (
 			<Tag color="blue">{presentation?.label || presentation}</Tag>
 		),
-		width: 445,
 	},
 	{
 		title: "Status",
 		dataIndex: "status",
 		key: "status",
 		render: (status) => <AppStatusTag status={status} />,
+		fixed: isMobile ? undefined : "right",
+		width: 150,
 	},
 	{
 		title: "Ações",
@@ -76,5 +80,7 @@ export const getItemColumns = ({
 				onStatus={(dto) => onStatus(record.uuid, dto)}
 			/>
 		),
+		fixed: isMobile ? undefined : "right",
+		width: 140,
 	},
 ];

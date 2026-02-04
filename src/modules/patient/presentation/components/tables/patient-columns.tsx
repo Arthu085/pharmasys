@@ -9,6 +9,7 @@ interface GetPatientColumnsProps {
 	onDetails: (patient: IPatientListData) => void;
 	onStatus: (uuid: string, dto: IStatusDto) => Promise<void>;
 	onDelete: (uuid: string) => Promise<void>;
+	isMobile?: boolean;
 }
 
 export const getPatientColumns = ({
@@ -16,25 +17,28 @@ export const getPatientColumns = ({
 	onDetails,
 	onStatus,
 	onDelete,
+	isMobile = false,
 }: GetPatientColumnsProps): ColumnsType<IPatientListData> => [
 	{
 		title: "Nome",
 		dataIndex: "name",
 		key: "name",
 		render: (text) => <strong>{text}</strong>,
+		fixed: isMobile ? undefined : "left",
 		width: 300,
 	},
 	{
 		title: "Documento",
 		dataIndex: "document",
 		key: "document",
-		width: 900,
 	},
 	{
 		title: "Status",
 		dataIndex: "status",
 		key: "status",
 		render: (status) => <AppStatusTag status={status} />,
+		fixed: isMobile ? undefined : "right",
+		width: 150,
 	},
 	{
 		title: "Ações",
@@ -49,5 +53,7 @@ export const getPatientColumns = ({
 				onStatus={(dto) => onStatus(record.uuid, dto)}
 			/>
 		),
+		fixed: isMobile ? undefined : "right",
+		width: 140,
 	},
 ];

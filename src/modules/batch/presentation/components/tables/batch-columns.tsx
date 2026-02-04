@@ -11,6 +11,7 @@ interface GetBatchColumnsProps {
 	onDetails: (batch: IBatchListData) => void;
 	onStatus: (uuid: string, dto: IStatusDto) => Promise<void>;
 	onDelete: (uuid: string) => Promise<void>;
+	isMobile?: boolean;
 }
 
 export const getBatchColumns = ({
@@ -18,28 +19,29 @@ export const getBatchColumns = ({
 	onDetails,
 	onStatus,
 	onDelete,
+	isMobile = false,
 }: GetBatchColumnsProps): ColumnsType<IBatchListData> => [
 	{
 		title: "Código do Lote",
 		dataIndex: "batchCode",
 		key: "batchCode",
 		render: (text) => <strong>{text}</strong>,
+		fixed: isMobile ? undefined : "left",
 		width: 300,
 	},
 	{
 		title: "Empresa",
 		dataIndex: "company",
 		key: "company",
-		width: 250,
 		render: (company) => {
 			return <Tag color={"blue"}>{company?.label || company}</Tag>;
 		},
+		width: 250,
 	},
 	{
 		title: "Data de Expiração",
 		dataIndex: "expirationDate",
 		key: "expirationDate",
-		width: 650,
 		render: (date) => {
 			if (!date) return "-";
 			return formatDate(date, "DD/MM/YYYY");
@@ -50,6 +52,8 @@ export const getBatchColumns = ({
 		dataIndex: "status",
 		key: "status",
 		render: (status) => <AppStatusTag status={status} />,
+		fixed: isMobile ? undefined : "right",
+		width: 150,
 	},
 	{
 		title: "Ações",
@@ -64,5 +68,7 @@ export const getBatchColumns = ({
 				onStatus={(dto) => onStatus(record.uuid, dto)}
 			/>
 		),
+		fixed: isMobile ? undefined : "right",
+		width: 140,
 	},
 ];
