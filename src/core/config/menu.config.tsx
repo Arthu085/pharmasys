@@ -1,5 +1,6 @@
 import {
 	DashboardOutlined,
+	EnvironmentOutlined,
 	HomeOutlined,
 	InboxOutlined,
 	AppstoreOutlined,
@@ -17,6 +18,7 @@ import {
 	ItemRoutesEnum,
 	PatientRoutesEnum,
 	PrescriptorRoutesEnum,
+	StockLocationRoutesEnum,
 	UserRoutesEnum,
 } from "../enums/app-routes.enum";
 import { RoleEnum } from "@/shared/domain/enums/role.enum";
@@ -56,6 +58,16 @@ export const topMenuItems: IAppMenuItem[] = [
 		key: ItemRoutesEnum.ITEMS,
 		icon: <AppstoreOutlined />,
 		label: <Link to={ItemRoutesEnum.ITEMS}>Itens</Link>,
+		allowedRoles: [RoleEnum.ADMIN, RoleEnum.FARMACEUTICO],
+	},
+	{
+		key: StockLocationRoutesEnum.STOCK_LOCATIONS,
+		icon: <EnvironmentOutlined />,
+		label: (
+			<Link to={StockLocationRoutesEnum.STOCK_LOCATIONS}>
+				Locais de Estoque
+			</Link>
+		),
 		allowedRoles: [RoleEnum.ADMIN, RoleEnum.FARMACEUTICO],
 	},
 	{

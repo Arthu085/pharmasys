@@ -1,5 +1,6 @@
 import {
 	AppstoreOutlined,
+	EnvironmentOutlined,
 	HomeOutlined,
 	InboxOutlined,
 	MedicineBoxOutlined,
@@ -15,6 +16,7 @@ import {
 	ItemRoutesEnum,
 	PatientRoutesEnum,
 	PrescriptorRoutesEnum,
+	StockLocationRoutesEnum,
 	UserRoutesEnum,
 } from "@/core/enums/app-routes.enum";
 
@@ -56,6 +58,14 @@ export const dashboardItems: IDashboardItem[] = [
 		subtitle: "Gerenciar itens do sistema",
 		icon: <AppstoreOutlined />,
 		to: ItemRoutesEnum.ITEMS,
+		iconColor: "#1677ff",
+		allowedRoles: [RoleEnum.ADMIN, RoleEnum.FARMACEUTICO],
+	},
+	{
+		title: "Gestão de Locais de Estoque",
+		subtitle: "Gerenciar locais de estoque do sistema",
+		icon: <EnvironmentOutlined />,
+		to: StockLocationRoutesEnum.STOCK_LOCATIONS,
 		iconColor: "#1677ff",
 		allowedRoles: [RoleEnum.ADMIN, RoleEnum.FARMACEUTICO],
 	},

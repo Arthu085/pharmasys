@@ -10,6 +10,7 @@ import {
 	NotFoundRoutesEnum,
 	PatientRoutesEnum,
 	PrescriptorRoutesEnum,
+	StockLocationRoutesEnum,
 	UserRoutesEnum,
 } from "../enums/app-routes.enum";
 import { Navigate } from "react-router-dom";
@@ -26,6 +27,7 @@ import { PatientPage } from "@/modules/patient/presentation/pages/patient.page";
 import { BatchPage } from "@/modules/batch/presentation/pages/batch.page";
 import { PrescriptorPage } from "@/modules/prescriptor/presentation/pages/prescriptor.page";
 import { ItemPage } from "@/modules/item/presentation/pages/item.page";
+import { StockLocationPage } from "@/modules/stock-location/presentation/pages/stock-location.page";
 
 export const routesConfig: IAppRoute[] = [
 	{
@@ -87,6 +89,10 @@ export const routesConfig: IAppRoute[] = [
 					{
 						path: ItemRoutesEnum.ITEMS,
 						element: <ItemPage />,
+					},
+					{
+						path: StockLocationRoutesEnum.STOCK_LOCATIONS,
+						element: <StockLocationPage />,
 					},
 				],
 			},
