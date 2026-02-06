@@ -33,7 +33,12 @@ export enum ItemRoutesEnum {
 }
 
 export enum StockLocationRoutesEnum {
-	STOCK_LOCATIONS = "/stock-locations",
+	STOCK_LOCATIONS = "/stock/locations",
+}
+
+export enum MovementRoutesEnum {
+	MOVEMENT = "/movement",
+	STOCK_BALANCE = "/movement/stock/balance",
 }
 
 export enum NotFoundRoutesEnum {

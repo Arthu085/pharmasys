@@ -6,7 +6,9 @@ import {
 	AppstoreOutlined,
 	MedicineBoxOutlined,
 	LogoutOutlined,
+	StockOutlined,
 	SolutionOutlined,
+	SwapOutlined,
 	UserAddOutlined,
 	UserOutlined,
 } from "@ant-design/icons";
@@ -16,6 +18,7 @@ import {
 	CompanyRoutesEnum,
 	DashboardRoutesEnum,
 	ItemRoutesEnum,
+	MovementRoutesEnum,
 	PatientRoutesEnum,
 	PrescriptorRoutesEnum,
 	StockLocationRoutesEnum,
@@ -69,6 +72,25 @@ export const topMenuItems: IAppMenuItem[] = [
 			</Link>
 		),
 		allowedRoles: [RoleEnum.ADMIN, RoleEnum.FARMACEUTICO],
+	},
+	{
+		key: MovementRoutesEnum.MOVEMENT,
+		icon: <SwapOutlined />,
+		label: "Movimentações",
+		children: [
+			{
+				key: MovementRoutesEnum.STOCK_BALANCE,
+				icon: <StockOutlined />,
+				label: (
+					<Link to={MovementRoutesEnum.STOCK_BALANCE}>Saldos de Estoque</Link>
+				),
+				allowedRoles: [
+					RoleEnum.ADMIN,
+					RoleEnum.FARMACEUTICO,
+					RoleEnum.OPERADOR,
+				],
+			},
+		],
 	},
 	{
 		key: UserRoutesEnum.USERS,

@@ -7,6 +7,7 @@ import {
 	CompanyRoutesEnum,
 	DashboardRoutesEnum,
 	ItemRoutesEnum,
+	MovementRoutesEnum,
 	NotFoundRoutesEnum,
 	PatientRoutesEnum,
 	PrescriptorRoutesEnum,
@@ -28,6 +29,7 @@ import { BatchPage } from "@/modules/batch/presentation/pages/batch.page";
 import { PrescriptorPage } from "@/modules/prescriptor/presentation/pages/prescriptor.page";
 import { ItemPage } from "@/modules/item/presentation/pages/item.page";
 import { StockLocationPage } from "@/modules/stock-location/presentation/pages/stock-location.page";
+import { StockBalancePage } from "@/modules/stock-balance/presentation/pages/stock-balance.page";
 
 export const routesConfig: IAppRoute[] = [
 	{
@@ -93,6 +95,10 @@ export const routesConfig: IAppRoute[] = [
 					{
 						path: StockLocationRoutesEnum.STOCK_LOCATIONS,
 						element: <StockLocationPage />,
+					},
+					{
+						path: MovementRoutesEnum.STOCK_BALANCE,
+						element: <StockBalancePage />,
 					},
 				],
 			},
