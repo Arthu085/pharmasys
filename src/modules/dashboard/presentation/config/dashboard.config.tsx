@@ -5,6 +5,7 @@ import {
 	InboxOutlined,
 	MedicineBoxOutlined,
 	SolutionOutlined,
+	StockOutlined,
 	UserAddOutlined,
 	UserOutlined,
 } from "@ant-design/icons";
@@ -14,6 +15,7 @@ import {
 	BatchRoutesEnum,
 	CompanyRoutesEnum,
 	ItemRoutesEnum,
+	MovementRoutesEnum,
 	PatientRoutesEnum,
 	PrescriptorRoutesEnum,
 	StockLocationRoutesEnum,
@@ -68,6 +70,14 @@ export const dashboardItems: IDashboardItem[] = [
 		to: StockLocationRoutesEnum.STOCK_LOCATIONS,
 		iconColor: "#1677ff",
 		allowedRoles: [RoleEnum.ADMIN, RoleEnum.FARMACEUTICO],
+	},
+	{
+		title: "Gestão de Saldos de Estoque",
+		subtitle: "Gerenciar saldos de estoque do sistema",
+		icon: <StockOutlined />,
+		to: MovementRoutesEnum.STOCK_BALANCE,
+		iconColor: "#1677ff",
+		allowedRoles: [RoleEnum.ADMIN, RoleEnum.FARMACEUTICO, RoleEnum.OPERADOR],
 	},
 	{
 		title: "Gestão de Usuários",

@@ -3,7 +3,7 @@ import {
 	AppAsyncSelect,
 	type AppAsyncSelectProps,
 	type FetchResult,
-} from "../app-async-select"; // Caminho relativo
+} from "../app-async-select";
 import { companyService } from "@/modules/company/infrastructure/company.service";
 import { StatusEnum } from "@/shared/domain/enums/status.enum";
 import type { ICompanyListData } from "@/modules/company/domain/dtos/company-list-response.dto";

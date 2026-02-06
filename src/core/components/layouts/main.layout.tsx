@@ -90,7 +90,7 @@ export const MainLayout = () => {
 					placement="left"
 					open={!collapsed}
 					onClose={() => setCollapsed(true)}
-					size="200px"
+					size="220px"
 					styles={{ body: { padding: 0 } }}
 					closable={false}>
 					{sidebarContent}
@@ -100,6 +100,7 @@ export const MainLayout = () => {
 					theme="light"
 					breakpoint="md"
 					collapsedWidth={0}
+					width={220}
 					trigger={null}
 					collapsible
 					collapsed={collapsed}

@@ -28,6 +28,7 @@ export interface AppAsyncSelectProps<T = any> extends Omit<
 	}) => Promise<FetchResult<T>>;
 	mapOption: (item: T) => { label: React.ReactNode; value: string | number };
 	debounceTime?: number;
+	refetchOnOpen?: boolean;
 	name?: string;
 	label?: string;
 	zodSchema?: ZodSchema;
@@ -38,6 +39,7 @@ export const AppAsyncSelect = <T,>({
 	fetchOptions,
 	mapOption,
 	debounceTime = 800,
+	refetchOnOpen = true,
 	showSearch: showSearchProp,
 	name,
 	label,
@@ -138,9 +140,15 @@ export const AppAsyncSelect = <T,>({
 	};
 
 	const handleOnOpenChange = (open: boolean) => {
-		if (open && !hasFetchedOnceRef.current && mountedRef.current) {
+		if (open && mountedRef.current) {
+			const shouldFetch = refetchOnOpen || !hasFetchedOnceRef.current;
+			if (!shouldFetch) {
+				props.onOpenChange?.(open);
+				return;
+			}
+
 			pageRef.current = 1;
-			loadData("", 1, false);
+			loadData(searchRef.current, 1, false);
 		}
 		props.onOpenChange?.(open);
 	};
