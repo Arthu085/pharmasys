@@ -24,7 +24,6 @@ export const getPatientColumns = ({
 		dataIndex: "name",
 		key: "name",
 		render: (text) => <strong>{text}</strong>,
-		fixed: isMobile ? undefined : "left",
 		width: 300,
 	},
 	{

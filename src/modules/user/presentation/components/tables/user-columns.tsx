@@ -26,7 +26,6 @@ export const getUserColumns = ({
 		key: "name",
 		render: (text) => <strong>{text}</strong>,
 		width: 300,
-		fixed: isMobile ? undefined : "left",
 	},
 	{
 		title: "E-mail",

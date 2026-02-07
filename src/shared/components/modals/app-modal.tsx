@@ -6,6 +6,7 @@ interface AppModalProps extends ModalProps {
 	confirmLoading?: boolean;
 	loading?: boolean;
 	hideFooter?: boolean;
+	width?: number;
 }
 
 export const AppModal = ({
@@ -13,6 +14,7 @@ export const AppModal = ({
 	confirmLoading = false,
 	loading = false,
 	hideFooter = false,
+	width = 600,
 	...rest
 }: AppModalProps) => {
 	return (
@@ -22,7 +24,7 @@ export const AppModal = ({
 			destroyOnHidden
 			maskClosable
 			keyboard
-			width={600}
+			width={width}
 			footer={hideFooter ? null : undefined}
 			confirmLoading={confirmLoading}
 			cancelText="Cancelar"

@@ -10,18 +10,21 @@ export const getStockBalanceColumns =
 			dataIndex: "item",
 			key: "item",
 			width: 300,
+			render: (item) => item.label,
 		},
 		{
 			title: "Lote",
 			dataIndex: "batch",
 			key: "batch",
 			width: 300,
+			render: (batch) => batch.label,
 		},
 		{
 			title: "Local de Estoque",
 			dataIndex: "stockLocation",
 			key: "stockLocation",
 			width: 300,
+			render: (stockLocation) => stockLocation.label,
 		},
 		{
 			title: "Quantidade",
