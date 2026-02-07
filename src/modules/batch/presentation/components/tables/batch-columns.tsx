@@ -26,7 +26,6 @@ export const getBatchColumns = ({
 		dataIndex: "batchCode",
 		key: "batchCode",
 		render: (text) => <strong>{text}</strong>,
-		fixed: isMobile ? undefined : "left",
 		width: 300,
 	},
 	{

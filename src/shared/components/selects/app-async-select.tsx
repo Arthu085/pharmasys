@@ -20,7 +20,7 @@ export interface FetchResult<T> {
 
 export interface AppAsyncSelectProps<T = any> extends Omit<
 	SelectProps,
-	"options" | "onSearch" | "filterOption" | "notFoundContent"
+	"options" | "onSearch" | "filterOption" | "notFoundContent" | "name"
 > {
 	fetchOptions: (params: {
 		search: string;
@@ -29,7 +29,7 @@ export interface AppAsyncSelectProps<T = any> extends Omit<
 	mapOption: (item: T) => { label: React.ReactNode; value: string | number };
 	debounceTime?: number;
 	refetchOnOpen?: boolean;
-	name?: string;
+	name?: string | (string | number)[];
 	label?: string;
 	zodSchema?: ZodSchema;
 	options?: SelectProps["options"];
