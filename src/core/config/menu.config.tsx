@@ -12,6 +12,7 @@ import {
 	UserAddOutlined,
 	UserOutlined,
 	ImportOutlined,
+	ExportOutlined,
 } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import {
@@ -95,6 +96,16 @@ export const topMenuItems: IAppMenuItem[] = [
 				key: MovementRoutesEnum.INVENTORY_ENTRY,
 				icon: <ImportOutlined />,
 				label: <Link to={MovementRoutesEnum.INVENTORY_ENTRY}>Entradas</Link>,
+				allowedRoles: [
+					RoleEnum.ADMIN,
+					RoleEnum.FARMACEUTICO,
+					RoleEnum.OPERADOR,
+				],
+			},
+			{
+				key: MovementRoutesEnum.INVENTORY_EXIT,
+				icon: <ExportOutlined />,
+				label: <Link to={MovementRoutesEnum.INVENTORY_EXIT}>Saídas</Link>,
 				allowedRoles: [
 					RoleEnum.ADMIN,
 					RoleEnum.FARMACEUTICO,

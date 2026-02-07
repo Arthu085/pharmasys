@@ -31,6 +31,7 @@ import { ItemPage } from "@/modules/item/presentation/pages/item.page";
 import { StockLocationPage } from "@/modules/stock-location/presentation/pages/stock-location.page";
 import { StockBalancePage } from "@/modules/stock-balance/presentation/pages/stock-balance.page";
 import { InventoryEntryPage } from "@/modules/inventory-entry/presentation/pages/inventory-entry.page";
+import { InventoryExitPage } from "@/modules/inventory-exit/presentation/pages/inventory-exit.page";
 
 export const routesConfig: IAppRoute[] = [
 	{
@@ -104,6 +105,10 @@ export const routesConfig: IAppRoute[] = [
 					{
 						path: MovementRoutesEnum.INVENTORY_ENTRY,
 						element: <InventoryEntryPage />,
+					},
+					{
+						path: MovementRoutesEnum.INVENTORY_EXIT,
+						element: <InventoryExitPage />,
 					},
 				],
 			},
