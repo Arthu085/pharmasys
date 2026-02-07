@@ -1,4 +1,5 @@
 import { Col, Divider, Form, Row } from "antd";
+import { useState } from "react";
 import { AppModal } from "@/shared/components/modals/app-modal";
 import { AppInput } from "@/shared/components/inputs/app-input";
 import { useFormSubmit } from "@/shared/hooks/use-form-submit";
@@ -17,6 +18,8 @@ import { inventoryEntryItemCreateSchema } from "../../domain/dtos/inventory-entr
 import { AppBatchSelect } from "@/shared/components/selects/batch/app-batch-select";
 import { AppInputNumber } from "@/shared/components/inputs/app-input-number";
 import { AppFormList } from "@/shared/components/form/app-form-list";
+import { BatchCreate } from "@/modules/batch/presentation/components/batch-create";
+import { AppButton } from "@/shared/components/buttons/app-button";
 
 export const InventoryEntryCreate = ({
 	open,
@@ -24,6 +27,7 @@ export const InventoryEntryCreate = ({
 	onSuccess,
 }: ICreateProps) => {
 	const [form] = Form.useForm();
+	const [openBatchCreate, setOpenBatchCreate] = useState(false);
 
 	const handleCreate = async (formData: any) => {
 		const { items, ...entryData } = formData;
@@ -50,6 +54,11 @@ export const InventoryEntryCreate = ({
 			onOk={form.submit}
 			confirmLoading={saving}
 			width={800}>
+			<BatchCreate
+				open={openBatchCreate}
+				onClose={() => setOpenBatchCreate(false)}
+				onSuccess={() => setOpenBatchCreate(false)}
+			/>
 			<Form<ICreateInventoryEntryRequestDto>
 				form={form}
 				layout="vertical"
@@ -125,6 +134,14 @@ export const InventoryEntryCreate = ({
 									label="Lote"
 									placeholder="Selecione o lote..."
 									zodSchema={inventoryEntryItemCreateSchema.shape.batch}
+									extra={
+										<AppButton
+											type="link"
+											style={{ padding: 0 }}
+											onClick={() => setOpenBatchCreate(true)}>
+											Cadastrar lote
+										</AppButton>
+									}
 								/>
 							</Col>
 							<Col xs={24} md={6}>

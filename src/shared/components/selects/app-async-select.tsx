@@ -6,6 +6,7 @@ import React, {
 	useCallback,
 } from "react";
 import { Form, Select, Spin, Empty, type SelectProps } from "antd";
+import type { FormItemProps } from "antd";
 import debounce from "lodash.debounce";
 import {
 	createZodRule,
@@ -33,6 +34,7 @@ export interface AppAsyncSelectProps<T = any> extends Omit<
 	label?: string;
 	zodSchema?: ZodSchema;
 	options?: SelectProps["options"];
+	extra?: FormItemProps["extra"];
 }
 
 export const AppAsyncSelect = <T,>({
@@ -44,6 +46,7 @@ export const AppAsyncSelect = <T,>({
 	name,
 	label,
 	zodSchema,
+	extra,
 	className,
 	options: initialOptions,
 	...props
@@ -215,6 +218,7 @@ export const AppAsyncSelect = <T,>({
 			label={label}
 			rules={rules}
 			required={required}
+			extra={extra}
 			getValueFromEvent={(value) =>
 				value === undefined && !required ? null : value
 			}
