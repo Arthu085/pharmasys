@@ -1,5 +1,4 @@
 import { Col, Divider, Form, Row } from "antd";
-import { useState } from "react";
 import { AppModal } from "@/shared/components/modals/app-modal";
 import type { ICreateProps } from "@/shared/domain/interfaces/create.interface";
 import type { ICreateItemDispensationRequestDto } from "../../domain/dtos/create-item-dispensation-request.dto";
@@ -19,6 +18,7 @@ import { AppPrescriptorSelect } from "@/shared/components/selects/prescriptor/ap
 import { AppInput } from "@/shared/components/inputs/app-input";
 import { useFormSubmit } from "@/shared/hooks/use-form-submit";
 import { AppCheckbox } from "@/shared/components/inputs/app-checkbox";
+import { useModals } from "@/shared/hooks/use-modals";
 
 export const ItemDispensationCreate = ({
 	open,
@@ -26,7 +26,7 @@ export const ItemDispensationCreate = ({
 	onSuccess,
 }: ICreateProps) => {
 	const [form] = Form.useForm();
-	const [openBatchCreate, setOpenBatchCreate] = useState(false);
+	const modals = useModals<string>();
 
 	const handleCreate = async (formData: any) => {
 		const { items, ...dispensationData } = formData;
@@ -54,9 +54,9 @@ export const ItemDispensationCreate = ({
 			confirmLoading={saving}
 			width={800}>
 			<BatchCreate
-				open={openBatchCreate}
-				onClose={() => setOpenBatchCreate(false)}
-				onSuccess={() => setOpenBatchCreate(false)}
+				open={modals.isCreateOpen}
+				onClose={modals.closeCreate}
+				onSuccess={modals.closeCreate}
 			/>
 			<Form<ICreateItemDispensationRequestDto>
 				form={form}
@@ -123,7 +123,7 @@ export const ItemDispensationCreate = ({
 										<AppButton
 											type="link"
 											style={{ padding: 0 }}
-											onClick={() => setOpenBatchCreate(true)}>
+											onClick={() => modals.openCreate()}>
 											Cadastrar lote
 										</AppButton>
 									}

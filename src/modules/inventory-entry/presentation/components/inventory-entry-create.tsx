@@ -1,5 +1,4 @@
 import { Col, Divider, Form, Row } from "antd";
-import { useState } from "react";
 import { AppModal } from "@/shared/components/modals/app-modal";
 import { AppInput } from "@/shared/components/inputs/app-input";
 import { useFormSubmit } from "@/shared/hooks/use-form-submit";
@@ -20,6 +19,7 @@ import { AppInputNumber } from "@/shared/components/inputs/app-input-number";
 import { AppFormList } from "@/shared/components/form/app-form-list";
 import { BatchCreate } from "@/modules/batch/presentation/components/batch-create";
 import { AppButton } from "@/shared/components/buttons/app-button";
+import { useModals } from "@/shared/hooks/use-modals";
 
 export const InventoryEntryCreate = ({
 	open,
@@ -27,7 +27,7 @@ export const InventoryEntryCreate = ({
 	onSuccess,
 }: ICreateProps) => {
 	const [form] = Form.useForm();
-	const [openBatchCreate, setOpenBatchCreate] = useState(false);
+	const modals = useModals<string>();
 
 	const handleCreate = async (formData: any) => {
 		const { items, ...entryData } = formData;
@@ -55,9 +55,9 @@ export const InventoryEntryCreate = ({
 			confirmLoading={saving}
 			width={800}>
 			<BatchCreate
-				open={openBatchCreate}
-				onClose={() => setOpenBatchCreate(false)}
-				onSuccess={() => setOpenBatchCreate(false)}
+				open={modals.isCreateOpen}
+				onClose={modals.closeCreate}
+				onSuccess={modals.closeCreate}
 			/>
 			<Form<ICreateInventoryEntryRequestDto>
 				form={form}
@@ -138,7 +138,7 @@ export const InventoryEntryCreate = ({
 										<AppButton
 											type="link"
 											style={{ padding: 0 }}
-											onClick={() => setOpenBatchCreate(true)}>
+											onClick={() => modals.openCreate()}>
 											Cadastrar lote
 										</AppButton>
 									}
