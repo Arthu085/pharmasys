@@ -127,6 +127,16 @@ export const topMenuItems: IAppMenuItem[] = [
 					RoleEnum.OPERADOR,
 				],
 			},
+			{
+				key: MovementRoutesEnum.STOCK_TRANSFER,
+				icon: <SwapOutlined />,
+				label: (
+					<Link to={MovementRoutesEnum.STOCK_TRANSFER}>
+						Transferências de Estoque
+					</Link>
+				),
+				allowedRoles: [RoleEnum.ADMIN, RoleEnum.FARMACEUTICO],
+			},
 		],
 	},
 	{
