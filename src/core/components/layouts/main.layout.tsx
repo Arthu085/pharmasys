@@ -50,8 +50,12 @@ export const MainLayout = () => {
 		<Flex
 			className="main-sidebar"
 			vertical
-			style={{ height: "100%", minHeight: 0 }}>
-			<Flex vertical style={{ padding: 16, paddingBottom: 8 }}>
+			style={{ 
+				height: "100vh", 
+				minHeight: 0,
+				overflow: "hidden"
+			}}>
+			<Flex vertical style={{ padding: 16, paddingBottom: 8, flexShrink: 0 }}>
 				<Typography.Title
 					level={4}
 					ellipsis={{ tooltip: "Pharmasys" }}
@@ -59,8 +63,15 @@ export const MainLayout = () => {
 					Pharmasys
 				</Typography.Title>
 			</Flex>
-			<Divider style={{ margin: "0 0 8px 0" }} />
-			<Flex vertical style={{ flex: 1, minHeight: 0, overflow: "auto" }}>
+			<Divider style={{ margin: "0 0 8px 0", flexShrink: 0 }} />
+			<Flex 
+				vertical 
+				style={{ 
+					flex: 1, 
+					minHeight: 0, 
+					overflow: "auto",
+					paddingRight: 8
+				}}>
 				<Menu
 					theme="light"
 					mode="inline"
@@ -69,18 +80,22 @@ export const MainLayout = () => {
 					onClick={() => {
 						if (isMobile) setCollapsed(true);
 					}}
+					style={{ border: 'none' }}
 				/>
 			</Flex>
-			<Divider style={{ margin: "8px 0" }} />
-			<Menu
-				theme="light"
-				mode="inline"
-				items={bottomItems}
-				selectedKeys={getSelectedKeys()}
-				onClick={() => {
-					if (isMobile) setCollapsed(true);
-				}}
-			/>
+			<Divider style={{ margin: "8px 0", flexShrink: 0 }} />
+			<Flex style={{ flexShrink: 0 }}>
+				<Menu
+					theme="light"
+					mode="inline"
+					items={bottomItems}
+					selectedKeys={getSelectedKeys()}
+					onClick={() => {
+						if (isMobile) setCollapsed(true);
+					}}
+					style={{ border: 'none', width: '100%' }}
+				/>
+			</Flex>
 		</Flex>
 	);
 
@@ -94,7 +109,13 @@ export const MainLayout = () => {
 					open={!collapsed}
 					onClose={() => setCollapsed(true)}
 					size="220px"
-					styles={{ body: { padding: 0 } }}
+					styles={{ 
+						body: { 
+							padding: 0,
+							height: '100%',
+							overflow: 'hidden'
+						} 
+					}}
 					closable={false}>
 					{sidebarContent}
 				</Drawer>
@@ -111,6 +132,7 @@ export const MainLayout = () => {
 						display: "flex",
 						flexDirection: "column",
 						overflow: "hidden",
+						height: "100vh",
 					}}>
 					{sidebarContent}
 				</Sider>
