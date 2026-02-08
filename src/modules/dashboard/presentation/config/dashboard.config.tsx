@@ -11,6 +11,7 @@ import {
 	StockOutlined,
 	UserAddOutlined,
 	UserOutlined,
+	SwapOutlined,
 } from "@ant-design/icons";
 import { RoleEnum } from "@/shared/domain/enums/role.enum";
 import type { IDashboardItem } from "../../domain/interfaces/dashboard-item.interface";
@@ -105,6 +106,14 @@ export const dashboardItems: IDashboardItem[] = [
 		to: MovementRoutesEnum.ITEM_DISPENSATION,
 		iconColor: "#1677ff",
 		allowedRoles: [RoleEnum.ADMIN, RoleEnum.FARMACEUTICO, RoleEnum.OPERADOR],
+	},
+	{
+		title: "Gestão de Transferências de Estoque",
+		subtitle: "Gerenciar transferências de estoque do sistema",
+		icon: <SwapOutlined />,
+		to: MovementRoutesEnum.STOCK_TRANSFER,
+		iconColor: "#1677ff",
+		allowedRoles: [RoleEnum.ADMIN, RoleEnum.FARMACEUTICO],
 	},
 	{
 		title: "Gestão de Usuários",
