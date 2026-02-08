@@ -1,27 +1,26 @@
 import { Col, Divider, Form, Row } from "antd";
 import { AppModal } from "@/shared/components/modals/app-modal";
-import { AppInput } from "@/shared/components/inputs/app-input";
-import { useFormSubmit } from "@/shared/hooks/use-form-submit";
 import type { ICreateProps } from "@/shared/domain/interfaces/create.interface";
-import type { ICreateInventoryEntryRequestDto } from "../../domain/dtos/create-inventory-entry-request.dto";
-import { inventoryEntryService } from "../../infrastructure/inventory-entry.service";
-import {
-	entryTypeConfig,
-	inventoryEntryCreateSchema,
-} from "../../domain/dtos/inventory-entry-create.dto";
+import type { ICreateItemDispensationRequestDto } from "../../domain/dtos/create-item-dispensation-request.dto";
+import { itemDispensationCreateSchema } from "../../domain/dtos/item-dispensation-create.dto";
 import { AppDateInput } from "@/shared/components/inputs/app-date-input";
-import { AppSelect } from "@/shared/components/selects/app-select";
 import { AppStockLocationSelect } from "@/shared/components/selects/stock-location/app-stock-location-select";
 import { AppItemSelect } from "@/shared/components/selects/item/app-item-select";
-import { inventoryEntryItemCreateSchema } from "../../domain/dtos/inventory-entry-item-create.dto";
+import { itemDispensationItemCreateSchema } from "../../domain/dtos/item-dispensation-item-create.dto";
 import { AppBatchSelect } from "@/shared/components/selects/batch/app-batch-select";
 import { AppInputNumber } from "@/shared/components/inputs/app-input-number";
 import { AppFormList } from "@/shared/components/form/app-form-list";
 import { BatchCreate } from "@/modules/batch/presentation/components/batch-create";
 import { AppButton } from "@/shared/components/buttons/app-button";
+import { itemDispensationService } from "../../infrastructure/item-dispensation.service";
+import { AppPatientSelect } from "@/shared/components/selects/patient/app-patient-select";
+import { AppPrescriptorSelect } from "@/shared/components/selects/prescriptor/app-prescriptor-select";
+import { AppInput } from "@/shared/components/inputs/app-input";
+import { useFormSubmit } from "@/shared/hooks/use-form-submit";
+import { AppCheckbox } from "@/shared/components/inputs/app-checkbox";
 import { useModals } from "@/shared/hooks/use-modals";
 
-export const InventoryEntryCreate = ({
+export const ItemDispensationCreate = ({
 	open,
 	onClose,
 	onSuccess,
@@ -30,25 +29,25 @@ export const InventoryEntryCreate = ({
 	const modals = useModals<string>();
 
 	const handleCreate = async (formData: any) => {
-		const { items, ...entryData } = formData;
+		const { items, ...dispensationData } = formData;
 
-		const payload: ICreateInventoryEntryRequestDto = {
-			entry: entryData,
+		const payload: ICreateItemDispensationRequestDto = {
+			dispensation: dispensationData,
 			items: items,
 		};
 
-		return inventoryEntryService.create(payload);
+		return itemDispensationService.create(payload);
 	};
 
 	const { saving, handleSubmit } =
-		useFormSubmit<ICreateInventoryEntryRequestDto>(handleCreate, () => {
+		useFormSubmit<ICreateItemDispensationRequestDto>(handleCreate, () => {
 			onSuccess?.();
 			onClose();
 		});
 
 	return (
 		<AppModal
-			title="Criar Entrada de Estoque"
+			title="Criar Dispensação de Item"
 			open={open}
 			onCancel={onClose}
 			onOk={form.submit}
@@ -59,7 +58,7 @@ export const InventoryEntryCreate = ({
 				onClose={modals.closeCreate}
 				onSuccess={modals.closeCreate}
 			/>
-			<Form<ICreateInventoryEntryRequestDto>
+			<Form<ICreateItemDispensationRequestDto>
 				form={form}
 				layout="vertical"
 				onFinish={handleSubmit}
@@ -70,52 +69,38 @@ export const InventoryEntryCreate = ({
 				}}>
 				<Row gutter={16}>
 					<Col xs={24} md={12}>
-						<AppInput
-							name="invoiceNumber"
-							label="Nota Fiscal"
-							placeholder="Ex: 123456"
-							zodSchema={inventoryEntryCreateSchema.shape.invoiceNumber}
-							maxLength={70}
+						<AppPatientSelect
+							name="patient"
+							label="Paciente"
+							zodSchema={itemDispensationCreateSchema.shape.patient}
 						/>
 					</Col>
 					<Col xs={24} md={12}>
+						<AppPrescriptorSelect
+							name="prescriptor"
+							label="Prescriptor"
+							zodSchema={itemDispensationCreateSchema.shape.prescriptor}
+						/>
+					</Col>
+					<Col xs={24} md={14}>
 						<AppStockLocationSelect
 							name="stockLocation"
 							label="Local de Estoque"
-							zodSchema={inventoryEntryCreateSchema.shape.stockLocation}
+							zodSchema={itemDispensationCreateSchema.shape.stockLocation}
 						/>
 					</Col>
-					<Col xs={24} md={8}>
+					<Col xs={24} md={10}>
 						<AppDateInput
-							name="entryDate"
-							label="Data de Entrada"
-							zodSchema={inventoryEntryCreateSchema.shape.entryDate}
-						/>
-					</Col>
-					<Col xs={24} md={8}>
-						<AppSelect
-							name="entryType"
-							label="Tipo de Entrada"
-							placeholder="Selecione..."
-							zodSchema={inventoryEntryCreateSchema.shape.entryType}
-							options={entryTypeConfig.options}
-						/>
-					</Col>
-					<Col xs={24} md={8}>
-						<AppInputNumber
-							name="totalValue"
-							label="Valor Total"
-							placeholder="0.00"
-							zodSchema={inventoryEntryCreateSchema.shape.totalValue}
-							precision={2}
-							prefix="R$"
+							name="dispensationDate"
+							label="Data de Dispensação"
+							zodSchema={itemDispensationCreateSchema.shape.dispensationDate}
 						/>
 					</Col>
 				</Row>
 				<Divider />
 				<AppFormList
 					name="items"
-					label="Itens da Entrada"
+					label="Itens da Dispensação"
 					addButtonLabel="Adicionar novo item"
 					minItems={1}
 					renderItem={(field) => (
@@ -125,7 +110,7 @@ export const InventoryEntryCreate = ({
 									name={[field.name, "item"]}
 									label="Item"
 									placeholder="Selecione o item..."
-									zodSchema={inventoryEntryItemCreateSchema.shape.item}
+									zodSchema={itemDispensationItemCreateSchema.shape.item}
 								/>
 							</Col>
 							<Col xs={24} md={12}>
@@ -133,7 +118,7 @@ export const InventoryEntryCreate = ({
 									name={[field.name, "batch"]}
 									label="Lote"
 									placeholder="Selecione o lote..."
-									zodSchema={inventoryEntryItemCreateSchema.shape.batch}
+									zodSchema={itemDispensationItemCreateSchema.shape.batch}
 									extra={
 										<AppButton
 											type="link"
@@ -148,21 +133,30 @@ export const InventoryEntryCreate = ({
 								<AppInputNumber
 									name={[field.name, "quantity"]}
 									label="Qtd"
-									zodSchema={inventoryEntryItemCreateSchema.shape.quantity}
+									zodSchema={itemDispensationItemCreateSchema.shape.quantity}
 									min={0}
 									precision={0}
 									placeholder="0"
 								/>
 							</Col>
-							<Col xs={24} md={6}>
-								<AppInputNumber
-									name={[field.name, "unitPrice"]}
-									label="Preço Unit."
-									zodSchema={inventoryEntryItemCreateSchema.shape.unitPrice}
-									min={0}
-									precision={2}
-									placeholder="0.00"
-									prefix="R$"
+							<Col xs={24} md={18}>
+								<AppInput
+									name={[field.name, "prescriptionNotificationNumber"]}
+									label="Número de Notificação da Prescrição"
+									zodSchema={
+										itemDispensationItemCreateSchema.shape
+											.prescriptionNotificationNumber
+									}
+									maxLength={50}
+									extra={
+										<AppCheckbox
+											name={[field.name, "isPsychotropic"]}
+											label="Psicotrópico?"
+											zodSchema={
+												itemDispensationItemCreateSchema.shape.isPsychotropic
+											}
+										/>
+									}
 								/>
 							</Col>
 						</Row>

@@ -1,16 +1,17 @@
-import { Form, Input, type InputProps } from "antd";
+import { Form, Input, type FormItemProps, type InputProps } from "antd";
 import {
 	createZodRule,
 	isZodRequired,
 	type ZodSchema,
 } from "@/shared/validation/antd-zod";
 
-interface AppInputProps extends InputProps {
-	name?: string;
+interface AppInputProps extends Omit<InputProps, "name"> {
+	name?: string | (string | number)[];
 	label?: string;
 	zodSchema?: ZodSchema;
 	placeholder?: string;
 	formatValueFromEvent?: (value: string) => unknown;
+	extra?: FormItemProps["extra"];
 }
 
 export const AppInput = ({
@@ -19,6 +20,7 @@ export const AppInput = ({
 	zodSchema,
 	className,
 	formatValueFromEvent,
+	extra,
 	...rest
 }: AppInputProps) => {
 	const rules = zodSchema ? [createZodRule(zodSchema)] : undefined;
@@ -56,7 +58,8 @@ export const AppInput = ({
 			label={label}
 			rules={rules}
 			required={required}
-			getValueFromEvent={getFormattedValueFromEvent(formatValueFromEvent)}>
+			getValueFromEvent={getFormattedValueFromEvent(formatValueFromEvent)}
+			extra={extra}>
 			<Input
 				className={className}
 				style={{ width: "100%", height: 40 }}
