@@ -47,7 +47,10 @@ export const MainLayout = () => {
 	};
 
 	const sidebarContent = (
-		<Flex vertical style={{ height: "100%", minHeight: 0 }}>
+		<Flex
+			className="main-sidebar"
+			vertical
+			style={{ height: "100%", minHeight: 0 }}>
 			<Flex vertical style={{ padding: 16, paddingBottom: 8 }}>
 				<Typography.Title
 					level={4}

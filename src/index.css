@@ -23,6 +23,26 @@ body {
 	background-color: #f0f2f5;
 }
 
+.main-sidebar .ant-menu-inline .ant-menu-item,
+.main-sidebar .ant-menu-inline .ant-menu-submenu-title {
+	height: auto;
+	line-height: 1.2;
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+
+.main-sidebar .ant-menu-title-content {
+	white-space: normal;
+	overflow: visible;
+	text-overflow: unset;
+}
+
+.main-sidebar .ant-menu-title-content > a {
+	white-space: normal;
+	overflow-wrap: anywhere;
+	word-break: break-word;
+}
+
 .app-table-actions {
 	display: inline-flex;
 	flex-wrap: wrap;

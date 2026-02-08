@@ -1,5 +1,6 @@
 import {
 	AppstoreOutlined,
+	DeliveredProcedureOutlined,
 	EnvironmentOutlined,
 	HomeOutlined,
 	ImportOutlined,
@@ -94,6 +95,14 @@ export const dashboardItems: IDashboardItem[] = [
 		subtitle: "Gerenciar saídas de estoque do sistema",
 		icon: <ExportOutlined />,
 		to: MovementRoutesEnum.INVENTORY_EXIT,
+		iconColor: "#1677ff",
+		allowedRoles: [RoleEnum.ADMIN, RoleEnum.FARMACEUTICO, RoleEnum.OPERADOR],
+	},
+	{
+		title: "Gestão de Dispensações de Itens",
+		subtitle: "Gerenciar dispensações de itens do sistema",
+		icon: <DeliveredProcedureOutlined />,
+		to: MovementRoutesEnum.ITEM_DISPENSATION,
 		iconColor: "#1677ff",
 		allowedRoles: [RoleEnum.ADMIN, RoleEnum.FARMACEUTICO, RoleEnum.OPERADOR],
 	},

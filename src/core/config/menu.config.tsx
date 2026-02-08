@@ -1,5 +1,6 @@
 import {
 	DashboardOutlined,
+	DeliveredProcedureOutlined,
 	EnvironmentOutlined,
 	HomeOutlined,
 	InboxOutlined,
@@ -106,6 +107,20 @@ export const topMenuItems: IAppMenuItem[] = [
 				key: MovementRoutesEnum.INVENTORY_EXIT,
 				icon: <ExportOutlined />,
 				label: <Link to={MovementRoutesEnum.INVENTORY_EXIT}>Saídas</Link>,
+				allowedRoles: [
+					RoleEnum.ADMIN,
+					RoleEnum.FARMACEUTICO,
+					RoleEnum.OPERADOR,
+				],
+			},
+			{
+				key: MovementRoutesEnum.ITEM_DISPENSATION,
+				icon: <DeliveredProcedureOutlined />,
+				label: (
+					<Link to={MovementRoutesEnum.ITEM_DISPENSATION}>
+						Dispensações de Itens
+					</Link>
+				),
 				allowedRoles: [
 					RoleEnum.ADMIN,
 					RoleEnum.FARMACEUTICO,
