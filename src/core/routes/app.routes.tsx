@@ -34,6 +34,7 @@ import { InventoryEntryPage } from "@/modules/inventory-entry/presentation/pages
 import { InventoryExitPage } from "@/modules/inventory-exit/presentation/pages/inventory-exit.page";
 import { ItemDispensationPage } from "@/modules/item-dispensation/presentation/pages/item-dispensation.page";
 import { StockTransferPage } from "@/modules/stock-transfer/presentation/pages/stock-transfer.page";
+import { TransferRequestPage } from "@/modules/transfer-request/presentation/pages/transfer-request.page";
 
 export const routesConfig: IAppRoute[] = [
 	{
@@ -119,6 +120,10 @@ export const routesConfig: IAppRoute[] = [
 					{
 						path: MovementRoutesEnum.STOCK_TRANSFER,
 						element: <StockTransferPage />,
+					},
+					{
+						path: MovementRoutesEnum.TRANSFER_REQUEST,
+						element: <TransferRequestPage />,
 					},
 				],
 			},

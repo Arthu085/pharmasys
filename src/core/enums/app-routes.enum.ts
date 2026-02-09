@@ -43,6 +43,7 @@ export enum MovementRoutesEnum {
 	INVENTORY_EXIT = "/movement/inventory/exit",
 	ITEM_DISPENSATION = "/movement/item/dispensation",
 	STOCK_TRANSFER = "/movement/stock/transfer",
+	TRANSFER_REQUEST = "/movement/transfer/request",
 }
 
 export enum NotFoundRoutesEnum {

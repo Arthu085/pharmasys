@@ -14,6 +14,7 @@ import {
 	UserOutlined,
 	ImportOutlined,
 	ExportOutlined,
+	SendOutlined,
 } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import {
@@ -136,6 +137,20 @@ export const topMenuItems: IAppMenuItem[] = [
 					</Link>
 				),
 				allowedRoles: [RoleEnum.ADMIN, RoleEnum.FARMACEUTICO],
+			},
+			{
+				key: MovementRoutesEnum.TRANSFER_REQUEST,
+				icon: <SendOutlined />,
+				label: (
+					<Link to={MovementRoutesEnum.TRANSFER_REQUEST}>
+						Solicitações de Transferência
+					</Link>
+				),
+				allowedRoles: [
+					RoleEnum.ADMIN,
+					RoleEnum.FARMACEUTICO,
+					RoleEnum.OPERADOR,
+				],
 			},
 		],
 	},

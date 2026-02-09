@@ -50,10 +50,10 @@ export const MainLayout = () => {
 		<Flex
 			className="main-sidebar"
 			vertical
-			style={{ 
-				height: "100vh", 
+			style={{
+				height: "100vh",
 				minHeight: 0,
-				overflow: "hidden"
+				overflow: "hidden",
 			}}>
 			<Flex vertical style={{ padding: 16, paddingBottom: 8, flexShrink: 0 }}>
 				<Typography.Title
@@ -64,13 +64,13 @@ export const MainLayout = () => {
 				</Typography.Title>
 			</Flex>
 			<Divider style={{ margin: "0 0 8px 0", flexShrink: 0 }} />
-			<Flex 
-				vertical 
-				style={{ 
-					flex: 1, 
-					minHeight: 0, 
+			<Flex
+				vertical
+				style={{
+					flex: 1,
+					minHeight: 0,
 					overflow: "auto",
-					paddingRight: 8
+					paddingRight: 8,
 				}}>
 				<Menu
 					theme="light"
@@ -80,7 +80,7 @@ export const MainLayout = () => {
 					onClick={() => {
 						if (isMobile) setCollapsed(true);
 					}}
-					style={{ border: 'none' }}
+					style={{ border: "none" }}
 				/>
 			</Flex>
 			<Divider style={{ margin: "8px 0", flexShrink: 0 }} />
@@ -93,7 +93,7 @@ export const MainLayout = () => {
 					onClick={() => {
 						if (isMobile) setCollapsed(true);
 					}}
-					style={{ border: 'none', width: '100%' }}
+					style={{ border: "none", width: "100%" }}
 				/>
 			</Flex>
 		</Flex>
@@ -109,12 +109,12 @@ export const MainLayout = () => {
 					open={!collapsed}
 					onClose={() => setCollapsed(true)}
 					size="220px"
-					styles={{ 
-						body: { 
+					styles={{
+						body: {
 							padding: 0,
-							height: '100%',
-							overflow: 'hidden'
-						} 
+							height: "100%",
+							overflow: "hidden",
+						},
 					}}
 					closable={false}>
 					{sidebarContent}
