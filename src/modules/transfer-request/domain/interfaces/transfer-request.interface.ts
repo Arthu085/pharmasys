@@ -6,5 +6,8 @@ export interface ITransferRequestProps extends Omit<
 	"items"
 > {
 	transfersRequest: ITransferRequestListData[];
+	onEdit: (transferRequest: ITransferRequestListData) => void;
+	onEditItems: (transferRequest: ITransferRequestListData) => void;
 	onDetails: (transferRequest: ITransferRequestListData) => void;
+	onDelete: (uuid: string) => Promise<void>;
 }

@@ -15,8 +15,8 @@ import type { ITransferRequestItemResponseDto } from "./transfer-request-item-re
 export interface ITransferRequestListData {
 	uuid: string;
 	requestDate: string;
-	origin: { label: string } | null;
-	destination: { label: string } | null;
+	origin: { value: string; label: string } | null;
+	destination: { value: string; label: string } | null;
 	reason: {
 		value: TransferReasonEnum;
 		label: TransferReasonEnumTranslated;

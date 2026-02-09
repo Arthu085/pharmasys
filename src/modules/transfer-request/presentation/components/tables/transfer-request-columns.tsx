@@ -6,12 +6,18 @@ import { formatDate } from "@/shared/utils/date.util";
 import { TransferStatusEnum } from "@/modules/transfer-request/domain/enums/transfer-status.enum";
 
 interface GetTransferRequestColumnsProps {
+	onEdit: (transferRequest: ITransferRequestListData) => void;
+	onEditItems: (transferRequest: ITransferRequestListData) => void;
 	onDetails: (transferRequest: ITransferRequestListData) => void;
+	onDelete: (uuid: string) => void;
 	isMobile?: boolean;
 }
 
 export const getTransferRequestColumns = ({
+	onEdit,
+	onEditItems,
 	onDetails,
+	onDelete,
 	isMobile = false,
 }: GetTransferRequestColumnsProps): ColumnsType<ITransferRequestListData> => [
 	{
@@ -22,27 +28,7 @@ export const getTransferRequestColumns = ({
 		render: (date) => formatDate(date, "DD/MM/YYYY"),
 	},
 	{
-		title: "Status",
-		dataIndex: "statusTransfer",
-		key: "statusTransfer",
-		render: (statusTransfer) => (
-			<Tag
-				color={
-					statusTransfer?.value === TransferStatusEnum.CONCLUIDO
-						? "green"
-						: statusTransfer?.value === TransferStatusEnum.NEGADO
-							? "red"
-							: statusTransfer?.value === TransferStatusEnum.SEPARACAO
-								? "blue"
-								: "orange"
-				}>
-				{statusTransfer?.label || statusTransfer}
-			</Tag>
-		),
-		width: 250,
-	},
-	{
-		title: "Motivo",
+		title: "Motivo da Transferência",
 		dataIndex: "reason",
 		key: "reason",
 		render: (reason) => <Tag color="purple">{reason?.label || reason}</Tag>,
@@ -65,6 +51,26 @@ export const getTransferRequestColumns = ({
 		width: 250,
 	},
 	{
+		title: "Status da Transferência",
+		dataIndex: "statusTransfer",
+		key: "statusTransfer",
+		render: (statusTransfer) => (
+			<Tag
+				color={
+					statusTransfer?.value === TransferStatusEnum.CONCLUIDO
+						? "green"
+						: statusTransfer?.value === TransferStatusEnum.NEGADO
+							? "red"
+							: statusTransfer?.value === TransferStatusEnum.SEPARACAO
+								? "blue"
+								: "orange"
+				}>
+				{statusTransfer?.label || statusTransfer}
+			</Tag>
+		),
+		width: 250,
+	},
+	{
 		title: "Itens",
 		dataIndex: "items",
 		key: "items",
@@ -78,7 +84,10 @@ export const getTransferRequestColumns = ({
 		render: (_, record) => (
 			<AppTableActions
 				entityName="Requisição de Transferência"
+				onEdit={() => onEdit(record)}
+				onEditItems={() => onEditItems(record)}
 				onDetails={() => onDetails(record)}
+				onDelete={() => onDelete(record.uuid)}
 			/>
 		),
 		fixed: isMobile ? undefined : "right",

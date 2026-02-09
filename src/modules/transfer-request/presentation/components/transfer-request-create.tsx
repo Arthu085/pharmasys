@@ -82,20 +82,21 @@ export const TransferRequestCreate = ({
 							zodSchema={transferRequestCreateSchema.shape.destination}
 						/>
 					</Col>
-					<Col xs={24} md={8}>
+					<Col xs={24} md={12}>
 						<AppDateInput
 							name="requestDate"
 							label="Data da Requisição"
 							zodSchema={transferRequestCreateSchema.shape.requestDate}
 						/>
 					</Col>
-					<Col xs={24} md={8}>
+					<Col xs={24} md={12}>
 						<AppSelect
 							name="reason"
-							label="Razão"
+							label="Motivo da Transferência"
 							placeholder="Selecione..."
 							zodSchema={transferRequestCreateSchema.shape.reason}
 							options={reasonConfig.options}
+							showSearch={{ optionFilterProp: "label" }}
 						/>
 					</Col>
 				</Row>

@@ -5,6 +5,7 @@ import {
 	EyeOutlined,
 	StopOutlined,
 	CheckCircleOutlined,
+	UnorderedListOutlined,
 } from "@ant-design/icons";
 import { StatusEnum } from "@/shared/domain/enums/status.enum";
 import type { IStatusDto } from "@/shared/domain/dtos/status.dto";
@@ -13,6 +14,7 @@ import { AppButton } from "@/shared/components/buttons/app-button";
 interface AppTableActionsProps {
 	entityName?: string;
 	onEdit?: () => void;
+	onEditItems?: () => void;
 	onDetails?: () => void;
 	onDelete?: () => Promise<void> | void;
 	currentStatus?: StatusEnum;
@@ -22,6 +24,7 @@ interface AppTableActionsProps {
 export const AppTableActions = ({
 	entityName = "Usuário",
 	onEdit,
+	onEditItems,
 	onDetails,
 	onDelete,
 	onStatus,
@@ -46,6 +49,16 @@ export const AppTableActions = ({
 						type="text"
 						icon={<EditOutlined />}
 						onClick={onEdit}
+					/>
+				</Tooltip>
+			)}
+			{onEditItems && (
+				<Tooltip title={isMobile ? undefined : "Editar Itens"}>
+					<AppButton
+						size="small"
+						type="text"
+						icon={<UnorderedListOutlined />}
+						onClick={onEditItems}
 					/>
 				</Tooltip>
 			)}

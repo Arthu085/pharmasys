@@ -11,9 +11,11 @@ export interface ITransferRequestItemResponseDto {
 		label: TransferStatusItemEnumTranslated;
 	} | null;
 	item: {
+		value: string;
 		label: string;
 	} | null;
 	batch: {
+		value: string;
 		label: string;
 	} | null;
 }

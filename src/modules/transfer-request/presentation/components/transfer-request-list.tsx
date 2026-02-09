@@ -9,7 +9,10 @@ export const TransferRequestList = ({
 	transfersRequest,
 	loading,
 	total,
+	onEdit,
+	onEditItems,
 	onDetails,
+	onDelete,
 	page,
 	pageSize,
 	onChangePage,
@@ -20,10 +23,13 @@ export const TransferRequestList = ({
 	const columns = useMemo(
 		() =>
 			getTransferRequestColumns({
+				onEdit,
+				onEditItems,
 				onDetails,
+				onDelete,
 				isMobile,
 			}),
-		[onDetails, isMobile],
+		[onEdit, onEditItems, onDetails, onDelete, isMobile],
 	);
 
 	return (

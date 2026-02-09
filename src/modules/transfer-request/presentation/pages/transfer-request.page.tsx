@@ -14,6 +14,9 @@ import { TransferStatusFilter } from "../components/filters/transfer-status.filt
 import { TransferRequestList } from "../components/transfer-request-list";
 import { TransferRequestCreate } from "../components/transfer-request-create";
 import { TransferRequestDetails } from "../components/transfer-request-details";
+import { TransferRequestEdit } from "../components/transfer-request-edit";
+import { useRowAction } from "@/shared/hooks/use-row-action";
+import { TransferRequestItemEdit } from "../components/transfer-request-item-edit";
 
 const { Title } = Typography;
 
@@ -33,6 +36,11 @@ export const TransferRequestPage = () => {
 			page: 1,
 			limit: 10,
 		},
+	);
+
+	const { handleAction: handleDelete } = useRowAction(
+		transferRequestService.delete,
+		refresh,
 	);
 
 	return (
@@ -56,7 +64,7 @@ export const TransferRequestPage = () => {
 			</Row>
 			<Card>
 				<Row gutter={[16, 16]} style={{ marginBottom: 16 }}>
-					<Col xs={24} sm={12} md={12} lg={12} xl={6}>
+					<Col xs={24} sm={12} md={12} lg={12} xl={8}>
 						<AppDateFilter
 							label="Data da Solicitação"
 							placeholder="Buscar pela data da solicitação..."
@@ -64,13 +72,13 @@ export const TransferRequestPage = () => {
 							onChange={(val) => handleFilterChange("requestDate", val)}
 						/>
 					</Col>
-					<Col xs={24} sm={12} md={12} lg={12} xl={6}>
+					<Col xs={24} sm={12} md={12} lg={12} xl={8}>
 						<TransferReasonFilter
 							value={filters.reason}
 							onChange={(val) => handleFilterChange("reason", val)}
 						/>
 					</Col>
-					<Col xs={24} sm={12} md={12} lg={12} xl={6}>
+					<Col xs={24} sm={12} md={12} lg={12} xl={8}>
 						<TransferStatusFilter
 							value={filters.statusTransfer}
 							onChange={(val) => handleFilterChange("statusTransfer", val)}
@@ -116,15 +124,38 @@ export const TransferRequestPage = () => {
 					page={filters.page}
 					pageSize={filters.limit}
 					onChangePage={handlePageChange}
+					onEdit={(transferRequest) => modals.openEdit(transferRequest.uuid)}
+					onEditItems={(transferRequest) =>
+						modals.openEditItems(transferRequest.uuid)
+					}
 					onDetails={(transferRequest) =>
 						modals.openDetails(transferRequest.uuid)
 					}
+					onDelete={handleDelete}
 				/>
 				<TransferRequestCreate
 					open={modals.isCreateOpen}
 					onClose={modals.closeCreate}
 					onSuccess={() => {
 						modals.closeCreate();
+						refresh();
+					}}
+				/>
+				<TransferRequestEdit
+					open={modals.isEditOpen}
+					uuid={modals.selectedUuid}
+					onClose={modals.closeEdit}
+					onSuccess={() => {
+						modals.closeEdit();
+						refresh();
+					}}
+				/>
+				<TransferRequestItemEdit
+					open={modals.isEditItemsOpen}
+					uuid={modals.selectedUuid}
+					onClose={modals.closeEditItems}
+					onSuccess={() => {
+						modals.closeEditItems();
 						refresh();
 					}}
 				/>

@@ -7,6 +7,7 @@ import { getTransferRequestItemColumns } from "./tables/transfer-request-item-co
 import type { ITransferRequestDetailsData } from "../../domain/dtos/transfer-request-details-response.dto";
 import { transferRequestService } from "../../infrastructure/transfer-request.service";
 import type { ITransferRequestItemResponseDto } from "../../domain/dtos/transfer-request-item-response.dto";
+import { TransferStatusEnum } from "../../domain/enums/transfer-status.enum";
 
 const { Title } = Typography;
 
@@ -39,19 +40,31 @@ export const TransferRequestDetails = ({
 						<Descriptions.Item label="Data da Solicitação">
 							{formatDate(transferRequest.requestDate, "DD/MM/YYYY")}
 						</Descriptions.Item>
+						<Descriptions.Item label="Motivo da Transferência">
+							<Tag color="purple">{transferRequest.reason?.label || "-"}</Tag>
+						</Descriptions.Item>
 						<Descriptions.Item label="Origem">
-							<Tag color="green">{transferRequest.origin?.label || "-"}</Tag>
+							<Tag color="cyan">{transferRequest.origin?.label || "-"}</Tag>
 						</Descriptions.Item>
 						<Descriptions.Item label="Destino">
-							<Tag color="purple">
+							<Tag color="geekblue">
 								{transferRequest.destination?.label || "-"}
 							</Tag>
 						</Descriptions.Item>
-						<Descriptions.Item label="Razão">
-							<Tag color="blue">{transferRequest.reason?.label || "-"}</Tag>
-						</Descriptions.Item>
 						<Descriptions.Item label="Status da Transferência">
-							<Tag color="green">
+							<Tag
+								color={
+									transferRequest.statusTransfer?.value ===
+									TransferStatusEnum.CONCLUIDO
+										? "green"
+										: transferRequest.statusTransfer?.value ===
+											  TransferStatusEnum.NEGADO
+											? "red"
+											: transferRequest.statusTransfer?.value ===
+												  TransferStatusEnum.SEPARACAO
+												? "blue"
+												: "orange"
+								}>
 								{transferRequest.statusTransfer?.label || "-"}
 							</Tag>
 						</Descriptions.Item>
